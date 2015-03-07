@@ -14,10 +14,10 @@ public class maze_game
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-		{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'S' },
+		{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-		{ 'X', ' ', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+		{ 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
 		{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 	};
 	
@@ -30,6 +30,9 @@ public class maze_game
 	
 	static int exit_x = 5, exit_y = 9;
 	
+	// Variáveis da Espada
+	
+	static int sword_x = 8, sword_y = 1;
 	
 	public static void main(String[] args)
 	{
@@ -38,12 +41,13 @@ public class maze_game
 			printMaze();
 			moveHero();
 		}
+		printMaze();
 		System.out.println("Fim de jogo!");
 	}
 	
 	public static boolean gameOver()
 	{
-		if (hero_x == exit_x && hero_y == exit_y)
+		if (hero_state == 'W')
 			return true;
 		else
 			return false;
@@ -104,8 +108,19 @@ public class maze_game
 	
 	public static boolean movementViable(int pos_x, int pos_y)
 	{
-		if (maze_map[pos_x][pos_y] != 'X')
+		if (maze_map[pos_x][pos_y] == ' ')
 			return true;
+		else if (maze_map[pos_x][pos_y] == 'E')
+		{
+			hero_state = 'A';
+			maze_map[exit_x][exit_y] = 'S';
+			return true;
+		}
+		else if (maze_map[pos_x][pos_y] == 'S')
+		{
+			hero_state = 'W';
+			return true;
+		}
 		else
 			return false;
 	}
