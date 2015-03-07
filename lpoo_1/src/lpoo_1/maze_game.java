@@ -33,6 +33,8 @@ public class maze_game
 	// Variáveis da Espada
 	
 	static int sword_x = 8, sword_y = 1;
+	static boolean sword_visibility = true;
+	static char sword_state = 'E'; // pode ser 'E' (normal) ou ' ' (morto);
 	
 	// Variáveis do Dragão
 	
@@ -47,6 +49,7 @@ public class maze_game
 		{
 			printMaze();
 			moveHero();
+			moveDragon();
 		}
 		printMaze();
 		System.out.println("Fim de jogo!");
@@ -86,25 +89,25 @@ public class maze_game
 			
 			keyIsViable = true;
 			
-			if (key == 'w' && movementViable(hero_x - 1, hero_y))
+			if (key == 'w' && movementViableForHero(hero_x - 1, hero_y))
 			{
 				maze_map[hero_x][hero_y] = ' ';
 				hero_x--;
 				maze_map[hero_x][hero_y] = hero_state;
 			}
-			else if (key == 'd' && movementViable(hero_x, hero_y + 1))
+			else if (key == 'd' && movementViableForHero(hero_x, hero_y + 1))
 			{
 				maze_map[hero_x][hero_y] = ' ';
 				hero_y++;
 				maze_map[hero_x][hero_y] = hero_state;
 			}
-			else if (key == 's' && movementViable(hero_x + 1, hero_y))
+			else if (key == 's' && movementViableForHero(hero_x + 1, hero_y))
 			{
 				maze_map[hero_x][hero_y] = ' ';
 				hero_x++;
 				maze_map[hero_x][hero_y] = hero_state;
 			}
-			else if (key == 'a' && movementViable(hero_x, hero_y - 1))
+			else if (key == 'a' && movementViableForHero(hero_x, hero_y - 1))
 			{
 				maze_map[hero_x][hero_y] = ' ';
 				hero_y--;
@@ -118,13 +121,81 @@ public class maze_game
 		}
 	}
 	
-	public static boolean movementViable(int pos_x, int pos_y)
+	public static void moveDragon()
+	{
+		if (dragon_state != ' ')
+		{
+			boolean wasItViable = false;
+			
+			while (!wasItViable)
+			{
+				Random positionGenerator = new Random();
+				int position = positionGenerator.nextInt(4);
+				
+				wasItViable = true;
+				
+				if (position == 0 && movementViableForDragon(dragon_x - 1, dragon_y))
+				{
+					maze_map[dragon_x][dragon_y] = ' ';
+					dragon_x--;
+					maze_map[dragon_x][dragon_y] = dragon_state;
+				}
+				else if (position == 1 && movementViableForDragon(dragon_x, dragon_y + 1))
+				{
+					maze_map[dragon_x][dragon_y] = ' ';
+					dragon_y++;
+					maze_map[dragon_x][dragon_y] = dragon_state;
+				}
+				else if (position == 2 && movementViableForDragon(dragon_x + 1, dragon_y))
+				{
+					maze_map[dragon_x][dragon_y] = ' ';
+					dragon_x++;
+					maze_map[dragon_x][dragon_y] = dragon_state;
+				}
+				else if (position == 3 && movementViableForDragon(dragon_x, dragon_y - 1))
+				{
+					maze_map[dragon_x][dragon_y] = ' ';
+					dragon_y--;
+					maze_map[dragon_x][dragon_y] = dragon_state;
+				}
+				else
+					wasItViable = false;
+			}
+		}
+		if (sword_visibility)
+			maze_map[sword_x][sword_y] = sword_state;
+	}
+	
+	public static boolean movementViableForDragon(int pos_x, int pos_y)
+	{
+		if (dragon_state == 'F' && maze_map[pos_x][pos_y] == ' ')
+		{
+			dragon_state = 'D';
+			if (!sword_visibility)
+				sword_visibility = true;
+			return true;
+		}
+		if (maze_map[pos_x][pos_y] == ' ')
+			return true;
+		else if (maze_map[pos_x][pos_y] == 'E')
+		{
+			dragon_state = 'F';
+			sword_visibility = false;
+			return true;
+		}
+		else
+			return false;
+	}
+	
+	public static boolean movementViableForHero(int pos_x, int pos_y)
 	{
 		if (maze_map[pos_x][pos_y] == ' ')
 			return true;
 		else if (maze_map[pos_x][pos_y] == 'E')
 		{
 			hero_state = 'A';
+			sword_visibility = false;
+			sword_state = ' ';
 			maze_map[exit_x][exit_y] = 'S';
 			return true;
 		}
