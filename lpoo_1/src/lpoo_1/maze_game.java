@@ -12,7 +12,7 @@ public class maze_game
 		{ 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
 		{ 'X', 'H', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+		{ 'X', 'D', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', 'X' },
 		{ 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
@@ -34,6 +34,13 @@ public class maze_game
 	
 	static int sword_x = 8, sword_y = 1;
 	
+	// Variáveis do Dragão
+	
+	static int dragon_x = 3, dragon_y = 1;
+	static char dragon_state = 'D'; // pode ser 'D' (normal), 'F' em cima da espada ou ' ' (morto);
+	
+	// Funções
+	
 	public static void main(String[] args)
 	{
 		while (!gameOver())
@@ -46,9 +53,14 @@ public class maze_game
 	}
 	
 	public static boolean gameOver()
-	{
+	{		
 		if (hero_state == 'W')
 			return true;
+		if (hero_state != 'A' && ((hero_x == dragon_x && Math.abs(hero_y - dragon_y) == 1) || (hero_y == dragon_y && Math.abs(hero_x - dragon_x) == 1)))
+		{
+			System.out.println(hero_state);
+			return true;
+		}
 		else
 			return false;
 	}
@@ -119,6 +131,12 @@ public class maze_game
 		else if (maze_map[pos_x][pos_y] == 'S')
 		{
 			hero_state = 'W';
+			return true;
+		}
+		else if (maze_map[pos_x][pos_y] == 'D' && hero_state == 'A')
+		{
+			dragon_state = ' ';
+			maze_map[dragon_x][dragon_y] = dragon_state;
 			return true;
 		}
 		else
