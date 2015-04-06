@@ -1,19 +1,20 @@
 package lpoo_1.logic;
 
-public class Sword extends Element
+public class Dart extends Element
 {
-	private boolean grabbed = false;
+	private boolean grabbed;
 	
-	public Sword (int start_x, int start_y)
+	public Dart (int start_x, int start_y)
 	{
 		this.pos_x = start_x;
 		this.pos_y = start_y;
+		this.grabbed = false;
 	}
 	
 	public char toChar ()
 	{
 		if (!this.grabbed)
-			return 'E';
+			return '*';
 		else
 			return ' ';
 	}
@@ -25,7 +26,7 @@ public class Sword extends Element
 	
 	public boolean wasGrabbed ()
 	{
-		if (grabbed)
+		if (this.grabbed)
 			return true;
 		else
 			return false;

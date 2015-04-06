@@ -2,13 +2,20 @@ package lpoo_1.logic;
 
 public class Hero extends Element
 {
-	public enum HeroStates {NORMAL, ARMED, WINNER, DEAD}
+	public enum HeroStates {NORMAL, WITHSWORD, WITHDART, WINNER, DEAD}
 	private HeroStates State = HeroStates.NORMAL;
+	
+	private char direction = ' ';
 	
 	public Hero (int start_x, int start_y)
 	{
 		this.pos_x = start_x;
 		this.pos_y = start_y;
+	}
+	
+	public void changeDirection (char new_dir)
+	{
+		this.direction = new_dir;
 	}
 	
 	public char toChar()
@@ -17,12 +24,14 @@ public class Hero extends Element
 		{
 			case NORMAL:
 				return 'H';
-			case ARMED:
+			case WITHSWORD:
 				return 'A';
+			case WITHDART:
+				return this.direction;
 			case WINNER:
 				return 'W';
 			case DEAD:
-				return '†';
+				return ' ';
 			default:
 				return 'H';
 		}

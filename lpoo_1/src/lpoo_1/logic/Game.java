@@ -19,8 +19,8 @@ public class Game
 		{ '1', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 		{ '2', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 		{ '3', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-		{ '4', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-		{ '5', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+		{ '4', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
+		{ '5', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
 		{ '6', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
 		{ '7', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S' },
 		{ '8', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
@@ -29,6 +29,7 @@ public class Game
 	
 	private Hero hero;
 	private Sword sword;
+	private ArrayList<Dart> darts = new ArrayList<Dart>();
 	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	
 	public Game()
@@ -39,10 +40,18 @@ public class Game
 		sword = new Sword(5, 2);
 		matrix[sword.getPosX()][sword.getPosY()] = sword.toChar();
 		
+		Dart dart_aux = new Dart(3, 3);
+		darts.add(dart_aux);
+		
+		for (Dart dart: darts)
+		{
+			matrix[dart.getPosX()][dart.getPosY()] = dart.toChar();
+		}
+		
 		Dragon dragon_aux = new Dragon(5, 3, DragonStates.NORMAL);
 		dragons.add(dragon_aux);
 		
-		dragon_aux = new Dragon(5, 5, DragonStates.NORMAL);
+		dragon_aux = new Dragon(5, 7, DragonStates.NORMAL);
 		dragons.add(dragon_aux);
 		
 		for (Dragon dragon: dragons)
@@ -68,13 +77,32 @@ public class Game
 		
 		// Verificação das letras.
 		if (dir == 'w')
+		{
 			new_x--;
+			hero.changeDirection('^');
+		}
 		else if (dir == 's')
+		{
 			new_x++;
+			hero.changeDirection('v');
+		}
 		else if (dir == 'd')
+		{
 			new_y++;
+			hero.changeDirection('>');
+		}
 		else if (dir == 'a')
+		{
 			new_y--;
+			hero.changeDirection('<');
+		}
+		else if (dir == '+') // disparar
+		{
+			if (hero.getState() != HeroStates.WITHDART)
+				return false;
+			else
+				shootDart();
+		}
 		else
 			return false;
 		
@@ -83,12 +111,17 @@ public class Game
 			return false;
 		else if (matrix[new_x][new_y] == 'E')
 		{
-			hero.changeState(HeroStates.ARMED);
+			hero.changeState(HeroStates.WITHSWORD);
 			sword.grabbed();
+		}
+		else if (matrix[new_x][new_y] == '*')
+		{
+			hero.changeState(HeroStates.WITHDART);
+			grabDart(new_x, new_y);
 		}
 		else if (matrix[new_x][new_y] == 'S')
 		{
-			if (hero.getState() == HeroStates.ARMED)
+			if (hero.getState() == HeroStates.WITHSWORD)
 				hero.changeState(HeroStates.WINNER);
 			else
 				return false;
@@ -103,6 +136,22 @@ public class Game
 		this.update();
 		
 		return true;
+	}
+	
+	public void grabDart (int pos_x, int pos_y)
+	{
+		for (Dart dart: darts)
+		{
+			if (dart.getPosX() == pos_x && dart.getPosY() == pos_y)
+			{
+				dart.grabbed();
+			}
+		}
+	}
+	
+	public void shootDart ()
+	{
+		
 	}
 	
 	public void moveDragon()
@@ -173,7 +222,7 @@ public class Game
 		for (Dragon dragon: dragons)
 		{			
 			if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) == 1) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) == 1))))
-				if (hero.getState() == HeroStates.ARMED)
+				if (hero.getState() == HeroStates.WITHSWORD)
 				{
 					dragon.changeState(DragonStates.DEAD);
 					

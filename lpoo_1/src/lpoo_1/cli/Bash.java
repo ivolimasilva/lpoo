@@ -48,7 +48,7 @@ public class Bash
 		
 		while (!keyIsViable)
 		{						
-			if (key != 'w' && key != 'd' && key != 's' && key != 'a')
+			if (key != 'w' && key != 'd' && key != 's' && key != 'a' && key != '+')
 			{
 				System.out.println("Direcção inválida, insira outra.");
 				key = readChar();
