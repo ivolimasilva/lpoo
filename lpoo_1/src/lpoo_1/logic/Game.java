@@ -109,7 +109,7 @@ public class Game
 			return false;
 		
 		// Verificação da posição para onde quer ir.
-		if (matrix[new_x][new_y] == 'X')
+		if (matrix[new_x][new_y] == 'X' || matrix[new_x][new_y] == 'd' || matrix[new_x][new_y] == 'D' || matrix[new_x][new_y] == 'f' || matrix[new_x][new_y] == 'F' || matrix[new_x][new_y] == '.' || matrix[new_x][new_y] == '_')
 			return false;
 		else if (matrix[new_x][new_y] == 'E')
 		{
@@ -222,7 +222,7 @@ public class Game
 			if ((dragon.getState() == DragonStates.NORMAL) || (dragon.getState() == DragonStates.ONSWORD) || (dragon.getState() == DragonStates.ONDART))
 			{
 				Random positionGenerator = new Random();
-				int position = positionGenerator.nextInt(4);
+				int position = positionGenerator.nextInt(5);
 				
 				if (position == 0 && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'X' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'D' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'd' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '_' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '.') // up
 				{
@@ -266,8 +266,32 @@ public class Game
 							matrix[dart.getPosX()][dart.getPosY()] = dart.toChar();
 					}
 				}
+				else if (position == 4)
+				{
+					if (dragon.getState() == DragonStates.NORMAL)
+						dragon.changeState(DragonStates.SLEEP);
+					else if (dragon.getState() == DragonStates.ONSWORD)
+						dragon.changeState(DragonStates.SLEEPONSWORD);
+					else if (dragon.getState() == DragonStates.ONDART)
+						dragon.changeState(DragonStates.SLEEPONDART);
+				}
 				
 				matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
+			}
+			else if ((dragon.getState() == DragonStates.SLEEP) || (dragon.getState() == DragonStates.SLEEPONSWORD) || (dragon.getState() == DragonStates.SLEEPONDART))
+			{
+				Random positionGenerator = new Random();
+				int position = positionGenerator.nextInt(2);
+				
+				if (position == 0)
+				{
+					if (dragon.getState() == DragonStates.SLEEP)
+						dragon.changeState(DragonStates.NORMAL);
+					else if (dragon.getState() == DragonStates.SLEEPONSWORD)
+						dragon.changeState(DragonStates.ONSWORD);
+					else if (dragon.getState() == DragonStates.SLEEPONDART)
+						dragon.changeState(DragonStates.ONDART);
+				}
 			}
 		}
 		
@@ -294,14 +318,17 @@ public class Game
 	{	
 		// Verificar se está adjacente a um dragão
 		for (Dragon dragon: dragons)
-		{			
+		{
 			if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) == 1) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) == 1))))
 				if (hero.getState() == HeroStates.WITHSWORD)
 					killDragon (dragon.getPosX(), dragon.getPosY());
 				else
 				{
-					hero.changeState(HeroStates.DEAD);
-					matrix[hero.getPosX()][hero.getPosY()] = '†';
+					if (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART)
+					{
+						hero.changeState(HeroStates.DEAD);
+						matrix[hero.getPosX()][hero.getPosY()] = '†';
+					}
 				}
 		}
 	}
