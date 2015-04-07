@@ -2,7 +2,7 @@ package lpoo_1.logic;
 
 public class Hero extends Element
 {
-	public enum HeroStates {NORMAL, WITHSWORD, WITHDART, WINNER, DEAD}
+	public enum HeroStates {NORMAL, WITHSWORD, WITHDART, WITHSHIELD, WINNER, DEAD}
 	private HeroStates State = HeroStates.NORMAL;
 	
 	private char direction = ' ';
@@ -28,6 +28,8 @@ public class Hero extends Element
 				return 'A';
 			case WITHDART:
 				return this.direction;
+			case WITHSHIELD:
+				return 'O';
 			case WINNER:
 				return 'W';
 			case DEAD:

@@ -31,6 +31,7 @@ public class Game
 	
 	private Hero hero;
 	private Sword sword;
+	private Shield shield;
 	private ArrayList<Dart> darts = new ArrayList<Dart>();
 	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	
@@ -41,6 +42,9 @@ public class Game
 		
 		sword = new Sword(5, 2);
 		matrix[sword.getPosX()][sword.getPosY()] = sword.toChar();
+		
+		shield = new Shield(3, 6);
+		matrix[shield.getPosX()][shield.getPosY()] = shield.toChar();
 		
 		Dart dart_aux = new Dart(3, 3);
 		darts.add(dart_aux);
@@ -115,6 +119,11 @@ public class Game
 		{
 			hero.changeState(HeroStates.WITHSWORD);
 			sword.grabbed();
+		}
+		else if (matrix[new_x][new_y] == 'o')
+		{
+			hero.changeState(HeroStates.WITHSHIELD);
+			shield.grabbed();
 		}
 		else if (matrix[new_x][new_y] == '*')
 		{
@@ -330,6 +339,14 @@ public class Game
 						matrix[hero.getPosX()][hero.getPosY()] = '†';
 					}
 				}
+			else if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) == 3) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) == 3))))
+			{
+				if (hero.getState() != HeroStates.WITHSHIELD)
+				{
+					hero.changeState(HeroStates.DEAD);
+					matrix[hero.getPosX()][hero.getPosY()] = '†';
+				}
+			}
 		}
 	}
 	
