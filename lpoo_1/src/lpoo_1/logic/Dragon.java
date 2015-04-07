@@ -2,7 +2,7 @@ package lpoo_1.logic;
 
 public class Dragon extends Element
 {
-	public enum DragonStates {NORMAL, ONSWORD, SLEEP, SLEEPONSWORD, DEAD}
+	public enum DragonStates {NORMAL, ONSWORD, ONDART, SLEEP, SLEEPONSWORD, SLEEPONDART, DEAD}
 	private DragonStates State;
 	
 	public Dragon (int start_x, int start_y, DragonStates start_state)
@@ -20,10 +20,14 @@ public class Dragon extends Element
 				return 'D';
 			case ONSWORD:
 				return 'F';
+			case ONDART:
+				return '.';
 			case SLEEP:
 				return 'd';
 			case SLEEPONSWORD:
 				return 'f';
+			case SLEEPONDART:
+				return '_';
 			case DEAD:
 				return '†';
 			default:
