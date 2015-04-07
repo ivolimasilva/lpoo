@@ -1,11 +1,23 @@
 package lpoo_1.logic;
 
-public class DemoMaze implements MazeBuilder {
-
-	@Override
-	public char generateMatrix() {
-		// TODO Auto-generated method stub
-		return 0;
+public class DemoMaze implements MazeBuilder
+{
+	public char[][] generateMatrix()
+	{
+		char matrix[][] =
+		{
+			{ 'X', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' },
+			{ '0', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{ '1', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ '2', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ '3', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ '4', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
+			{ '5', 'X', ' ', ' ', ' ', 'X', 'X', ' ', ' ', ' ', 'X' },
+			{ '6', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ '7', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S' },
+			{ '8', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{ '9', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
+		};
+		return matrix;
 	}
-
 }

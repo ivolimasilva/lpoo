@@ -1,11 +1,11 @@
 package lpoo_1.logic;
 
-public class RandomMaze implements MazeBuilder {
-
-	@Override
-	public char generateMatrix() {
-		// TODO Auto-generated method stub
-		return 0;
+public class RandomMaze implements MazeBuilder
+{
+	public char[][] generateMatrix()
+	{
+		char result[][] = {{'a'}, {'b'}};
+		return result;
 	}
 
 }

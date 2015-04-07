@@ -6,6 +6,7 @@ public class Hero extends Element
 	private HeroStates State = HeroStates.NORMAL;
 	
 	private char direction = ' ';
+	private boolean shielded = false;
 	
 	public Hero (int start_x, int start_y)
 	{
@@ -23,7 +24,10 @@ public class Hero extends Element
 		switch (State)
 		{
 			case NORMAL:
-				return 'H';
+				if (this.isShielded())
+					return 'O';
+				else
+					return 'H';
 			case WITHSWORD:
 				return 'A';
 			case WITHDART:
@@ -37,6 +41,16 @@ public class Hero extends Element
 			default:
 				return 'H';
 		}
+	}
+	
+	public boolean isShielded()
+	{
+		return shielded;
+	}
+	
+	public void grabShield()
+	{
+		shielded = true;
 	}
 	
 	public HeroStates getState ()

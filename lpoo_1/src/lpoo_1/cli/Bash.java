@@ -9,7 +9,7 @@ public class Bash
 	{
 		System.out.println ("The Maze Game.\nThis is the console!");
 		
-		Game game = new Game();
+		Game game = new Game(11, false);
 		
 		while (!game.gameOver())
 		{
