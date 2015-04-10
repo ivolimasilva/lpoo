@@ -5,20 +5,22 @@ import java.util.*;
 
 public class Bash
 {
+	
+	private static int matrixSize = 11;
+	private static char[][] matrix;
+	
 	public static void main(String [] args)
 	{
 		System.out.println ("The Maze Game.\nThis is the console!");
 		
-		Game game = new Game(11, false);
+		Game game = new Game(matrixSize, false);
+		
+		// Imprime a matrix de jogo.
+		matrix = game.getMatrix();
+		printMatrix();
 		
 		while (!game.gameOver())
-		{
-			// Update aos elementos (herói, dragões e espada).
-			// game.update();
-			
-			// Imprime a matrix de jogo.
-			game.printMatrix();
-			
+		{	
 			// Move heroi.
 			char dir = readMovement();
 			game.moveHero(dir);
@@ -28,10 +30,27 @@ public class Bash
 			game.moveDragon();
 			if (game.gameOver())
 				break;
+			
+			// Imprime a matrix de jogo.
+			matrix = game.getMatrix();
+			printMatrix();
 		}
 		
 		// Imprime a matrix de jogo.
-		game.printMatrix();
+		matrix = game.getMatrix();
+		printMatrix();
+
+	}
+	
+	public static void printMatrix()
+	{
+		for (int i = 0; i < matrixSize; i ++)
+		{
+			for (int j = 0; j < matrixSize; j++)
+				System.out.print(matrix[i][j] + " ");
+			
+			System.out.println();
+		}
 	}
 	
 	public static char readChar()

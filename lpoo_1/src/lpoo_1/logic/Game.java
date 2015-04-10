@@ -68,8 +68,9 @@ public class Game
 		}
 	}
 	
-	public void printMatrix()
+	public char[][] getMatrix()
 	{
+		/*
 		for (int i = 0; i < this.matrixSize; i ++)
 		{
 			for (int j = 0; j < this.matrixSize; j++)
@@ -77,6 +78,8 @@ public class Game
 			
 			System.out.println();
 		}
+		*/
+		return this.matrix;
 	}
 	
 	public boolean moveHero(char dir)
