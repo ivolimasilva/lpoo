@@ -53,7 +53,7 @@ public class GameFrame extends JFrame
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		gamePanel = new GamePanel(this);
+		gamePanel = new GamePanel();
 		contentPane.add(gamePanel, BorderLayout.CENTER);
 		
 		JPanel btnPanel = new JPanel();
@@ -66,17 +66,13 @@ public class GameFrame extends JFrame
 			{
 				public void actionPerformed(ActionEvent arg0)
 				{
-					
-					//0=YES , 1=NO
 					if (JOptionPane.showConfirmDialog(null, "Começar jogo Novo?", "New Game?",JOptionPane.YES_NO_OPTION) == 0)
 					{
-						System.out.println("NewGame!");
-						gamePanel = new GamePanel (frame);
-						frame.setVisible(true);
+						((GamePanel) gamePanel).LoadNewMatrix();
 						contentPane.add(gamePanel, BorderLayout.CENTER);
-						gamePanel.requestFocusInWindow();
 						
-						gamePanel.repaint();
+						contentPane.repaint();
+						contentPane.setVisible(true);
 						gamePanel.requestFocusInWindow();
 					}
 				}

@@ -13,23 +13,26 @@ public class GamePanel extends JPanel implements KeyListener
 	
 	private static int matrixSize = 11;
 	private static char[][] matrix;
-	DemoMaze Maze = new DemoMaze(matrixSize);
-	Game game = new Game(matrixSize, false);
+	Game game;
 	
 	JFrame myMainWindow;
 	
-	public GamePanel(JFrame frame)
+	public GamePanel()
 	{
 		super();
 		
-		myMainWindow = frame;
+		//myMainWindow = frame;
 		
 		this.addKeyListener(this);
 		
-		// Desenha matrix
+		LoadNewMatrix();
+	}
+	
+	public void LoadNewMatrix()
+	{
+		game = new Game(matrixSize, false); 
 		matrix = game.getMatrix();
 		System.out.println("Matrix loaded!");
-		//printMatrix();
 	}
 	
 	@Override
