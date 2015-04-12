@@ -63,11 +63,12 @@ public class GamePanel extends JPanel implements KeyListener
 		{
 			// Desenha matrix
 			matrix = game.getMatrix();
+			System.out.println("1");
 			printMatrix();
 			repaint();
 			
 			// Encerra a janela
-			myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
+			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
 		}
 		else
 		{
@@ -76,6 +77,7 @@ public class GamePanel extends JPanel implements KeyListener
 			
 			// Desenha matrix
 			matrix = game.getMatrix();
+			System.out.println("2");
 			printMatrix();
 			repaint();
 		}
@@ -85,16 +87,18 @@ public class GamePanel extends JPanel implements KeyListener
 		{
 			// Desenha matrix
 			matrix = game.getMatrix();
+			System.out.println("3");
 			printMatrix();
 			repaint();
 			
 			// Encerra a janela
-			myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
+			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
 		}
 		else
 		{
 			// Desenha matrix
 			matrix = game.getMatrix();
+			System.out.println("4");
 			printMatrix();
 			repaint();
 		}
@@ -106,31 +110,69 @@ public class GamePanel extends JPanel implements KeyListener
 		
 		super.paintComponent(g);
 		
-		for (int i = 0; i < matrixSize; i ++)
+		for (int i = 1; i < matrixSize; i ++)
 		{
-			for (int j = 0; j < matrixSize; j++)
+			for (int j = 1; j < matrixSize; j++)
 			{
-				ImageIcon aux_img = new ImageIcon("img/floor.png");
-				img = aux_img.getImage();				
-				g.drawImage(img, (i)*16, (j)*16, null);
+				ImageIcon aux_img = new ImageIcon("img/map/floor.png");
+				img = aux_img.getImage();
+				g.drawImage(img, (i - 1) * 32, (j - 1) * 32, null);
 				
 				if (matrix[j][i] == 'X')
-					aux_img = new ImageIcon("img/wall.png");
-				else if (matrix[j][i] == 'H')
-					aux_img = new ImageIcon("img/hero.png");
-				else if (matrix[j][i] == 'A')
-					aux_img = new ImageIcon("img/hero.png");
-				else if (matrix[j][i] == 'D')
-					aux_img = new ImageIcon("img/dragon.png");
-				else if (matrix[j][i] == 'd')
-					aux_img = new ImageIcon("img/dragon.png");
+					aux_img = new ImageIcon("img/map/wall.png");
+				
+				else if (matrix[j][i] == '^')
+					aux_img = new ImageIcon("img/hero/back.png");
+				
+				else if (matrix[j][i] == 'v')
+					aux_img = new ImageIcon("img/hero/front.png");
+				else if (matrix[j][i] == '>')
+					aux_img = new ImageIcon("img/hero/right.png");
+				else if (matrix[j][i] == '<')
+					aux_img = new ImageIcon("img/hero/left.png");
+				
+				else if (matrix[j][i] == '1')
+					aux_img = new ImageIcon("img/hero/right_sword.png");
+				else if (matrix[j][i] == '2')
+					aux_img = new ImageIcon("img/hero/left_sword.png");
+				else if (matrix[j][i] == '3')
+					aux_img = new ImageIcon("img/hero/front_sword.png");
+				
+				else if (matrix[j][i] == '4')
+					aux_img = new ImageIcon("img/hero/right_shield.png");
+				else if (matrix[j][i] == '5')
+					aux_img = new ImageIcon("img/hero/left_shield.png");
+				else if (matrix[j][i] == '6')
+					aux_img = new ImageIcon("img/hero/front_shield.png");
+				
+				else if (matrix[j][i] == '7')
+					aux_img = new ImageIcon("img/hero/right_sword_shield.png");
+				else if (matrix[j][i] == '8')
+					aux_img = new ImageIcon("img/hero/left_sword_shield.png");
+				else if (matrix[j][i] == '9')
+					aux_img = new ImageIcon("img/hero/front_sword_shield.png");
+				
+				else if (matrix[j][i] == 'W')
+					aux_img = new ImageIcon("img/hero/winner.png");
+				
+				else if (matrix[j][i] == 'D' || matrix[j][i] == 'F' || matrix[j][i] == '.' || matrix[j][i] == 'º')
+					aux_img = new ImageIcon("img/dragon/front.png");
+				else if (matrix[j][i] == 'd' || matrix[j][i] == 'f' || matrix[j][i] == '_' || matrix[j][i] == 'ª')
+					aux_img = new ImageIcon("img/dragon/back.png");
+				
 				else if (matrix[j][i] == 'S')
-					aux_img = new ImageIcon("img/exit.png");
+					aux_img = new ImageIcon("img/map/exit.png");
 				else if (matrix[j][i] == 'E')
-					aux_img = new ImageIcon("img/sword.png");
+					aux_img = new ImageIcon("img/map/sword.png");
+				else if (matrix[j][i] == 'o')
+					aux_img = new ImageIcon("img/map/shield.png");
+				else if (matrix[j][i] == '*')
+					aux_img = new ImageIcon("img/map/dart.png");
+				else if (matrix[j][i] == '†')
+					aux_img = new ImageIcon("img/map/grave.png");
 					
 				img = aux_img.getImage();				
-				g.drawImage(img, (i)*16, (j)*16, null);
+				g.drawImage(img, (i - 1) * 32, (j - 1) * 32, null);
 			}
 			
 		}
@@ -147,17 +189,13 @@ public class GamePanel extends JPanel implements KeyListener
 		}
 	}
 
-	@Override
 	public void keyReleased(KeyEvent e)
 	{
-		// TODO Auto-generated method stub
-		//System.out.println("KeyReleased");
 	}
 
-	@Override
 	public void keyTyped(KeyEvent e)
 	{
-		// TODO Auto-generated method stub
-		System.out.println("KeyTyped");
+		System.out.println("Key down;");
+		game.moveHero('+');
 	}
 }

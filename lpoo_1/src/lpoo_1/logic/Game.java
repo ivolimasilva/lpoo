@@ -27,20 +27,23 @@ public class Game
 		MazeBuilder Maze = new DemoMaze(size);
 		
 		this.matrix = Maze.getMatrix();
-		this.dragons = Maze.getDragons();
 		
+		this.dragons = Maze.getDragons();
 		for (Dragon dragon: dragons)
-		{
 			this.matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
-		}
 		
 		this.hero = Maze.getHero();
+		this.matrix[hero.getPosX()][hero.getPosY()] = hero.toChar();
 		
 		this.sword = Maze.getSword();
+		this.matrix[sword.getPosX()][sword.getPosY()] = sword.toChar();
 		
 		this.shield = Maze.getShield();
+		this.matrix[shield.getPosX()][shield.getPosY()] = shield.toChar();
 		
 		this.darts = Maze.getDarts();
+		for (Dart dart: darts)
+			this.matrix[dart.getPosX()][dart.getPosY()] = dart.toChar();
 
 	}
 	
@@ -154,20 +157,20 @@ public class Game
 		char line[] = new char[this.matrixSize];
 		int position = 0, inc = 0, lineIndex = 0, colIndex = 0;
 		
-		hero.shotDart();
+		hero.shootDart();
 		
-		if ((hero.toChar() == '<') || (hero.toChar() == '>'))
+		if ((hero.toChar() == '<') || (hero.toChar() == '>') || (hero.toChar() == '1') || (hero.toChar() == '2') || (hero.toChar() == '4') || (hero.toChar() == '5') || (hero.toChar() == '7') || (hero.toChar() == '8'))
 		{
 			position = hero.getPosY();
 			lineIndex = hero.getPosX();
 			line = getRow(lineIndex);
 			
-			if (hero.toChar() == '<')
+			if ((hero.toChar() == '<')  || (hero.toChar() == '2') || (hero.toChar() == '5') || (hero.toChar() == '8'))
 				inc = -1;
-			else if (hero.toChar() == '>')
+			else if ((hero.toChar() == '>') || (hero.toChar() == '1') || (hero.toChar() == '4') || (hero.toChar() == '7'))
 				inc = 1;
 		}
-		else if ((hero.toChar() == '^') || (hero.toChar() == 'v'))
+		else if ((hero.toChar() == '^') || (hero.toChar() == 'v') || (hero.toChar() == '3') || (hero.toChar() == '6') || (hero.toChar() == '9'))
 		{
 			position = hero.getPosX();
 			colIndex = hero.getPosY();
@@ -175,7 +178,7 @@ public class Game
 			
 			if (hero.toChar() == '^')
 				inc = -1;
-			else if (hero.toChar() == 'v')
+			else if ((hero.toChar() == 'v') || (hero.toChar() == '3') || (hero.toChar() == '6') || (hero.toChar() == '9'))
 				inc = 1;
 		}
 
@@ -194,8 +197,6 @@ public class Game
 				}
 			}
 		}
-		
-		hero.changeState(HeroStates.NORMAL);
 		
 	}
 	
@@ -223,22 +224,22 @@ public class Game
 				Random positionGenerator = new Random();
 				int position = positionGenerator.nextInt(5);
 				
-				if (position == 0 && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'X' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'D' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'd' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '_' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '.') // up
+				if (position == 0 && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'X' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'D' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'd' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '_' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != '.' && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'º'  && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'ª'  && matrix[dragon.getPosX() - 1][dragon.getPosY()] != 'S') // up
 				{
 					matrix[dragon.getPosX()][dragon.getPosY()] = ' ';
 					dragon.changePos(dragon.getPosX() - 1, dragon.getPosY());
 				}
-				else if (position == 1 && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'X') // right
+				else if (position == 1 && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'X' && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'D'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'd'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != '_'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != '.'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'º'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'ª'  && matrix[dragon.getPosX()][dragon.getPosY() + 1] != 'S') // right
 				{
 					matrix[dragon.getPosX()][dragon.getPosY()] = ' ';
 					dragon.changePos(dragon.getPosX(), dragon.getPosY() + 1);
 				}
-				else if (position == 2 && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'X') // down
+				else if (position == 2 && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'X' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'D' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'd' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != '_' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != '.' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'º' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'ª' && matrix[dragon.getPosX() + 1][dragon.getPosY()] != 'S') // down
 				{
 					matrix[dragon.getPosX()][dragon.getPosY()] = ' ';
 					dragon.changePos(dragon.getPosX() + 1, dragon.getPosY());
 				}
-				else if (position == 3 && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'X') // left
+				else if (position == 3 && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'X' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'D' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'd' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != '_' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != '.' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'º' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'ª' && matrix[dragon.getPosX()][dragon.getPosY() - 1] != 'S') // left
 				{
 					matrix[dragon.getPosX()][dragon.getPosY()] = ' ';
 					dragon.changePos(dragon.getPosX(), dragon.getPosY() - 1);

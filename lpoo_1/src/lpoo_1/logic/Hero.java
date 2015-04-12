@@ -25,9 +25,45 @@ public class Hero extends Element
 		switch (State)
 		{
 			case NORMAL:
-				return this.direction;
+				if (!shielded)
+					return this.direction;
+				else
+					switch (this.direction)
+					{
+						case '^':
+							return '^';
+						case '>':
+							return '4';
+						case '<':
+							return '5';
+						case 'v':
+							return '6';
+					}
 			case ARMED:
-				return 'A';
+				if (!shielded)
+					switch (this.direction)
+					{
+						case '^':
+							return '^';
+						case '>':
+							return '1';
+						case '<':
+							return '2';
+						case 'v':
+							return '3';
+					}
+				else
+					switch (this.direction)
+					{
+						case '^':
+							return '^';
+						case '>':
+							return '7';
+						case '<':
+							return '8';
+						case 'v':
+							return '9';
+					}
 			case WINNER:
 				return 'W';
 			case DEAD:
@@ -57,7 +93,7 @@ public class Hero extends Element
 		darts++;
 	}
 	
-	public void shotDart()
+	public void shootDart()
 	{
 		darts--;
 	}

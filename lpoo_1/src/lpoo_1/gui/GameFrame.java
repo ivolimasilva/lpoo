@@ -38,7 +38,7 @@ public class GameFrame extends JFrame
 	public GameFrame()
 	{
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
+		setBounds((1920 - 350) / 2, (1080 - 405) / 2, 350, 405);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
@@ -48,12 +48,12 @@ public class GameFrame extends JFrame
 		contentPane.add(gamePanel, BorderLayout.CENTER);
 		
 		JPanel btnPanel = new JPanel();
-		contentPane.add(btnPanel, BorderLayout.SOUTH);
+		contentPane.add(btnPanel, BorderLayout.NORTH);
 		
-		JButton btnNewButton = new JButton("New button");
+		JButton btnNewButton = new JButton("Start");
 		btnPanel.add(btnNewButton);
 		
-		JButton btnNewButton_1 = new JButton("New button");
+		JButton btnNewButton_1 = new JButton("Exit");
 		btnPanel.add(btnNewButton_1);
 	}
 

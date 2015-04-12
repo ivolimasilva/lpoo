@@ -55,50 +55,62 @@ public class DemoMaze implements MazeBuilder
 				{
 					case 'H':
 						hero = new Hero(i, j);
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case 'E':
 						sword = new Sword(i, j);
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case '*':
 						darts.add(new Dart (i, j));
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case 'o':
 						shield = new Shield(i, j);
+						aux_matrix[i][j] = ' ';
 						break;
 					
 					case 'D':
 						dragons.add(new Dragon (i, j, DragonStates.NORMAL));
+						aux_matrix[i][j] = ' ';
 						break;
 					
 					case 'd':
 						dragons.add(new Dragon (i, j, DragonStates.SLEEP));
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case 'F':
 						dragons.add(new Dragon (i, j, DragonStates.ONSWORD));
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case 'f':
 						dragons.add(new Dragon (i, j, DragonStates.SLEEPONSWORD));
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case 'º':
 						dragons.add(new Dragon (i, j, DragonStates.ONSHIELD));
+						aux_matrix[i][j] = ' ';
 						break;
 					
 					case 'ª':
 						dragons.add(new Dragon (i, j, DragonStates.SLEEPONSHIELD));
+						aux_matrix[i][j] = ' ';
 						break;
 						
 					case '.':
 						dragons.add(new Dragon (i, j, DragonStates.ONDART));
+						aux_matrix[i][j] = ' ';
 						break;
 					
 					case '_':
 						dragons.add(new Dragon (i, j, DragonStates.SLEEPONDART));
+						aux_matrix[i][j] = ' ';
 						break;
 				}
 				
