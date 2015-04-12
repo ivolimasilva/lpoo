@@ -23,16 +23,16 @@ public class GamePanel extends JPanel implements KeyListener
 		
 		//myMainWindow = frame;
 		
-		this.addKeyListener(this);
-		
 		LoadNewMatrix();
 	}
 	
 	public void LoadNewMatrix()
 	{
+		this.removeKeyListener(this);
 		game = new Game(matrixSize, false); 
 		matrix = game.getMatrix();
 		System.out.println("Matrix loaded!");
+		this.addKeyListener(this);
 	}
 	
 	@Override
@@ -72,6 +72,7 @@ public class GamePanel extends JPanel implements KeyListener
 			repaint();
 			
 			// Encerra a janela
+			this.removeKeyListener(this);
 			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
 		}
 		else
@@ -96,6 +97,7 @@ public class GamePanel extends JPanel implements KeyListener
 			repaint();
 			
 			// Encerra a janela
+			this.removeKeyListener(this);
 			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
 		}
 		else

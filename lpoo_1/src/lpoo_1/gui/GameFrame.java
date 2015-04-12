@@ -80,6 +80,20 @@ public class GameFrame extends JFrame
 		);
 		btnPanel.add(btnNewGame);
 		
+		JButton btnSettings = new JButton("Settings");
+		btnNewGame.addActionListener
+		(
+			new ActionListener()
+			{
+				public void actionPerformed(ActionEvent arg0)
+				{
+					
+				}
+				
+			}
+		);
+		btnPanel.add(btnSettings);
+		
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener
 		(
