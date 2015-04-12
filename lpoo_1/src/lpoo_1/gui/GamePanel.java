@@ -28,7 +28,8 @@ public class GamePanel extends JPanel implements KeyListener
 		
 		// Desenha matrix
 		matrix = game.getMatrix();
-		printMatrix();
+		System.out.println("Matrix loaded!");
+		//printMatrix();
 	}
 	
 	@Override
