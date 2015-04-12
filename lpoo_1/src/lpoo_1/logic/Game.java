@@ -1,31 +1,16 @@
 package lpoo_1.logic;
 
 import java.util.ArrayList;
-
 import java.util.Random;
 
 import lpoo_1.logic.Dragon;
 import lpoo_1.logic.Dragon.DragonStates;
-
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Hero.HeroStates;
 
 public class Game
 {
-	private char matrix[][] =
-	{
-		{ 'X', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' },
-		{ '0', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-		{ '1', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-		{ '2', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-		{ '3', 'X', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', 'X' },
-		{ '4', 'X', ' ', ' ', 'X', 'X', 'X', ' ', ' ', ' ', 'X' },
-		{ '5', 'X', ' ', ' ', ' ', 'X', 'X', 'X', ' ', ' ', 'X' },
-		{ '6', 'X', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', 'X' },
-		{ '7', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'S' },
-		{ '8', 'X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X' },
-		{ '9', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
-	};
+	private char matrix[][];
 	
 	private int matrixSize;
 	
@@ -39,38 +24,28 @@ public class Game
 	{
 		this.matrixSize = size;
 		
-		hero = new Hero(2, 2);
-		matrix[hero.getPosX()][hero.getPosY()] = hero.toChar();
+		MazeBuilder Maze = new DemoMaze(size);
 		
-		sword = new Sword(5, 2);
-		matrix[sword.getPosX()][sword.getPosY()] = sword.toChar();
-		
-		shield = new Shield(3, 6);
-		matrix[shield.getPosX()][shield.getPosY()] = shield.toChar();
-		
-		Dart dart_aux = new Dart(3, 3);
-		darts.add(dart_aux);
-		
-		for (Dart dart: darts)
-		{
-			matrix[dart.getPosX()][dart.getPosY()] = dart.toChar();
-		}
-		
-		Dragon dragon_aux = new Dragon(8, 3, DragonStates.NORMAL);
-		dragons.add(dragon_aux);
-		
-		dragon_aux = new Dragon(3, 6, DragonStates.SLEEPONSHIELD);
-		dragons.add(dragon_aux);
+		this.matrix = Maze.getMatrix();
+		this.dragons = Maze.getDragons();
 		
 		for (Dragon dragon: dragons)
 		{
-			matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
+			this.matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
 		}
+		
+		this.hero = Maze.getHero();
+		
+		this.sword = Maze.getSword();
+		
+		this.shield = Maze.getShield();
+		
+		this.darts = Maze.getDarts();
+
 	}
 	
-	public char[][] getMatrix()
+	public void printMatrix()
 	{
-		/*
 		for (int i = 0; i < this.matrixSize; i ++)
 		{
 			for (int j = 0; j < this.matrixSize; j++)
@@ -78,7 +53,20 @@ public class Game
 			
 			System.out.println();
 		}
-		*/
+	}
+	
+	public char[][] getMatrix()
+	{
+		System.out.print ("Armas: ");
+		if (hero.getState() == HeroStates.ARMED)
+			System.out.print ("Espada | ");
+		System.out.print ("Dardos (" + hero.hasDarts() + ").\n");
+		
+		System.out.print ("Defesas: ");
+		if (hero.isShielded())
+			System.out.print ("Escudo.");
+		
+		System.out.print ("\n");
 		return this.matrix;
 	}
 	
@@ -109,10 +97,10 @@ public class Game
 		}
 		else if (dir == '+') // disparar
 		{
-			if (hero.getState() != HeroStates.WITHDART)
-				return false;
-			else
+			if (hero.hasDarts() > 0)
 				shootDart();
+			else
+				return false;
 		}
 		else
 			return false;
@@ -122,27 +110,22 @@ public class Game
 			return false;
 		else if (matrix[new_x][new_y] == 'E')
 		{
-			hero.changeState(HeroStates.WITHSWORD);
+			hero.changeState(HeroStates.ARMED);
 			sword.grabbed();
 		}
 		else if (matrix[new_x][new_y] == 'o')
-		{
-			if (!sword.wasGrabbed())
-			{
-				hero.changeState(HeroStates.WITHSHIELD);
-			}
-			
+		{		
 			shield.grabbed();
 			hero.grabShield();
 		}
 		else if (matrix[new_x][new_y] == '*')
 		{
-			hero.changeState(HeroStates.WITHDART);
+			hero.grabDart();
 			grabDart(new_x, new_y);
 		}
 		else if (matrix[new_x][new_y] == 'S')
 		{
-			if (hero.getState() == HeroStates.WITHSWORD)
+			if (hero.getState() == HeroStates.ARMED)
 				hero.changeState(HeroStates.WINNER);
 			else
 				return false;
@@ -171,6 +154,8 @@ public class Game
 		char line[] = new char[this.matrixSize];
 		int position = 0, inc = 0, lineIndex = 0, colIndex = 0;
 		
+		hero.shotDart();
+		
 		if ((hero.toChar() == '<') || (hero.toChar() == '>'))
 		{
 			position = hero.getPosY();
@@ -193,11 +178,6 @@ public class Game
 			else if (hero.toChar() == 'v')
 				inc = 1;
 		}
-		
-		/*System.out.print("Linha a analisar: ");
-		for (int i = 0; i < line.length; i++)
-			System.out.print(line[i] + " ");
-		System.out.println();*/
 
 		for (int i = position ;  i > 0 && i < this.matrixSize; i += inc)
 		{
@@ -317,12 +297,16 @@ public class Game
 				}
 			}
 			
-			matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
-			if (dragon.getState() == DragonStates.DEAD && dragon.getPosX() == shield.getPosX() && dragon.getPosY() == shield.getPosY())
-				matrix[dragon.getPosX()][dragon.getPosY()] = shield.toChar();
 			
-			if (hero.getPosX() == shield.getPosX() && hero.getPosY() == shield.getPosY())
-				matrix[hero.getPosX()][hero.getPosY()] = hero.toChar();
+			if (dragon.getState() == DragonStates.DEAD && dragon.getPosX() == hero.getPosX() && dragon.getPosY() == hero.getPosY())
+				matrix[dragon.getPosX()][dragon.getPosY()] = hero.toChar();
+			else if (dragon.getState() == DragonStates.DEAD && dragon.getPosX() == shield.getPosX() && dragon.getPosY() == shield.getPosY())
+				matrix[dragon.getPosX()][dragon.getPosY()] = shield.toChar();
+			else
+				matrix[dragon.getPosX()][dragon.getPosY()] = dragon.toChar();
+			
+			/*if (hero.getPosX() == shield.getPosX() && hero.getPosY() == shield.getPosY())
+				matrix[hero.getPosX()][hero.getPosY()] = hero.toChar();*/
 			
 		}
 		
@@ -350,20 +334,23 @@ public class Game
 		// Verificar se está adjacente a um dragão
 		for (Dragon dragon: dragons)
 		{
+			// Se está adjacente
 			if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) == 1) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) == 1))))
-				if (hero.getState() == HeroStates.WITHSWORD)
+				if (hero.getState() == HeroStates.ARMED)
 					killDragon (dragon.getPosX(), dragon.getPosY());
 				else
 				{
-					if (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART)
+					if (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART || dragon.getState() == DragonStates.ONSHIELD)
 					{
 						hero.changeState(HeroStates.DEAD);
 						matrix[hero.getPosX()][hero.getPosY()] = '†';
 					}
 				}
+			
+			// Se está a menos de 3 casas
 			if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) <= 3) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) <= 3))))
 			{
-				if (!hero.isShielded() && (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART))
+				if (!hero.isShielded() && (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART || dragon.getState() == DragonStates.ONSHIELD))
 				{
 					hero.changeState(HeroStates.DEAD);
 					matrix[hero.getPosX()][hero.getPosY()] = '†';
@@ -378,11 +365,15 @@ public class Game
 		{
 			if (dragon.getPosX() == pos_x && dragon.getPosY() == pos_y)
 			{
+				if (dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.SLEEPONSWORD)
+					matrix[dragon.getPosX()][dragon.getPosY()] = 'E';
+				else if (dragon.getState() == DragonStates.ONDART || dragon.getState() == DragonStates.SLEEPONDART)
+					matrix[dragon.getPosX()][dragon.getPosY()] = '*';
+				
 				dragon.changeState(DragonStates.DEAD);
 				
-				matrix[dragon.getPosX()][dragon.getPosY()] = '†';
 				
-				System.out.println("Dragon is dead.");
+				System.out.println("Dragon(" + dragon.getPosX() + ", " + dragon.getPosY() + ") is dead.");
 			}
 		}
 	}

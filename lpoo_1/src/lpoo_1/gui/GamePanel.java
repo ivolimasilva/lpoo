@@ -13,6 +13,7 @@ public class GamePanel extends JPanel implements KeyListener
 	
 	private static int matrixSize = 11;
 	private static char[][] matrix;
+	DemoMaze Maze = new DemoMaze(matrixSize);
 	Game game = new Game(matrixSize, false);
 	
 	JFrame myMainWindow;

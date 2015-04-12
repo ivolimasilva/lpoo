@@ -2,11 +2,12 @@ package lpoo_1.logic;
 
 public class Hero extends Element
 {
-	public enum HeroStates {NORMAL, WITHSWORD, WITHDART, WITHSHIELD, WINNER, DEAD}
+	public enum HeroStates {NORMAL, ARMED, WINNER, DEAD} // Armed tem espada
 	private HeroStates State = HeroStates.NORMAL;
 	
-	private char direction = ' ';
+	private char direction = 'v';
 	private boolean shielded = false;
+	private int darts = 0;
 	
 	public Hero (int start_x, int start_y)
 	{
@@ -24,16 +25,9 @@ public class Hero extends Element
 		switch (State)
 		{
 			case NORMAL:
-				if (this.isShielded())
-					return 'O';
-				else
-					return 'H';
-			case WITHSWORD:
-				return 'A';
-			case WITHDART:
 				return this.direction;
-			case WITHSHIELD:
-				return 'O';
+			case ARMED:
+				return 'A';
 			case WINNER:
 				return 'W';
 			case DEAD:
@@ -51,6 +45,21 @@ public class Hero extends Element
 	public void grabShield()
 	{
 		shielded = true;
+	}
+	
+	public int hasDarts()
+	{
+		return darts;
+	}
+	
+	public void grabDart()
+	{
+		darts++;
+	}
+	
+	public void shotDart()
+	{
+		darts--;
 	}
 	
 	public HeroStates getState ()

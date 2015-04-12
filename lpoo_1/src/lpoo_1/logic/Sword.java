@@ -20,7 +20,7 @@ public class Sword extends Element
 	
 	public void grabbed()
 	{
-		this.grabbed = true;
+		grabbed = true;
 	}
 	
 	public boolean wasGrabbed ()

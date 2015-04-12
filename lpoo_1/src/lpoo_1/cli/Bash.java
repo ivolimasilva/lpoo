@@ -11,11 +11,10 @@ public class Bash
 	
 	public static void main(String [] args)
 	{
-		System.out.println ("The Maze Game.\nThis is the console!");
+		System.out.println ("The Maze Game.\nThis is the console!");	
 		
 		Game game = new Game(matrixSize, false);
 		
-		// Imprime a matrix de jogo.
 		matrix = game.getMatrix();
 		printMatrix();
 		
