@@ -15,21 +15,26 @@ public class GamePanel extends JPanel implements KeyListener
 	private static char[][] matrix;
 	Game game;
 	
-	JFrame myMainWindow;
-	
-	public GamePanel(int size)
+	public GamePanel(boolean random, int size)
 	{
 		super();
-		this.matrixSize = size;
-		LoadNewMatrix();
+		LoadNewMatrix(random, size);
 	}
 	
-	public void LoadNewMatrix()
+	public void LoadNewMatrix(boolean random, int size)
 	{
 		this.removeKeyListener(this);
-		game = new Game(matrixSize, true); 
+		
+		if (matrixSize != size)
+			setBounds((1920 - ((size + 1) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 1) * 32, (size + 1) * 32 + 65);
+		
+		this.matrixSize = size;
+		game = new Game(size, random);
 		matrix = game.getMatrix();
+		
 		System.out.println("Matrix loaded!");
+		printMatrix();
+		
 		this.addKeyListener(this);
 	}
 	
