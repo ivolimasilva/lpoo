@@ -35,7 +35,11 @@ public class GamePanel extends JPanel implements KeyListener
 		this.addKeyListener(this);
 	}
 	
-	@Override
+	public char[][] GetCurrentMatrix()
+	{
+		return GamePanel.matrix;
+	}
+	
 	public void keyPressed(KeyEvent e)
 	{
 		// Move heroi

@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,7 +32,6 @@ public class GameFrame extends JFrame
 				try
 				{
 					frame = new GameFrame();
-					//frame.pack();
 					frame.setVisible(true);
 					gamePanel.requestFocusInWindow();
 				}
@@ -80,19 +80,22 @@ public class GameFrame extends JFrame
 		);
 		btnPanel.add(btnNewGame);
 		
-		JButton btnSettings = new JButton("Settings");
-		btnNewGame.addActionListener
+		JButton btnSaveLoad = new JButton("Save/Load");
+		btnSaveLoad.addActionListener
 		(
 			new ActionListener()
 			{
 				public void actionPerformed(ActionEvent arg0)
 				{
-					
+					SaveLoad saveload = new SaveLoad(((GamePanel) gamePanel).GetCurrentMatrix());
+					saveload.setVisible(true);
+					saveload.setLocationRelativeTo(null);
+					saveload.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 				}
 				
 			}
 		);
-		btnPanel.add(btnSettings);
+		btnPanel.add(btnSaveLoad);
 		
 		JButton btnExit = new JButton("Exit");
 		btnExit.addActionListener
