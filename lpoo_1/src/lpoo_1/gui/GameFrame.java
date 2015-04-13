@@ -22,6 +22,8 @@ public class GameFrame extends JFrame
 	private JPanel contentPane;
 	static JPanel gamePanel;
 	static GameFrame frame;
+	
+	private int size = 21;
 
 	public static void main(String[] args)
 	{
@@ -32,6 +34,7 @@ public class GameFrame extends JFrame
 				try
 				{
 					frame = new GameFrame();
+					//frame.pack();
 					frame.setVisible(true);
 					gamePanel.requestFocusInWindow();
 				}
@@ -45,15 +48,15 @@ public class GameFrame extends JFrame
 
 	public GameFrame()
 	{
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setTitle("The Maze Game!");
-		setBounds((1920 - 350) / 2, (1080 - 405) / 2, 350, 405);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setTitle("The Maze Game!");
+		this.setBounds((1920 - ((size + 1) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 1) * 32, (size + 1) * 32 + 65);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
-		gamePanel = new GamePanel();
+		gamePanel = new GamePanel(size);
 		contentPane.add(gamePanel, BorderLayout.CENTER);
 		
 		JPanel btnPanel = new JPanel();

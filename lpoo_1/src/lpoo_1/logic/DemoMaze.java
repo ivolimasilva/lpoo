@@ -1,6 +1,7 @@
 package lpoo_1.logic;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Dragon.DragonStates;
@@ -18,7 +19,7 @@ public class DemoMaze implements MazeBuilder
 	
 	public DemoMaze(int size)
 	{
-		this.size = size;
+		this.size = 10;
 		
 		generateMatrix();
 		
@@ -34,18 +35,19 @@ public class DemoMaze implements MazeBuilder
 		
 		char aux_matrix[][] =
 		{
-			{ 'X', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' },
-			{ '0', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
-			{ '1', 'X', 'H', ' ', 'o', ' ', '*', ' ', ' ', ' ', 'X' },
-			{ '2', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ '3', 'X', '*', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ '4', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ '5', 'X', ' ', ' ', 'D', ' ', ' ', ' ', 'X', ' ', 'X' },
-			{ '6', 'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
-			{ '7', 'X', ' ', 'X', 'X', ' ', 'X', 'd', 'X', ' ', 'S' },
-			{ '8', 'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
-			{ '9', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
+			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' },
+			{'X', 'H', ' ', 'o', ' ', '*', ' ', ' ', ' ', 'X' },
+			{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{'X', '*', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{'X', ' ', ' ', 'D', ' ', ' ', ' ', 'X', ' ', 'X' },
+			{'X', ' ', 'X', 'X', ' ', 'X', ' ', 'X', ' ', 'X' },
+			{'X', ' ', 'X', 'X', ' ', 'X', 'd', 'X', ' ', 'S' },
+			{'X', 'E', 'X', 'X', ' ', ' ', ' ', ' ', ' ', 'X' },
+			{'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X' }
 		};
+		
+		System.out.println(aux_matrix.length);
 		
 		for (int i = 0; i < this.size; i ++)
 		{

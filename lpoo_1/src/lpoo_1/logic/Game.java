@@ -23,8 +23,11 @@ public class Game
 	public Game(int size, boolean random)
 	{
 		this.matrixSize = size;
-		
-		MazeBuilder Maze = new DemoMaze(size);
+		MazeBuilder Maze;
+		if (random)
+			Maze = new RandomMaze(size);
+		else
+			Maze = new DemoMaze(size);
 		
 		this.matrix = Maze.getMatrix();
 		
@@ -348,14 +351,66 @@ public class Game
 					}
 				}
 			
-			// Se está a menos de 3 casas
-			if (((hero.getPosX() == dragon.getPosX()) && (Math.abs(hero.getPosY() - dragon.getPosY()) <= 3) || ((hero.getPosY() == dragon.getPosY()) && (Math.abs(hero.getPosX() - dragon.getPosX()) <= 3))))
+			// Se está a menos de 3 casas (nao pode cuspir por cima das paredes)
+			if (!hero.isShielded() && dragon.getState() != DragonStates.SLEEP && dragon.getState() != DragonStates.SLEEPONSWORD && dragon.getState() != DragonStates.SLEEPONDART && dragon.getState() != DragonStates.SLEEPONSHIELD)
 			{
-				if (!hero.isShielded() && (dragon.getState() == DragonStates.NORMAL || dragon.getState() == DragonStates.ONSWORD || dragon.getState() == DragonStates.ONDART || dragon.getState() == DragonStates.ONSHIELD))
+				if (Math.abs (hero.getPosX() - dragon.getPosX()) < 3) // horizontal
 				{
-					hero.changeState(HeroStates.DEAD);
-					matrix[hero.getPosX()][hero.getPosY()] = '†';
+					char line[] = new char[this.matrixSize];
+					line = getRow(hero.getPosX());
+					
+					int inc, fire_range = 3;
+					
+					if (hero.getPosX() > dragon.getPosX())
+						inc = -1;
+					else
+						inc = 1;
+						
+					
+					for (int i = dragon.getPosY() ;  i > 0 && i < this.matrixSize && fire_range > 0; i += inc)
+					{
+						System.out.print ("[" + line[i] + "]");
+						
+						if (line[i] == 'X')
+							break;
+						else if (line[i] == hero.toChar())
+						{
+							System.out.println("Killed by dragon (" + dragon.getPosX() + ", " + dragon.getPosY() + ").");
+							hero.changeState(HeroStates.DEAD);
+							matrix[hero.getPosX()][hero.getPosY()] = '†';
+							break;
+						}
+						else
+							fire_range--;
+					}
 				}
+				else if (Math.abs (hero.getPosY() - dragon.getPosY()) < 3) // vertical
+					{
+						char line[] = new char[this.matrixSize];
+						line = getCol(hero.getPosY());
+						int inc, fire_range = 3;
+						
+						if (hero.getPosY() > dragon.getPosY())
+							inc = -1;
+						else
+							inc = 1;
+							
+						
+						for (int i = dragon.getPosX() ;  i > 0 && i < this.matrixSize && fire_range > 0; i += inc)
+						{
+							if (line[i] == 'X')
+								break;
+							else if (line[i] == hero.toChar())
+							{
+								System.out.println("Killed by dragon (" + dragon.getPosX() + ", " + dragon.getPosY() + ").");
+								hero.changeState(HeroStates.DEAD);
+								matrix[hero.getPosX()][hero.getPosY()] = '†';
+								break;
+							}
+							else
+								fire_range--;
+						}
+					}
 			}
 		}
 	}

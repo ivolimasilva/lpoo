@@ -11,25 +11,23 @@ import javax.swing.*;
 public class GamePanel extends JPanel implements KeyListener
 {
 	
-	private static int matrixSize = 11;
+	private static int matrixSize;
 	private static char[][] matrix;
 	Game game;
 	
 	JFrame myMainWindow;
 	
-	public GamePanel()
+	public GamePanel(int size)
 	{
 		super();
-		
-		//myMainWindow = frame;
-		
+		this.matrixSize = size;
 		LoadNewMatrix();
 	}
 	
 	public void LoadNewMatrix()
 	{
 		this.removeKeyListener(this);
-		game = new Game(matrixSize, false); 
+		game = new Game(matrixSize, true); 
 		matrix = game.getMatrix();
 		System.out.println("Matrix loaded!");
 		this.addKeyListener(this);
@@ -120,13 +118,13 @@ public class GamePanel extends JPanel implements KeyListener
 		
 		super.paintComponent(g);
 		
-		for (int i = 1; i < matrixSize; i ++)
+		for (int i = 0; i < matrixSize; i++)
 		{
-			for (int j = 1; j < matrixSize; j++)
+			for (int j = 0; j < matrixSize; j++)
 			{
 				ImageIcon aux_img = new ImageIcon("img/map/floor.png");
 				img = aux_img.getImage();
-				g.drawImage(img, (i - 1) * 32, (j - 1) * 32, null);
+				g.drawImage(img, i * 32, j * 32, null);
 				
 				if (matrix[j][i] == 'X')
 					aux_img = new ImageIcon("img/map/wall.png");
@@ -182,7 +180,7 @@ public class GamePanel extends JPanel implements KeyListener
 					aux_img = new ImageIcon("img/map/grave.png");
 					
 				img = aux_img.getImage();				
-				g.drawImage(img, (i - 1) * 32, (j - 1) * 32, null);
+				g.drawImage(img, i * 32, j * 32, null);
 			}
 			
 		}
@@ -190,7 +188,7 @@ public class GamePanel extends JPanel implements KeyListener
 
 	private void printMatrix()
 	{
-		for (int i = 0; i < matrixSize; i ++)
+		for (int i = 0; i < matrixSize; i++)
 		{
 			for (int j = 0; j < matrixSize; j++)
 				System.out.print(matrix[i][j] + " ");

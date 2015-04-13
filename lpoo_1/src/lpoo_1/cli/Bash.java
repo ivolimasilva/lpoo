@@ -6,14 +6,18 @@ import java.util.*;
 public class Bash
 {
 	
-	private static int matrixSize = 11;
+	private static int matrixSize;
 	private static char[][] matrix;
 	
 	public static void main(String [] args)
 	{
 		System.out.println ("The Maze Game.\nThis is the console!");	
 		
-		Game game = new Game(matrixSize, false);
+		Game game;
+		if (isRandom())
+			game = new Game(matrixSize, true);
+		else
+			game = new Game(matrixSize, false);
 		
 		matrix = game.getMatrix();
 		printMatrix();
@@ -39,6 +43,24 @@ public class Bash
 		matrix = game.getMatrix();
 		printMatrix();
 
+	}
+	
+	public static boolean isRandom()
+	{
+		System.out.print("Mapa aleatório (Y/N): ");
+		Scanner c = new Scanner(System.in);
+		if (c.next().charAt(0) == 'Y')
+		{
+			System.out.print("Tamanho ímpar (NxN): ");
+			c = new Scanner(System.in);
+			matrixSize = c.nextInt();
+			return true;
+		}
+		else
+		{
+			matrixSize = 10;
+			return false;
+		}
 	}
 	
 	public static void printMatrix()
