@@ -2,11 +2,13 @@ package lpoo_1.logic;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Scanner;
-
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Dragon.DragonStates;
 
+/**
+ * DemoMaze.java - generates the standard maze matrix
+ * @author Mariana and Ivo
+ */
 public class DemoMaze implements MazeBuilder, Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -19,19 +21,21 @@ public class DemoMaze implements MazeBuilder, Serializable
 	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	private Shield shield;
 	
+	/**
+	 * Default Maze constructor
+	 * @param size - dimension of the maze
+	 */
 	public DemoMaze(int size)
 	{
 		this.size = 10;
 		
 		generateMatrix();
-		
-		/*Dragon dragon_aux = new Dragon(8, 3, DragonStates.NORMAL);
-		dragons.add(dragon_aux);
-		
-		dragon_aux = new Dragon(3, 6, DragonStates.SLEEPONSHIELD);
-		dragons.add(dragon_aux);*/
 	}
 	
+	/**
+	 * Returns the default maze matrix 
+	 * @return A char[][] data type
+	 */
 	public void generateMatrix()
 	{
 		
@@ -124,31 +128,55 @@ public class DemoMaze implements MazeBuilder, Serializable
 		this.matrix = aux_matrix;
 	}
 
+	/**
+	 * Returns the generated matrix
+	 * @return A char[][] data type
+	 */
 	public char[][] getMatrix()
 	{
 		return matrix;
 	}
 	
+	/**
+	 * Returns the hero
+	 * @return A Hero data type
+	 */
 	public Hero getHero()
 	{
 		return hero;
 	}
 
+	/**
+	 * Returns the list of Dragons
+	 * @return A ArrayList<Dragon> data type
+	 */
 	public ArrayList<Dragon> getDragons()
 	{	
 		return dragons;
 	}
 
+	/**
+	 * Returns the sword
+	 * @return A Sword data type
+	 */
 	public Sword getSword()
 	{
 		return sword;
 	}
 
+	/**
+	 * Returns the shield
+	 * @return A Shield data type
+	 */
 	public Shield getShield()
 	{
 		return shield;
 	}
 	
+	/**
+	 * Returns the list of existing darts
+	 * @return A ArrayList<Dart> data type
+	 */
 	public ArrayList<Dart> getDarts()
 	{
 		return darts;

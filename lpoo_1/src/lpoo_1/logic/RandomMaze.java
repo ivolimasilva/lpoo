@@ -8,6 +8,11 @@ import java.util.Random;
 
 import lpoo_1.logic.Dragon.DragonStates;
 
+/**
+ * RandomMaze.java - generates a random maze with a given dimension
+ * @author Mariana and Ivo
+ *
+ */
 public class RandomMaze implements MazeBuilder, Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +28,10 @@ public class RandomMaze implements MazeBuilder, Serializable
 	
 	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	
+	/**
+	 * Constructor of the random maze
+	 * @param size - dimension of the maze
+	 */
 	public RandomMaze (int size)
 	{
 		this.size = size;
@@ -30,54 +39,63 @@ public class RandomMaze implements MazeBuilder, Serializable
 		generateMatrix();
 	}
 	
-	/*public void generateMatrix()
-	{
-		for (int i = 0; i < this.size; i++)
-			for (int j = 0; j < this.size; j++)
-				matrix[i][j] = ' ';
-		
-		generateMatrix(size);
-		
-		Dragon dragon_aux = new Dragon(8, 3, DragonStates.NORMAL);
-		dragons.add(dragon_aux);
-		
-		dragon_aux = new Dragon(3, 6, DragonStates.SLEEPONSHIELD);
-		dragons.add(dragon_aux);
-	}*/
-	
+	/**
+	 * Returns the matrix
+	 * @return A char[][] data type
+	 */
 	public char[][] getMatrix()
 	{
 		return matrix;
 	}
 
+	/**
+	 * Returns homem
+	 * @return Hero data type
+	 */
 	public Hero getHero()
 	{
 		return homem;
 	}
 
-	@Override
-	public Sword getSword() {
-		// TODO Auto-generated method stub
+	/**
+	 * Returns espada
+	 * @return A Sword data type 
+	 */
+	public Sword getSword()
+	{
 		return espada;
 	}
 	
+	/**
+	 * Returns dragons
+	 * @return An ArrayList<Dragon> data type
+	 */
 	public ArrayList<Dragon> getDragons()
 	{
 		return dragons;
 	}
 
-	@Override
-	public Shield getShield() {
-		// TODO Auto-generated method stub
+	/**
+	 * Returns the shield
+	 * @return A Shield data type
+	 */
+	public Shield getShield()
+	{
 		return escudo;
 	}
 
-	@Override
-	public ArrayList<Dart> getDarts() {
-		// TODO Auto-generated method stub
+	/**
+	 * Returns dardos
+	 * @return An ArrayList<Dart> data type
+	 */
+	public ArrayList<Dart> getDarts()
+	{
 		return dardos;
 	}
 	
+	/**
+	 * Creates a random matrix with all its elements
+	 */
 	public void generateMatrix ()
 	{
 		Random MyRandom = new Random();
@@ -89,7 +107,7 @@ public class RandomMaze implements MazeBuilder, Serializable
 			dardos.add(new Dart(-1, -1));
 		}
 
-		this.size = size;
+		//this.size = size;
 		matrix = new char[size][size];
 		helpingBoard = new char[(size - 1) / 2][(size - 1) / 2];
 		path = new ArrayDeque<Position>();
@@ -227,11 +245,23 @@ public class RandomMaze implements MazeBuilder, Serializable
 		System.out.println("Número de dragões: " + dragons.size() +"\n");
 	}
 	
-	private boolean isOnHelpingBoard(int x, int y){
-		for(int xi = 1; xi < size; xi = xi + 2){
-			if(xi == x){
-				for(int yi = 1; yi < size; yi = yi + 2){
-					if(yi == y){
+	/**
+	 * Verifies if a certain number is in the matrix
+	 * Returns True if it is or False otherwise
+	 * @param x
+	 * @param y
+	 * @return A boolean data type
+	 */
+	private boolean isOnHelpingBoard(int x, int y)
+	{
+		for(int xi = 1; xi < size; xi = xi + 2)
+		{
+			if(xi == x)
+			{
+				for(int yi = 1; yi < size; yi = yi + 2)
+				{
+					if(yi == y)
+					{
 						return true;
 					}
 				}
@@ -240,6 +270,13 @@ public class RandomMaze implements MazeBuilder, Serializable
 		return false;
 	}
 	
+	/**
+	 * Verifies if the coordinates given represent a border
+	 * Returns True if it is or False otherwise
+	 * @param Horizontal
+	 * @param Vertical
+	 * @return A boolean data type
+	 */
 	public boolean isBorder(int Horizontal, int Vertical)
 	{
 		if (Horizontal == 0)
@@ -264,26 +301,44 @@ public class RandomMaze implements MazeBuilder, Serializable
 		}
 	}
 	
-	public boolean hasNeighbors(int x, int y){
+	/**
+	 * Verifies the existence of adjacent cells
+	 * Returns True if there is or False if there isn't 
+	 * @param x
+	 * @param y
+	 * @return A boolean data type
+	 */
+	public boolean hasNeighbors(int x, int y)
+	{
 		x = (x - 1) / 2;
 		y = (y - 1) / 2;
 		if(x != 0)
-			if(helpingBoard[x - 1][y] == '.') return true;
+			if(helpingBoard[x - 1][y] == '.')
+				return true;
 
 		if(y != 0)
-			if(helpingBoard[x][y - 1] == '.') return true;
+			if(helpingBoard[x][y - 1] == '.')
+				return true;
 
 		if(x != ((size - 1) / 2) - 1)
-			if(helpingBoard[x + 1][y] == '.') return true;
+			if(helpingBoard[x + 1][y] == '.')
+				return true;
 
 		if(y != ((size - 1) / 2) - 1)
-			if(helpingBoard[x][y + 1] == '.') return true;
+			if(helpingBoard[x][y + 1] == '.')
+				return true;
 
 		return false;
 	}
 
-	boolean samePos(int nrdragons) {
-
+	/**
+	 * Verifies if an element has the same position as another element
+	 * Returns True if there is or False otherwise
+	 * @param nrdragons
+	 * @return
+	 */
+	boolean samePos(int nrdragons)
+	{
 		for (int i = 0; i < nrdragons;i++)
 		{
 			for (int j = 0; j < nrdragons; j++)
@@ -381,8 +436,17 @@ public class RandomMaze implements MazeBuilder, Serializable
 		return false;
 	}
 	
-	public boolean wasVisited(int x,int y){
-		if( x <= 0 || y <= 0 || y > size || x > size){
+	/**
+	 * Verifies if the parameters were already visited by the random generator
+	 * Returns True if it was or False otherwise 
+	 * @param x
+	 * @param y
+	 * @return
+	 */
+	public boolean wasVisited(int x,int y)
+	{
+		if(x <= 0 || y <= 0 || y > size || x > size)
+		{
 			return true;
 		}
 		x = (x - 1) / 2;

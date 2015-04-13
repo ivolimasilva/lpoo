@@ -1,6 +1,7 @@
 package lpoo_1.cli;
 
 import lpoo_1.logic.*;
+
 import java.util.*;
 
 public class Bash
@@ -48,6 +49,7 @@ public class Bash
 	public static boolean isRandom()
 	{
 		System.out.print("Mapa aleatório (Y/N): ");
+		@SuppressWarnings("resource")
 		Scanner c = new Scanner(System.in);
 		if (c.next().charAt(0) == 'Y')
 		{
@@ -77,6 +79,7 @@ public class Bash
 	public static char readChar()
 	{
 		System.out.print("Insira uma direcção (W, A, S, D): ");
+		@SuppressWarnings("resource")
 		Scanner c = new Scanner(System.in);
 		return c.next().charAt(0);
 	}

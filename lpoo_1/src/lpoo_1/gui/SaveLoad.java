@@ -3,7 +3,6 @@ package lpoo_1.gui;
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -17,13 +16,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.border.EmptyBorder;
-
 import lpoo_1.logic.Game;
-import lpoo_1.logic.Hero.HeroStates;
 
 public class SaveLoad extends JDialog
 {
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField savePath;
 	private JTextField loadPath;
@@ -55,7 +52,7 @@ public class SaveLoad extends JDialog
 				ObjectOutputStream file = null;
 				try
 				{
-					file = new ObjectOutputStream (new FileOutputStream(savePath.getText() + ".dat"));
+					file = new ObjectOutputStream (new FileOutputStream("savedgame_" + savePath.getText() + ".dat"));
 					file.writeObject(GamePanel.getGame());
 					file.close();
 					JOptionPane.showMessageDialog(null,	"Sucesso!");
@@ -86,7 +83,7 @@ public class SaveLoad extends JDialog
 			{
 				try
 				{
-					FileInputStream fin = new FileInputStream(loadPath.getText() + ".dat");
+					FileInputStream fin = new FileInputStream("savedgame_" + loadPath.getText() + ".dat");
 					ObjectInputStream ois = new ObjectInputStream(fin);
 					Game game = (Game) ois.readObject();
 					ois.close();

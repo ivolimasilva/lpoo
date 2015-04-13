@@ -9,6 +9,12 @@ import lpoo_1.logic.Dragon.DragonStates;
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Hero.HeroStates;
 
+/**
+ * Game.java - represents the game with a maze and its elements
+ * @author Mariana and Ivo
+ *
+ */
+
 public class Game implements Serializable
 {
 	private static final long serialVersionUID = 1L;
@@ -23,6 +29,12 @@ public class Game implements Serializable
 	private ArrayList<Dart> darts = new ArrayList<Dart>();
 	private ArrayList<Dragon> dragons = new ArrayList<Dragon>();
 	
+	
+	/**
+	 * Game constructor
+	 * @param size - dimension of the maze
+	 * @param random - True if the user wants a random generated maze or False if the user wants the default maze
+	 */
 	public Game(int size, boolean random)
 	{
 		this.matrixSize = size;
@@ -53,6 +65,9 @@ public class Game implements Serializable
 
 	}
 	
+	/**
+	 * Prints the matrix of the game
+	 */
 	public void printMatrix()
 	{
 		for (int i = 0; i < this.matrixSize; i ++)
@@ -64,6 +79,10 @@ public class Game implements Serializable
 		}
 	}
 	
+	/**
+	 * Returns the information about the matrix and its elements
+	 * @return A char[][] data type
+	 */
 	public char[][] getMatrix()
 	{
 		System.out.print ("Armas: ");
@@ -79,31 +98,57 @@ public class Game implements Serializable
 		return this.matrix;
 	}
 	
+	/**
+	 * Returns the hero
+	 * @return A Hero data type
+	 */
 	public Hero getHero()
 	{
 		return hero;
 	}
 
+	/**
+	 * Returns the list of Dragons
+	 * @return A ArrayList<Dragon> data type
+	 */
 	public ArrayList<Dragon> getDragons()
 	{	
 		return dragons;
 	}
 
+	/**
+	 * Returns the sword
+	 * @return A Sword data type
+	 */
 	public Sword getSword()
 	{
 		return sword;
 	}
 
+	/**
+	 * Returns the shield
+	 * @return A Shield data type
+	 */
 	public Shield getShield()
 	{
 		return shield;
 	}
 	
+	/**
+	 * Returns the list of existing darts
+	 * @return A ArrayList<Dart> data type
+	 */
 	public ArrayList<Dart> getDarts()
 	{
 		return darts;
 	}
 	
+	/**
+	 * Verifies if the hero can move in the direction given as a parameter and if he can, moves the hero
+	 * Returns True if the hero can move or False otherwise
+	 * @param dir - direction in which we want the hero to move or if he wants to shoot a dart
+	 * @return A boolean data type
+	 */
 	public boolean moveHero(char dir)
 	{
 		int new_x = hero.getPosX(), new_y = hero.getPosY();
@@ -176,6 +221,11 @@ public class Game implements Serializable
 		return true;
 	}
 	
+	/**
+	 * Verifies if the hero is in the same position as the dart and grabs it
+	 * @param pos_x - x position of the hero
+	 * @param pos_y - y position of the hero
+	 */
 	public void grabDart (int pos_x, int pos_y)
 	{
 		for (Dart dart: darts)
@@ -183,6 +233,9 @@ public class Game implements Serializable
 				dart.grabbed();
 	}
 	
+	/**
+	 * Verifies the hero's position and if he can, he shoots a dart
+	 */
 	public void shootDart ()
 	{
 		char line[] = new char[this.matrixSize];
@@ -231,11 +284,21 @@ public class Game implements Serializable
 		
 	}
 	
+	/**
+	 * Returns the n row of the matrix
+	 * @param n
+	 * @return A char[] data type
+	 */
 	public char[] getRow(int n)
 	{		
 		return this.matrix[n];
 	}
 	
+	/**
+	 * Returns the n column of the matrix
+	 * @param n
+	 * @return A char[] data type
+	 */
 	public char[] getCol(int n)
 	{
 		char result[] = new char[this.matrixSize];
@@ -246,6 +309,9 @@ public class Game implements Serializable
 		return result;
 	}
 	
+	/**
+	 * Verifies if the dragon is not asleep or dead and if it isn't , it moves randomly
+	 */
 	public void moveDragon()
 	{
 		for (Dragon dragon: dragons)
@@ -345,6 +411,11 @@ public class Game implements Serializable
 		this.update();
 	}
 	
+	/**
+	 * Verifies if the game is over
+	 * Returns True if the hero won or False if the hero died
+	 * @return A boolean data type
+	 */
 	public boolean gameOver()
 	{
 		if (hero.getState() == HeroStates.WINNER)
@@ -361,6 +432,9 @@ public class Game implements Serializable
 			return false;
 	}
 	
+	/**
+	 * Updates the state of the dragons and the hero after their moves
+	 */
 	public void update()
 	{	
 		// Verificar se está adjacente a um dragão
@@ -385,7 +459,7 @@ public class Game implements Serializable
 				if (Math.abs (hero.getPosX() - dragon.getPosX()) < 3) // horizontal
 				{
 					char line[] = new char[this.matrixSize];
-					line = getRow(hero.getPosX());
+					line = getRow(dragon.getPosX());
 					
 					int inc, fire_range = 3;
 					
@@ -415,7 +489,7 @@ public class Game implements Serializable
 				else if (Math.abs (hero.getPosY() - dragon.getPosY()) < 3) // vertical
 					{
 						char line[] = new char[this.matrixSize];
-						line = getCol(hero.getPosY());
+						line = getCol(dragon.getPosY());
 						int inc, fire_range = 3;
 						
 						if (hero.getPosY() > dragon.getPosY())
@@ -443,6 +517,11 @@ public class Game implements Serializable
 		}
 	}
 	
+	/**
+	 * Changes the state of the dragon positioned in the coordinates given as a parameter to DEAD
+	 * @param pos_x
+	 * @param pos_y
+	 */
 	public void killDragon (int pos_x, int pos_y)
 	{
 		for (Dragon dragon: dragons)
@@ -462,9 +541,14 @@ public class Game implements Serializable
 		}
 	}
 
+	/**
+	 * Loads to the current game the objects of another game
+	 * @param newgame
+	 */
 	public void loadNewGame(Game newgame)
 	{
 		System.out.println("Size matrix: " + newgame.getMatrix().length);
+		
 		matrixSize = newgame.getMatrix().length;
 		matrix = new char [newgame.getMatrix().length][newgame.getMatrix().length];
 		matrix = newgame.getMatrix();

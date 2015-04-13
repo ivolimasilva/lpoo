@@ -2,7 +2,6 @@ package lpoo_1.gui;
 
 import lpoo_1.logic.*;
 
-import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -75,7 +74,6 @@ public class GamePanel extends JPanel implements KeyListener
 			
 			// Encerra a janela
 			this.removeKeyListener(this);
-			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
 		}
 		else
 		{
@@ -100,7 +98,8 @@ public class GamePanel extends JPanel implements KeyListener
 			
 			// Encerra a janela
 			this.removeKeyListener(this);
-			//myMainWindow.dispatchEvent(new WindowEvent(myMainWindow, WindowEvent.WINDOW_CLOSING));
+			
+			JOptionPane.showMessageDialog(null, "Acabou o jogo!", "End Game", JOptionPane.OK_OPTION);
 		}
 		else
 		{

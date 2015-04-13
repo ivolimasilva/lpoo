@@ -1,30 +1,58 @@
 package lpoo_1.logic;
 
-public class Position {
+/**
+ * Position.java - represents a Position with x and y coordinates
+ * @author Mariana and Ivo
+ *
+ */
+class Position
+{
 	int x, y;
 	
-	public Position ( int xi, int yi){
+	/**
+	 * Position constructor
+	 * @param xi - x coordinate
+	 * @param yi - y coordinate
+	 */
+	public Position (int xi, int yi)
+	{
 		x = xi;
 		y = yi;
 	}
 
-	public int getX() {
-		// TODO Auto-generated method stub
+	/**
+	 * Returns the x coordinate
+	 * @return An Integer data type
+	 */
+	public int getX()
+	{
 		return x;
 	}
 
-	public void setX(int i) {
-		// TODO Auto-generated method stub
+	/**
+	 * Sets the x coordinate as the parameter given
+	 * @param i - new x coordinate
+	 */
+	public void setX(int i)
+	{
 		x = i;
 	}
 
-	public int getY() {
-		// TODO Auto-generated method stub
+	/**
+	 * 	Returns the y coordinate
+	 * @return An Integer data type
+	 */
+	public int getY()
+	{
 		return y;
 	}
 
-	public void setY(int i) {
-		// TODO Auto-generated method stub
+	/**
+	 * Sets the y coordinate as the parameter given
+	 * @param i - new y coordinate
+	 */
+	public void setY(int i)
+	{
 		y = i;
 	}
 }

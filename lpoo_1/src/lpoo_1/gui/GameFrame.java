@@ -1,7 +1,6 @@
 package lpoo_1.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JDialog;
@@ -14,13 +13,11 @@ import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
-import java.util.ArrayList;
-
 import lpoo_1.gui.GamePanel;
 
 public class GameFrame extends JFrame
 {
-
+	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	static JPanel gamePanel;
 	static GameFrame frame;
@@ -54,8 +51,8 @@ public class GameFrame extends JFrame
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setTitle("The Maze Game!");
 		
-		this.size = 10;
-		this.random = false;
+		GameFrame.size = 10;
+		GameFrame.random = false;
 		
 		if (size == 10)
 			setBounds((1920 - ((size + 2) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 2) * 32, (size + 1) * 32 + 65);
