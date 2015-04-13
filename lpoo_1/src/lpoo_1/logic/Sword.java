@@ -2,6 +2,7 @@ package lpoo_1.logic;
 
 public class Sword extends Element
 {
+	private static final long serialVersionUID = 1L;
 	private boolean grabbed = false;
 	
 	public Sword (int start_x, int start_y)

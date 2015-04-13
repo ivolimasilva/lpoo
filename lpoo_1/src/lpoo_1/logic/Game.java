@@ -1,5 +1,6 @@
 package lpoo_1.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -8,8 +9,10 @@ import lpoo_1.logic.Dragon.DragonStates;
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Hero.HeroStates;
 
-public class Game
+public class Game implements Serializable
 {
+	private static final long serialVersionUID = 1L;
+
 	private char matrix[][];
 	
 	private int matrixSize;
@@ -74,6 +77,31 @@ public class Game
 		
 		System.out.print ("\n");
 		return this.matrix;
+	}
+	
+	public Hero getHero()
+	{
+		return hero;
+	}
+
+	public ArrayList<Dragon> getDragons()
+	{	
+		return dragons;
+	}
+
+	public Sword getSword()
+	{
+		return sword;
+	}
+
+	public Shield getShield()
+	{
+		return shield;
+	}
+	
+	public ArrayList<Dart> getDarts()
+	{
+		return darts;
 	}
 	
 	public boolean moveHero(char dir)
@@ -432,5 +460,20 @@ public class Game
 				System.out.println("Dragon(" + dragon.getPosX() + ", " + dragon.getPosY() + ") is dead.");
 			}
 		}
+	}
+
+	public void loadNewGame(Game newgame)
+	{
+		System.out.println("Size matrix: " + newgame.getMatrix().length);
+		matrixSize = newgame.getMatrix().length;
+		matrix = new char [newgame.getMatrix().length][newgame.getMatrix().length];
+		matrix = newgame.getMatrix();
+		hero = newgame.getHero();
+		darts = newgame.getDarts();
+		shield = newgame.getShield();
+		dragons = newgame.getDragons();
+		sword = newgame.getSword();
+		
+		printMatrix();
 	}
 }

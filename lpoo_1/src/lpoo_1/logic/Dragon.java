@@ -2,6 +2,8 @@ package lpoo_1.logic;
 
 public class Dragon extends Element
 {
+	private static final long serialVersionUID = 1L;
+
 	public enum DragonStates {NORMAL, ONSWORD, ONDART, ONSHIELD, SLEEP, SLEEPONSWORD, SLEEPONDART, SLEEPONSHIELD, DEAD}
 	private DragonStates State;
 	

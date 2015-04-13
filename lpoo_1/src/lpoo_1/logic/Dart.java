@@ -2,6 +2,7 @@ package lpoo_1.logic;
 
 public class Dart extends Element
 {
+	private static final long serialVersionUID = 1L;
 	private boolean grabbed;
 	
 	public Dart (int start_x, int start_y)

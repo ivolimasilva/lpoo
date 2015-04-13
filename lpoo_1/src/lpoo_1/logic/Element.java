@@ -1,7 +1,10 @@
 package lpoo_1.logic;
 
-public abstract class Element
+import java.io.Serializable;
+
+public abstract class Element implements Serializable
 {
+	private static final long serialVersionUID = 1L;
 	protected int pos_x, pos_y;
 	
 	public void setPosX (int x)

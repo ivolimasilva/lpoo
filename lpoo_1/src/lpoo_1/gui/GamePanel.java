@@ -10,10 +10,10 @@ import javax.swing.*;
 
 public class GamePanel extends JPanel implements KeyListener
 {
-	
+	private static final long serialVersionUID = 1L;
 	private static int matrixSize;
 	private static char[][] matrix;
-	Game game;
+	static Game game;
 	
 	public GamePanel(boolean random, int size)
 	{
@@ -28,7 +28,7 @@ public class GamePanel extends JPanel implements KeyListener
 		if (matrixSize != size)
 			setBounds((1920 - ((size + 1) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 1) * 32, (size + 1) * 32 + 65);
 		
-		this.matrixSize = size;
+		GamePanel.matrixSize = size;
 		game = new Game(size, random);
 		matrix = game.getMatrix();
 		
@@ -36,11 +36,6 @@ public class GamePanel extends JPanel implements KeyListener
 		printMatrix();
 		
 		this.addKeyListener(this);
-	}
-	
-	public char[][] GetCurrentMatrix()
-	{
-		return GamePanel.matrix;
 	}
 	
 	public void keyPressed(KeyEvent e)
@@ -119,6 +114,8 @@ public class GamePanel extends JPanel implements KeyListener
 	
 	public void paintComponent(Graphics g)
 	{
+		setBounds(20, 50, (matrixSize + 1) * 32, (matrixSize + 1) * 32 + 65);
+		
 		Image img;
 		
 		super.paintComponent(g);
@@ -191,7 +188,7 @@ public class GamePanel extends JPanel implements KeyListener
 		}
 	}
 
-	private void printMatrix()
+	private static void printMatrix()
 	{
 		for (int i = 0; i < matrixSize; i++)
 		{
@@ -210,5 +207,26 @@ public class GamePanel extends JPanel implements KeyListener
 	{
 		System.out.println("Key down;");
 		game.moveHero('+');
+	}
+	
+	public static Game getGame()
+	{
+		System.out.println("Saved Game:");
+		printMatrix();
+		return game;
+	}
+	
+	public static int getMatrixSize()
+	{
+		return matrixSize;
+	}
+
+	public static void loadGame(Game newgame)
+	{
+		System.out.println("Loaded Game:");
+		game.loadNewGame(newgame);
+		matrixSize = newgame.getMatrix().length;
+		
+		printMatrix();
 	}
 }

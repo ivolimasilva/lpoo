@@ -2,6 +2,7 @@ package lpoo_1.logic;
 
 public class Shield extends Element
 {
+	private static final long serialVersionUID = 1L;
 	private boolean grabbed;
 	
 	public Shield (int start_x, int start_y)

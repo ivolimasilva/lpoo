@@ -2,6 +2,8 @@ package lpoo_1.logic;
 
 public class Hero extends Element
 {
+	private static final long serialVersionUID = 1L;
+
 	public enum HeroStates {NORMAL, ARMED, WINNER, DEAD} // Armed tem espada
 	private HeroStates State = HeroStates.NORMAL;
 	

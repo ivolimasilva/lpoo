@@ -1,5 +1,6 @@
 package lpoo_1.logic;
 
+import java.io.Serializable;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -7,8 +8,9 @@ import java.util.Random;
 
 import lpoo_1.logic.Dragon.DragonStates;
 
-public class RandomMaze implements MazeBuilder
+public class RandomMaze implements MazeBuilder, Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private char matrix[][];
 	private char helpingBoard[][];
 	private int size;
@@ -48,9 +50,8 @@ public class RandomMaze implements MazeBuilder
 		return matrix;
 	}
 
-	@Override
-	public Hero getHero() {
-		// TODO Auto-generated method stub
+	public Hero getHero()
+	{
 		return homem;
 	}
 

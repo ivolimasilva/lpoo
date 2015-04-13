@@ -1,13 +1,15 @@
 package lpoo_1.logic;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import lpoo_1.logic.Hero;
 import lpoo_1.logic.Dragon.DragonStates;
 
-public class DemoMaze implements MazeBuilder
+public class DemoMaze implements MazeBuilder, Serializable
 {
+	private static final long serialVersionUID = 1L;
 	private char[][] matrix;
 	private int size;
 	

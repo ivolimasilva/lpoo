@@ -16,6 +16,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
+import lpoo_1.gui.GamePanel;
+
 public class GameFrame extends JFrame
 {
 
@@ -56,9 +58,9 @@ public class GameFrame extends JFrame
 		this.random = false;
 		
 		if (size == 10)
-			this.setBounds((1920 - ((size + 2) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 2) * 32, (size + 1) * 32 + 65);
+			setBounds((1920 - ((size + 2) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 2) * 32, (size + 1) * 32 + 65);
 		else
-			this.setBounds((1920 - ((size + 1) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 1) * 32, (size + 1) * 32 + 65);
+			setBounds((1920 - ((size + 1) * 32)) / 2, (1080 - ((size + 1) * 32 + 65)) / 2, (size + 1) * 32, (size + 1) * 32 + 65);
 		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -121,10 +123,12 @@ public class GameFrame extends JFrame
 			{
 				public void actionPerformed(ActionEvent arg0)
 				{
-					SaveLoad saveload = new SaveLoad(((GamePanel) gamePanel).GetCurrentMatrix());
+					SaveLoad saveload = new SaveLoad(frame);
 					saveload.setVisible(true);
 					saveload.setLocationRelativeTo(null);
 					saveload.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+								
+					gamePanel.requestFocusInWindow();
 				}
 				
 			}
