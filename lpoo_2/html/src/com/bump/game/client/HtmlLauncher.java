@@ -1,9 +1,9 @@
-package com.mygdx.game.client;
+package com.bump.game.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.mygdx.game.Bump;
+import com.bump.game.Bump;
 
 public class HtmlLauncher extends GwtApplication {
 

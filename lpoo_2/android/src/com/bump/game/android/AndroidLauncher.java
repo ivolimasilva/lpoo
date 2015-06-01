@@ -1,10 +1,10 @@
-package com.mygdx.game.android;
+package com.bump.game.android;
 
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.mygdx.game.Bump;
+import com.bump.game.Bump;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
