@@ -19,17 +19,28 @@ public class MenuScreen extends ScreenAdapter
 	public MenuScreen(Bump game)
 	{
 		this.game = game;
-		guiCam = new OrthographicCamera(320, 480);
-		guiCam.position.set(320 / 2, 480 / 2 , 0);
-		playBounds = new Rectangle(0, 0, 64, 64);
+		guiCam = new OrthographicCamera(1280, 720);
+		guiCam.position.set(1280 / 2, 720 / 2, 0);
 		touchPoint = new Vector3();
+		
+		playBounds = new Rectangle(((1280 - 100) / 2) - (1280 / 2), ((720 - 30) / 2) - (720 / 2), 100, 30);
 	}
 
 	public void update()
 	{
 		if (Gdx.input.justTouched())
 		{
-			game.setScreen(new GameScreen(game));
+			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+			
+			System.out.print("Tocou aqui (" + touchPoint.x + ", " + touchPoint.y + ")");
+			
+			if (playBounds.contains(touchPoint.x, touchPoint.y))
+			{
+				System.out.print(" e acertou!\n");
+				game.setScreen(new GameScreen(game));
+			}
+			else
+				System.out.println();
 		}
 	}
 
@@ -41,6 +52,11 @@ public class MenuScreen extends ScreenAdapter
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.backgroundMenu, 0, 0);
+		game.batcher.end();
+		
+		game.batcher.disableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.buttonPlay, (1280 - 100) / 2, (720 - 30) / 2);
 		game.batcher.end();
 	}
 
