@@ -5,14 +5,20 @@ import com.badlogic.gdx.graphics.Texture;
 public class Assets
 {
 	public static float
-		width = 1280,
-		height = 720;
+		windowWidth = 1280,
+		windowHeight = 720;
 
 	public static Texture
 		backgroundMenu,
 		backgroundGame,
 		backgroundHighscores,
+
+		buttonBump,
 		buttonPlay,
+		buttonScores,
+		buttonOptions,
+		buttonExit,
+
 		spriteBall;
 
 	public static void load()
@@ -21,7 +27,11 @@ public class Assets
 		backgroundGame = new Texture("game/background.jpg");
 		backgroundHighscores = new Texture("highscores/background.jpg");
 
-		buttonPlay = new Texture("menu/play.jpg");
+		buttonBump = new Texture("menu/MainTile.jpg");
+		buttonPlay = new Texture("menu/PlayTile.jpg");
+		buttonScores = new Texture("menu/ScoresTile.jpg");
+		buttonOptions = new Texture("menu/OptionsTile.jpg");
+		buttonExit = new Texture("menu/ExitTile.jpg");
 
 		spriteBall = new Texture("game/ball.jpg");
 	}

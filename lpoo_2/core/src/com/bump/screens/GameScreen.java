@@ -44,9 +44,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	int
 		state = 0,
 		startX,
-		startY,
-		endX,
-		endY;
+		startY;
 
 	final float PIXELS_TO_METERS = 100f;
 
@@ -63,11 +61,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		
 		world = new World(new Vector2(0, 0f), true);
 		BodyDef bodyDef = new BodyDef();
+		BodyDef bodyDef2 = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef2.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
 		body = world.createBody(bodyDef);
-		bodyDef.position.set((300 + sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (200 + sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
-		body2 = world.createBody(bodyDef);
+		bodyDef2.position.set((300 + sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (200 + sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
+		body2 = world.createBody(bodyDef2);
 		
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight() / 2 / PIXELS_TO_METERS);
@@ -77,10 +77,12 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape2;
 		fixtureDef.density = 0.1f;
+		fixtureDef.restitution = 0.6f;
 		
 		FixtureDef fixtureDef2 = new FixtureDef();
 		fixtureDef2.shape = shape;
 		fixtureDef2.density = 0.1f;
+		fixtureDef2.restitution = 0.6f;
 
 		body.createFixture(fixtureDef);
 		body2.createFixture(fixtureDef2);
@@ -92,32 +94,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		guiCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 
-	public void update()
-	{
-		/*
-			if (Gdx.input.justTouched())
-			{
-				game.setScreen(new MenuScreen(game));
-			}
-		*/
-	}
-
-	public void draw()
-	{
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundGame, 0, 0);
-		game.batcher.end();
-	}
-
 	public void render(float delta)
 	{
-		/*
-		update();
-		draw();
-		*/
 		guiCam.update();
 		world.step(1f / 60f, 6, 2);
 

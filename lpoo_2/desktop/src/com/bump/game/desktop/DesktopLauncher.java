@@ -11,8 +11,8 @@ public class DesktopLauncher
 	{
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.title = "Bump";
-		config.height = (int) Assets.height;
-		config.width = (int) Assets.width;
+		config.height = (int) Assets.windowHeight;
+		config.width = (int) Assets.windowWidth;
 		new LwjglApplication(new Bump(), config);
 	}
 }

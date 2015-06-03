@@ -18,18 +18,24 @@ public class MenuScreen extends ScreenAdapter
 	Vector3
 		touchPoint;
 	Button
+		bumpButton,
 		playButton,
-		highScoresButton;
+		highScoresButton,
+		optionButton,
+		exitButton;
 
 	public MenuScreen(Bump game)
 	{
 		this.game = game;
-		guiCam = new OrthographicCamera(Assets.width, Assets.height);
-		guiCam.position.set(Assets.width / 2, Assets.height / 2, 0);
+		guiCam = new OrthographicCamera(Assets.windowWidth, Assets.windowHeight);
+		guiCam.position.set(Assets.windowWidth / 2, Assets.windowHeight / 2, 0);
 		touchPoint = new Vector3();
 
-		playButton = new Button(Assets.buttonPlay, (Assets.width - 250) / 2, (Assets.height + 150) / 2, 250, 100);
-		highScoresButton = new Button(Assets.buttonPlay, (Assets.width - 250) / 2, (Assets.height - 100) / 2, 250, 100);
+		bumpButton = new Button(Assets.buttonBump, 30, Assets.windowHeight - Assets.buttonBump.getHeight() - 30);
+		playButton = new Button(Assets.buttonPlay, 30, Assets.windowHeight - Assets.buttonPlay.getHeight() - 160);
+		highScoresButton = new Button(Assets.buttonScores, 30, Assets.windowHeight - Assets.buttonScores.getHeight() - 290);
+		optionButton = new Button(Assets.buttonOptions, 30, Assets.windowHeight - Assets.buttonOptions.getHeight() - 420);
+		exitButton = new Button(Assets.buttonExit, 30, Assets.windowHeight - Assets.buttonExit.getHeight() - 550);
 	}
 
 	public void update()
@@ -44,6 +50,10 @@ public class MenuScreen extends ScreenAdapter
 				game.setScreen(new GameScreen(game));
 			else if (highScoresButton.bounds.contains(touchPoint.x, touchPoint.y))
 				game.setScreen(new Highscores(game));
+			else if (optionButton.bounds.contains(touchPoint.x, touchPoint.y))
+				System.out.println("Clicou em Options.");
+			else if (exitButton.bounds.contains(touchPoint.x, touchPoint.y))
+				Gdx.app.exit();
 		}
 	}
 
@@ -58,8 +68,11 @@ public class MenuScreen extends ScreenAdapter
 		game.batcher.end();
 		
 		game.batcher.disableBlending();
+		bumpButton.draw(game.batcher);
 		playButton.draw(game.batcher);
 		highScoresButton.draw(game.batcher);
+		optionButton.draw(game.batcher);
+		exitButton.draw(game.batcher);
 	}
 
 	public void render(float delta)

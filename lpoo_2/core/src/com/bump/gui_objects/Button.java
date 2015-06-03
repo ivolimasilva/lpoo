@@ -17,15 +17,15 @@ public class Button
 		width,
 		height;
 
-	public Button(Texture _texture, float _x, float _y, float _width, float _height)
+	public Button(Texture _texture, float _x, float _y)
 	{
 		this.x = _x;
 		this.y = _y;
-		this.width = _width;
-		this.height = _height;
+		this.width = _texture.getWidth();
+		this.height = _texture.getHeight();
 		this.texture = _texture;
 
-		this.bounds = new Rectangle(this.x - Assets.width / 2, this.y - Assets.height / 2, this.width, this.height);
+		this.bounds = new Rectangle(this.x - Assets.windowWidth / 2, this.y - Assets.windowHeight / 2, this.width, this.height);
 	}
 
 	public void draw(SpriteBatch batcher)
