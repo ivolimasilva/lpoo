@@ -3,7 +3,7 @@ package com.bump.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.bump.assets.Assets;
-import com.bump.screens.MenuScreen;
+import com.bump.screens.GameScreen;
 
 public class Bump extends Game
 {
@@ -13,7 +13,7 @@ public class Bump extends Game
 	{
 		Assets.load();
 		batcher = new SpriteBatch();
-		setScreen (new MenuScreen (this));
+		setScreen (new GameScreen (this));
 	}
 
 	public void render()

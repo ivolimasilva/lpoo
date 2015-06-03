@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
@@ -70,13 +71,19 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight() / 2 / PIXELS_TO_METERS);
+		CircleShape shape2 = new CircleShape();
+		shape2.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
 		
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
+		fixtureDef.shape = shape2;
 		fixtureDef.density = 0.1f;
+		
+		FixtureDef fixtureDef2 = new FixtureDef();
+		fixtureDef2.shape = shape;
+		fixtureDef2.density = 0.1f;
 
 		body.createFixture(fixtureDef);
-		body2.createFixture(fixtureDef);
+		body2.createFixture(fixtureDef2);
 		shape.dispose();
 
 		Gdx.input.setInputProcessor(this);
