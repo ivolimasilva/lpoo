@@ -66,23 +66,23 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		bodyDef2.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
 		body = world.createBody(bodyDef);
-		bodyDef2.position.set((300 + sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (200 + sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
+		bodyDef2.position.set(Assets.windowWidth / 2 / PIXELS_TO_METERS, (200 + sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
 		body2 = world.createBody(bodyDef2);
 		
 		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(sprite.getWidth() / 2 / PIXELS_TO_METERS, sprite.getHeight() / 2 / PIXELS_TO_METERS);
+		shape.setAsBox(0, 720);
 		CircleShape shape2 = new CircleShape();
 		shape2.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape2;
 		fixtureDef.density = 0.1f;
-		fixtureDef.restitution = 0.6f;
+		//fixtureDef.restitution = 1f;
 		
 		FixtureDef fixtureDef2 = new FixtureDef();
 		fixtureDef2.shape = shape;
 		fixtureDef2.density = 0.1f;
-		fixtureDef2.restitution = 0.6f;
+		fixtureDef2.restitution = 0.5f;
 
 		body.createFixture(fixtureDef);
 		body2.createFixture(fixtureDef2);
