@@ -2,28 +2,34 @@ package com.bump.screens;
 
 import com.bump.assets.Assets;
 import com.bump.game.Bump;
+import com.bump.gui_objects.Button;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 
 public class MenuScreen extends ScreenAdapter
 {
-	private Bump game;
-	OrthographicCamera guiCam;
-	Rectangle playBounds;
-	Vector3 touchPoint;
+	private Bump
+		game;
+	OrthographicCamera
+		guiCam;
+	Vector3
+		touchPoint;
+	Button
+		playButton,
+		highScoresButton;
 
 	public MenuScreen(Bump game)
 	{
 		this.game = game;
-		guiCam = new OrthographicCamera(1280, 720);
-		guiCam.position.set(1280 / 2, 720 / 2, 0);
+		guiCam = new OrthographicCamera(Assets.width, Assets.height);
+		guiCam.position.set(Assets.width / 2, Assets.height / 2, 0);
 		touchPoint = new Vector3();
-		
-		playBounds = new Rectangle(((1280 - 100) / 2) - (1280 / 2), ((720 - 30) / 2) - (720 / 2), 100, 30);
+
+		playButton = new Button(Assets.buttonPlay, (Assets.width - 250) / 2, (Assets.height + 150) / 2, 250, 100);
+		highScoresButton = new Button(Assets.buttonPlay, (Assets.width - 250) / 2, (Assets.height - 100) / 2, 250, 100);
 	}
 
 	public void update()
@@ -31,16 +37,13 @@ public class MenuScreen extends ScreenAdapter
 		if (Gdx.input.justTouched())
 		{
 			guiCam.unproject(touchPoint.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-			
-			System.out.print("Tocou aqui (" + touchPoint.x + ", " + touchPoint.y + ")");
-			
-			if (playBounds.contains(touchPoint.x, touchPoint.y))
-			{
-				System.out.print(" e acertou!\n");
+
+			//System.out.println ("Tocou em (" + touchPoint.x + ", " + touchPoint.y + ").");
+
+			if (playButton.bounds.contains(touchPoint.x, touchPoint.y))
 				game.setScreen(new GameScreen(game));
-			}
-			else
-				System.out.println();
+			else if (highScoresButton.bounds.contains(touchPoint.x, touchPoint.y))
+				game.setScreen(new Highscores(game));
 		}
 	}
 
@@ -55,9 +58,8 @@ public class MenuScreen extends ScreenAdapter
 		game.batcher.end();
 		
 		game.batcher.disableBlending();
-		game.batcher.begin();
-		game.batcher.draw(Assets.buttonPlay, (1280 - 100) / 2, (720 - 30) / 2);
-		game.batcher.end();
+		playButton.draw(game.batcher);
+		highScoresButton.draw(game.batcher);
 	}
 
 	public void render(float delta)
