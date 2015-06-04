@@ -74,8 +74,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		bodyDef.position.set((Assets.windowWidth + 250) / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
 		body3 = world.createBody(bodyDef);
 		body.setLinearDamping(0.5f);
+		body.setAngularDamping(0.5f);
 		body2.setLinearDamping(0.5f);
+		body2.setAngularDamping(0.5f);
 		body3.setLinearDamping(0.5f);
+		body3.setAngularDamping(0.5f);
 		
 		CircleShape shape = new CircleShape();
 		shape.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
@@ -84,6 +87,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.3f;
 		fixtureDef.friction = 0.0f;
+		fixtureDef.restitution = 0.3f;
 
 		body.createFixture(fixtureDef);
 		body2.createFixture(fixtureDef);
@@ -217,6 +221,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
+			body.applyAngularImpulse(0.1f, true);
 			body.applyForceToCenter((float) 0.1 * (screenX - startX), (float) 0.1 * (startY - screenY), true);
 			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 		}
