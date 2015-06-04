@@ -62,18 +62,20 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		sprite = new Sprite(Assets.spriteBall);
 		
 		world = new World(new Vector2(0, 0f), true);
-		// world.setVelocityThreshold(0.0f);
+		world.setVelocityThreshold(0.0f);
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
 		body = world.createBody(bodyDef);
+		body.setLinearDamping(1f);
 		
 		CircleShape shape = new CircleShape();
 		shape.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0.1f;
+		fixtureDef.density = 0.9f;
+		fixtureDef.friction = 0.0f;
 
 		body.createFixture(fixtureDef);
 		shape.dispose();
@@ -95,30 +97,35 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
 		fixtureDef.restitution = 0.5f;
+		fixtureDef.friction = 0.0f;
 		
 		// Wall Top
 		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, Assets.windowHeight / PIXELS_TO_METERS);
 		wallTop = world.createBody(bodyDef);
 		shape.setAsBox(Assets.windowHeight, 0);
 		wallTop.createFixture(fixtureDef);
+		wallTop = world.createBody(bodyDef);
 		
 		// Wall Bottom
 		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
 		wallBottom = world.createBody(bodyDef);
 		shape.setAsBox(Assets.windowHeight, 0);
 		wallBottom.createFixture(fixtureDef);
+		wallBottom = world.createBody(bodyDef);
 
 		// Wall Left
 		bodyDef.position.set(0, 0);
 		wallLeft = world.createBody(bodyDef);
 		shape.setAsBox(0, Assets.windowHeight);
 		wallLeft.createFixture(fixtureDef);
+		wallLeft = world.createBody(bodyDef);
 		
 		// Wall Right
 		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
 		wallRight = world.createBody(bodyDef);
 		shape.setAsBox(0, Assets.windowHeight);
 		wallRight.createFixture(fixtureDef);
+		wallRight = world.createBody(bodyDef);
 
 		shape.dispose();
 	}
@@ -131,6 +138,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		body.applyTorque(torque, true);
 		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2, (body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
 		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+		
+		System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
 
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -147,6 +156,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		game.batcher.end();
 
 		debugRenderer.render(world, debugMatrix);
+		
+		/*
+		if (Math.abs(body.getLinearVelocity().x) < 0.1 && Math.abs(body.getLinearVelocity().y) < 0.1)
+			body.setLinearVelocity(new Vector2(0, 0));
+		else
+			body.setLinearVelocity(new Vector2((float) body.getLinearVelocity().x - 0.01f, (float) body.getLinearVelocity().y - 0.01f));
+		*/
 	}
 
 	public boolean keyDown(int keycode)
@@ -178,7 +194,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
-			body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
+			body.applyForceToCenter((float) 0.1 * (screenX - startX), (float) 0.1 * (startY - screenY), true);
 			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 		}
 		return false;
