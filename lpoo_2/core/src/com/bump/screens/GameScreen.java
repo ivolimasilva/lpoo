@@ -31,7 +31,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	Sprite
 		sprite;
 	Body
-		body, body2;
+		body, body2,
+		wallTop,
+		wallBottom,
+		wallLeft,
+		wallRight;
 	Box2DDebugRenderer
 		debugRenderer;
 	Matrix4
@@ -51,47 +55,72 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	public GameScreen(Bump game)
 	{
 		this.game = game;
-		/*
-		guiCam = new OrthographicCamera(Assets.width, Assets.height);
-		guiCam.position.set(Assets.width / 2, Assets.height / 2, 0);
-		*/
+		guiCam = new OrthographicCamera(Assets.windowWidth, Assets.windowHeight);
+		guiCam.position.set(Assets.windowWidth / 2, Assets.windowHeight / 2, 0);
 
 		// TESTING
 		sprite = new Sprite(Assets.spriteBall);
 		
 		world = new World(new Vector2(0, 0f), true);
+		// world.setVelocityThreshold(0.0f);
 		BodyDef bodyDef = new BodyDef();
-		BodyDef bodyDef2 = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef2.type = BodyDef.BodyType.StaticBody;
 		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
 		body = world.createBody(bodyDef);
-		bodyDef2.position.set(Assets.windowWidth / 2 / PIXELS_TO_METERS, (200 + sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
-		body2 = world.createBody(bodyDef2);
 		
-		PolygonShape shape = new PolygonShape();
-		shape.setAsBox(0, 720);
-		CircleShape shape2 = new CircleShape();
-		shape2.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
+		CircleShape shape = new CircleShape();
+		shape.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
 		
 		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape2;
+		fixtureDef.shape = shape;
 		fixtureDef.density = 0.1f;
-		//fixtureDef.restitution = 1f;
-		
-		FixtureDef fixtureDef2 = new FixtureDef();
-		fixtureDef2.shape = shape;
-		fixtureDef2.density = 0.1f;
-		fixtureDef2.restitution = 0.5f;
 
 		body.createFixture(fixtureDef);
-		body2.createFixture(fixtureDef2);
 		shape.dispose();
+		
+		createWalls();
 
 		Gdx.input.setInputProcessor(this);
 
 		debugRenderer = new Box2DDebugRenderer();
-		guiCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		//guiCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+	}
+	
+	public void createWalls()
+	{
+		BodyDef bodyDef = new BodyDef();
+		bodyDef.type = BodyDef.BodyType.StaticBody;
+		PolygonShape shape = new PolygonShape();
+		FixtureDef fixtureDef = new FixtureDef();
+		fixtureDef.shape = shape;
+		fixtureDef.density = 0.1f;
+		fixtureDef.restitution = 0.5f;
+		
+		// Wall Top
+		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, Assets.windowHeight / PIXELS_TO_METERS);
+		wallTop = world.createBody(bodyDef);
+		shape.setAsBox(Assets.windowHeight, 0);
+		wallTop.createFixture(fixtureDef);
+		
+		// Wall Bottom
+		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
+		wallBottom = world.createBody(bodyDef);
+		shape.setAsBox(Assets.windowHeight, 0);
+		wallBottom.createFixture(fixtureDef);
+
+		// Wall Left
+		bodyDef.position.set(0, 0);
+		wallLeft = world.createBody(bodyDef);
+		shape.setAsBox(0, Assets.windowHeight);
+		wallLeft.createFixture(fixtureDef);
+		
+		// Wall Right
+		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
+		wallRight = world.createBody(bodyDef);
+		shape.setAsBox(0, Assets.windowHeight);
+		wallRight.createFixture(fixtureDef);
+
+		shape.dispose();
 	}
 
 	public void render(float delta)
@@ -149,7 +178,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
-			body.applyForceToCenter(screenX - startX, startY - screenY, true);
+			body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
 			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 		}
 		return false;
