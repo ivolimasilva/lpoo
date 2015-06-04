@@ -29,9 +29,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	World
 		world;
 	Sprite
-		sprite;
+		sprite, sprite2, sprite3;
 	Body
-		body, body2,
+		body, body2, body3,
 		wallTop,
 		wallBottom,
 		wallLeft,
@@ -60,24 +60,34 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		// TESTING
 		sprite = new Sprite(Assets.spriteBall);
+		sprite2 = new Sprite(Assets.spriteBall);
+		sprite3 = new Sprite(Assets.spriteBall);
 		
 		world = new World(new Vector2(0, 0f), true);
 		world.setVelocityThreshold(0.0f);
 		BodyDef bodyDef = new BodyDef();
 		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set((sprite.getX() + sprite.getWidth() / 2) / PIXELS_TO_METERS, (sprite.getY() + sprite.getHeight() / 2) / PIXELS_TO_METERS);
+		bodyDef.position.set(Assets.windowWidth / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
 		body = world.createBody(bodyDef);
-		body.setLinearDamping(1f);
+		bodyDef.position.set((Assets.windowWidth - 250) / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
+		body2 = world.createBody(bodyDef);
+		bodyDef.position.set((Assets.windowWidth + 250) / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
+		body3 = world.createBody(bodyDef);
+		body.setLinearDamping(0.5f);
+		body2.setLinearDamping(0.5f);
+		body3.setLinearDamping(0.5f);
 		
 		CircleShape shape = new CircleShape();
 		shape.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
 		
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0.9f;
+		fixtureDef.density = 0.3f;
 		fixtureDef.friction = 0.0f;
 
 		body.createFixture(fixtureDef);
+		body2.createFixture(fixtureDef);
+		body3.createFixture(fixtureDef);
 		shape.dispose();
 		
 		createWalls();
@@ -135,23 +145,36 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		guiCam.update();
 		world.step(1f / 60f, 6, 2);
 
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 		body.applyTorque(torque, true);
 		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2, (body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
 		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
 		
-		System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
+		sprite2.setPosition((body2.getPosition().x * PIXELS_TO_METERS) - sprite2.getWidth() / 2, (body2.getPosition().y * PIXELS_TO_METERS) - sprite2.getHeight() / 2);
+		sprite2.setRotation((float) Math.toDegrees(body2.getAngle()));
+		
+		sprite3.setPosition((body3.getPosition().x * PIXELS_TO_METERS) - sprite3.getWidth() / 2, (body3.getPosition().y * PIXELS_TO_METERS) - sprite3.getHeight() / 2);
+		sprite3.setRotation((float) Math.toDegrees(body3.getAngle()));
+		
+		// System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
 
-		Gdx.gl.glClearColor(1, 1, 1, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		
 
 		game.batcher.setProjectionMatrix(guiCam.combined);
 
 		debugMatrix = game.batcher.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS, PIXELS_TO_METERS, 0);
 
 		game.batcher.begin();
+		game.batcher.enableBlending();
 		
 		if (drawSprite)
+		{
 			game.batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
+			game.batcher.draw(sprite2, sprite2.getX(), sprite2.getY(), sprite2.getOriginX(), sprite2.getOriginY(), sprite2.getWidth(), sprite2.getHeight(), sprite2.getScaleX(), sprite2.getScaleY(), sprite2.getRotation());
+			game.batcher.draw(sprite3, sprite3.getX(), sprite3.getY(), sprite3.getOriginX(), sprite3.getOriginY(), sprite3.getWidth(), sprite3.getHeight(), sprite3.getScaleX(), sprite3.getScaleY(), sprite3.getRotation());
+		}
 
 		game.batcher.end();
 

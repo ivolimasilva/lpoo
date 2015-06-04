@@ -33,6 +33,6 @@ public class Assets
 		buttonOptions = new Texture("menu/OptionsTile.jpg");
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
-		spriteBall = new Texture("game/ball.jpg");
+		spriteBall = new Texture("game/ball.png");
 	}
 }
