@@ -6,6 +6,8 @@ import com.bump.assets.Assets;
 import com.bump.game.Bump;
 import com.bump.objects.Ball;
 import com.bump.objects.Piece;
+import com.bump.objects.Square;
+import com.bump.objects.Triangle;
 import com.bump.objects.Wall;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -35,10 +37,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		selectedPiece;
 	Ball
 		ball, ball2;
+	Triangle
+		triangle;
+	Square
+		square;
 	World
 		world;
 	Sprite
-		sprite, sprite2;
+		sprite, sprite2, sprite3, sprite4;
 	Box2DDebugRenderer
 		debugRenderer;
 	Matrix4
@@ -62,17 +68,21 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		// TESTING
 		sprite = new Sprite(Assets.spriteBall);
 		sprite2 = new Sprite(Assets.spriteBall);
+		sprite3 = new Sprite(Assets.spriteTriangle);
+		sprite4 = new Sprite(Assets.spriteSquare);
 		
 		world = new World(new Vector2(0, 0f), true);
 		
 		createWalls();
-		ball = new Ball(0, world, sprite, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
+		ball = new Ball(world, sprite, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 		pieces.add(ball);
-		ball2 = new Ball(1, world, sprite2, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		ball2 = new Ball(world, sprite2, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
 		pieces.add(ball2);
+		triangle = new Triangle(world, sprite3, (Assets.windowWidth + 300) / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		pieces.add(triangle);
+		square = new Square(world, sprite4, (Assets.windowWidth - 300) / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		pieces.add(square);
 		
-		selectedPiece = ball2;
-
 		Gdx.input.setInputProcessor(this);
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -138,7 +148,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		game.batcher.end();
 
-		debugRenderer.render(world, debugMatrix);
+		//debugRenderer.render(world, debugMatrix);
 	}
 
 	public boolean keyDown(int keycode)
@@ -166,7 +176,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			if (piece.contains(screenX, 720 - screenY))
 			{
 				selectedPiece = piece;
-				System.out.println("Peça selecionada: " + selectedPiece.id);
 				state = 0;
 				startX = screenX;
 				startY = screenY;

@@ -20,7 +20,9 @@ public class Assets
 		buttonOptions,
 		buttonExit,
 
-		spriteBall;
+		spriteBall,
+		spriteTriangle,
+		spriteSquare;
 
 	public static void load()
 	{
@@ -35,6 +37,8 @@ public class Assets
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
 		spriteBall = new Texture("game/ball.png");
+		spriteTriangle = new Texture("game/triangle.png");
+		spriteSquare = new Texture("game/square.png");
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2)

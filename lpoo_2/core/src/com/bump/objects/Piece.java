@@ -12,8 +12,6 @@ public abstract class Piece
 		world;
 	public Body
 		body;
-	public int
-		id;
 
 	public abstract boolean contains(float x, float y);
 }
