@@ -1,7 +1,12 @@
 package com.bump.screens;
 
+import java.util.ArrayList;
+
 import com.bump.assets.Assets;
 import com.bump.game.Bump;
+import com.bump.objects.Ball;
+import com.bump.objects.Piece;
+import com.bump.objects.Wall;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
@@ -10,12 +15,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class GameScreen extends ScreenAdapter implements InputProcessor
@@ -24,18 +24,21 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		game;
 	OrthographicCamera
 		guiCam;
-
-	// TESTING
-	World
-		world;
-	Sprite
-		sprite, sprite2, sprite3;
-	Body
-		body, body2, body3,
+	private Wall
 		wallTop,
 		wallBottom,
 		wallLeft,
 		wallRight;
+	ArrayList<Piece>
+		pieces = new ArrayList<Piece>();
+	Piece
+		selectedPiece;
+	Ball
+		ball, ball2;
+	World
+		world;
+	Sprite
+		sprite, sprite2;
 	Box2DDebugRenderer
 		debugRenderer;
 	Matrix4
@@ -50,8 +53,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		startX,
 		startY;
 
-	final float PIXELS_TO_METERS = 100f;
-
 	public GameScreen(Bump game)
 	{
 		this.game = game;
@@ -61,87 +62,35 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		// TESTING
 		sprite = new Sprite(Assets.spriteBall);
 		sprite2 = new Sprite(Assets.spriteBall);
-		sprite3 = new Sprite(Assets.spriteBall);
 		
 		world = new World(new Vector2(0, 0f), true);
-		world.setVelocityThreshold(0.0f);
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
-		bodyDef.position.set(Assets.windowWidth / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
-		body = world.createBody(bodyDef);
-		bodyDef.position.set((Assets.windowWidth - 250) / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
-		body2 = world.createBody(bodyDef);
-		bodyDef.position.set((Assets.windowWidth + 250) / 2 / PIXELS_TO_METERS, Assets.windowHeight / 2 / PIXELS_TO_METERS);
-		body3 = world.createBody(bodyDef);
-		body.setLinearDamping(0.5f);
-		body.setAngularDamping(0.5f);
-		body2.setLinearDamping(0.5f);
-		body2.setAngularDamping(0.5f);
-		body3.setLinearDamping(0.5f);
-		body3.setAngularDamping(0.5f);
-		
-		CircleShape shape = new CircleShape();
-		shape.setRadius(sprite.getWidth() / 2 / PIXELS_TO_METERS);
-		
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.density = 0.3f;
-		fixtureDef.friction = 0.0f;
-		fixtureDef.restitution = 0.3f;
-
-		body.createFixture(fixtureDef);
-		body2.createFixture(fixtureDef);
-		body3.createFixture(fixtureDef);
-		shape.dispose();
 		
 		createWalls();
+		ball = new Ball(0, world, sprite, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
+		pieces.add(ball);
+		ball2 = new Ball(1, world, sprite2, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		pieces.add(ball2);
+		
+		selectedPiece = ball2;
 
 		Gdx.input.setInputProcessor(this);
 
 		debugRenderer = new Box2DDebugRenderer();
-		//guiCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 	
 	public void createWalls()
 	{
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.StaticBody;
-		PolygonShape shape = new PolygonShape();
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.shape = shape;
-		fixtureDef.density = 0.1f;
-		fixtureDef.restitution = 0.5f;
-		fixtureDef.friction = 0.0f;
-		
-		// Wall Top
-		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, Assets.windowHeight / PIXELS_TO_METERS);
-		wallTop = world.createBody(bodyDef);
-		shape.setAsBox(Assets.windowHeight, 0);
-		wallTop.createFixture(fixtureDef);
-		wallTop = world.createBody(bodyDef);
-		
-		// Wall Bottom
-		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
-		wallBottom = world.createBody(bodyDef);
-		shape.setAsBox(Assets.windowHeight, 0);
-		wallBottom.createFixture(fixtureDef);
-		wallBottom = world.createBody(bodyDef);
+		wallTop = new Wall();
+		wallTop.createWall(world, Assets.windowWidth / Assets.PIXELS_TO_METERS, Assets.windowHeight / Assets.PIXELS_TO_METERS, Assets.windowWidth / Assets.PIXELS_TO_METERS, 0);
 
-		// Wall Left
-		bodyDef.position.set(0, 0);
-		wallLeft = world.createBody(bodyDef);
-		shape.setAsBox(0, Assets.windowHeight);
-		wallLeft.createFixture(fixtureDef);
-		wallLeft = world.createBody(bodyDef);
-		
-		// Wall Right
-		bodyDef.position.set(Assets.windowWidth / PIXELS_TO_METERS, 0);
-		wallRight = world.createBody(bodyDef);
-		shape.setAsBox(0, Assets.windowHeight);
-		wallRight.createFixture(fixtureDef);
-		wallRight = world.createBody(bodyDef);
+		wallBottom = new Wall();
+		wallBottom.createWall(world, Assets.windowWidth / Assets.PIXELS_TO_METERS, 0, Assets.windowWidth / Assets.PIXELS_TO_METERS, 0);
 
-		shape.dispose();
+		wallLeft = new Wall();
+		wallLeft.createWall(world, 0, 0, 0, Assets.windowHeight / Assets.PIXELS_TO_METERS);
+		
+		wallRight = new Wall();
+		wallRight.createWall(world, Assets.windowWidth / Assets.PIXELS_TO_METERS, 0, 0, Assets.windowHeight / Assets.PIXELS_TO_METERS);
 	}
 
 	public void render(float delta)
@@ -149,47 +98,47 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		guiCam.update();
 		world.step(1f / 60f, 6, 2);
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		body.applyTorque(torque, true);
-		sprite.setPosition((body.getPosition().x * PIXELS_TO_METERS) - sprite.getWidth() / 2, (body.getPosition().y * PIXELS_TO_METERS) - sprite.getHeight() / 2);
-		sprite.setRotation((float) Math.toDegrees(body.getAngle()));
+		// body.applyTorque(torque, true);
+		// ball.body.applyTorque(torque, true);
+		// sprite.setPosition((ball.body.getPosition().x * Assets.PIXELS_TO_METERS) - sprite.getWidth() / 2, (ball.body.getPosition().y * Assets.PIXELS_TO_METERS) - sprite.getHeight() / 2);
+		// sprite.setRotation((float) Math.toDegrees(ball.body.getAngle()));
 		
-		sprite2.setPosition((body2.getPosition().x * PIXELS_TO_METERS) - sprite2.getWidth() / 2, (body2.getPosition().y * PIXELS_TO_METERS) - sprite2.getHeight() / 2);
-		sprite2.setRotation((float) Math.toDegrees(body2.getAngle()));
-		
-		sprite3.setPosition((body3.getPosition().x * PIXELS_TO_METERS) - sprite3.getWidth() / 2, (body3.getPosition().y * PIXELS_TO_METERS) - sprite3.getHeight() / 2);
-		sprite3.setRotation((float) Math.toDegrees(body3.getAngle()));
-		
-		// System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
+		for (Piece piece: pieces)
+		{
+			piece.body.applyTorque(torque, true);
+			piece.sprite.setPosition((piece.body.getPosition().x * Assets.PIXELS_TO_METERS) - piece.sprite.getWidth() / 2, (piece.body.getPosition().y * Assets.PIXELS_TO_METERS) - piece.sprite.getHeight() / 2);
+			piece.sprite.setRotation((float) Math.toDegrees(piece.body.getAngle()));
+		}
 
-		
+		// System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
 
 		game.batcher.setProjectionMatrix(guiCam.combined);
 
-		debugMatrix = game.batcher.getProjectionMatrix().cpy().scale(PIXELS_TO_METERS, PIXELS_TO_METERS, 0);
+		debugMatrix = game.batcher.getProjectionMatrix().cpy().scale(Assets.PIXELS_TO_METERS, Assets.PIXELS_TO_METERS, 0);
 
 		game.batcher.begin();
 		game.batcher.enableBlending();
 		
+		for (Piece piece: pieces)
+		{
+			game.batcher.draw(piece.sprite, piece.sprite.getX(), piece.sprite.getY(), piece.sprite.getOriginX(), piece.sprite.getOriginY(), piece.sprite.getWidth(), piece.sprite.getHeight(), piece.sprite.getScaleX(), piece.sprite.getScaleY(), piece.sprite.getRotation());
+		}
+		
+		/*
 		if (drawSprite)
 		{
-			game.batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
+			// game.batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
 			game.batcher.draw(sprite2, sprite2.getX(), sprite2.getY(), sprite2.getOriginX(), sprite2.getOriginY(), sprite2.getWidth(), sprite2.getHeight(), sprite2.getScaleX(), sprite2.getScaleY(), sprite2.getRotation());
 			game.batcher.draw(sprite3, sprite3.getX(), sprite3.getY(), sprite3.getOriginX(), sprite3.getOriginY(), sprite3.getWidth(), sprite3.getHeight(), sprite3.getScaleX(), sprite3.getScaleY(), sprite3.getRotation());
 		}
+		*/
 
 		game.batcher.end();
 
 		debugRenderer.render(world, debugMatrix);
-		
-		/*
-		if (Math.abs(body.getLinearVelocity().x) < 0.1 && Math.abs(body.getLinearVelocity().y) < 0.1)
-			body.setLinearVelocity(new Vector2(0, 0));
-		else
-			body.setLinearVelocity(new Vector2((float) body.getLinearVelocity().x - 0.01f, (float) body.getLinearVelocity().y - 0.01f));
-		*/
 	}
 
 	public boolean keyDown(int keycode)
@@ -210,9 +159,20 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		//System.out.println ("touchDown: " + screenX + ", " + screenY + ", " + pointer + "," + button);
-		state = 0;
-		startX = screenX;
-		startY = screenY;
+		
+		state = -1;
+		for (Piece piece: pieces)
+		{
+			if (piece.contains(screenX, 720 - screenY))
+			{
+				selectedPiece = piece;
+				System.out.println("Peça selecionada: " + selectedPiece.id);
+				state = 0;
+				startX = screenX;
+				startY = screenY;
+			}
+		}
+
 		return true;
 	}
 
@@ -221,8 +181,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
-			body.applyAngularImpulse(0.1f, true);
-			body.applyForceToCenter((float) 0.1 * (screenX - startX), (float) 0.1 * (startY - screenY), true);
+			selectedPiece.body.applyAngularImpulse(0.1f, true);
+			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
 			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 		}
 		return false;

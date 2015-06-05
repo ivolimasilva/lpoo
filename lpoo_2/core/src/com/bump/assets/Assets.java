@@ -6,7 +6,8 @@ public class Assets
 {
 	public static float
 		windowWidth = 1280,
-		windowHeight = 720;
+		windowHeight = 720,
+		PIXELS_TO_METERS = 100f;
 
 	public static Texture
 		backgroundMenu,
@@ -34,5 +35,10 @@ public class Assets
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
 		spriteBall = new Texture("game/ball.png");
+	}
+
+	public static float distance(float x1, float y1, float x2, float y2)
+	{
+		return (float) Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 	}
 }

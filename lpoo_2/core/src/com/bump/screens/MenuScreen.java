@@ -2,7 +2,7 @@ package com.bump.screens;
 
 import com.bump.assets.Assets;
 import com.bump.game.Bump;
-import com.bump.gui_objects.Button;
+import com.bump.objects.Button;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;

@@ -1,4 +1,4 @@
-package com.bump.gui_objects;
+package com.bump.objects;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.graphics.Texture;
