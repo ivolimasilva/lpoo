@@ -36,7 +36,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	Piece
 		selectedPiece;
 	Ball
-		ball, ball2;
+		ball;
 	Triangle
 		triangle;
 	Square
@@ -44,7 +44,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	World
 		world;
 	Sprite
-		sprite, sprite2, sprite3, sprite4;
+		sprite, sprite2, sprite3;
 	Box2DDebugRenderer
 		debugRenderer;
 	Matrix4
@@ -67,20 +67,17 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		// TESTING
 		sprite = new Sprite(Assets.spriteBall);
-		sprite2 = new Sprite(Assets.spriteBall);
-		sprite3 = new Sprite(Assets.spriteTriangle);
-		sprite4 = new Sprite(Assets.spriteSquare);
+		sprite2 = new Sprite(Assets.spriteTriangle);
+		sprite3 = new Sprite(Assets.spriteSquare);
 		
 		world = new World(new Vector2(0, 0f), true);
 		
 		createWalls();
 		ball = new Ball(world, sprite, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 		pieces.add(ball);
-		ball2 = new Ball(world, sprite2, Assets.windowWidth / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
-		pieces.add(ball2);
-		triangle = new Triangle(world, sprite3, (Assets.windowWidth + 300) / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		triangle = new Triangle(world, sprite2, (Assets.windowWidth + 300) / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 		pieces.add(triangle);
-		square = new Square(world, sprite4, (Assets.windowWidth - 300) / 2 / Assets.PIXELS_TO_METERS, (Assets.windowHeight + 250) / 2 / Assets.PIXELS_TO_METERS);
+		square = new Square(world, sprite3, (Assets.windowWidth - 300) / 2 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 		pieces.add(square);
 		
 		Gdx.input.setInputProcessor(this);
@@ -111,11 +108,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		
-		// body.applyTorque(torque, true);
-		// ball.body.applyTorque(torque, true);
-		// sprite.setPosition((ball.body.getPosition().x * Assets.PIXELS_TO_METERS) - sprite.getWidth() / 2, (ball.body.getPosition().y * Assets.PIXELS_TO_METERS) - sprite.getHeight() / 2);
-		// sprite.setRotation((float) Math.toDegrees(ball.body.getAngle()));
-		
 		for (Piece piece: pieces)
 		{
 			piece.body.applyTorque(torque, true);
@@ -136,15 +128,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		{
 			game.batcher.draw(piece.sprite, piece.sprite.getX(), piece.sprite.getY(), piece.sprite.getOriginX(), piece.sprite.getOriginY(), piece.sprite.getWidth(), piece.sprite.getHeight(), piece.sprite.getScaleX(), piece.sprite.getScaleY(), piece.sprite.getRotation());
 		}
-		
-		/*
-		if (drawSprite)
-		{
-			// game.batcher.draw(sprite, sprite.getX(), sprite.getY(), sprite.getOriginX(), sprite.getOriginY(), sprite.getWidth(), sprite.getHeight(), sprite.getScaleX(), sprite.getScaleY(), sprite.getRotation());
-			game.batcher.draw(sprite2, sprite2.getX(), sprite2.getY(), sprite2.getOriginX(), sprite2.getOriginY(), sprite2.getWidth(), sprite2.getHeight(), sprite2.getScaleX(), sprite2.getScaleY(), sprite2.getRotation());
-			game.batcher.draw(sprite3, sprite3.getX(), sprite3.getY(), sprite3.getOriginX(), sprite3.getOriginY(), sprite3.getWidth(), sprite3.getHeight(), sprite3.getScaleX(), sprite3.getScaleY(), sprite3.getRotation());
-		}
-		*/
 
 		game.batcher.end();
 
@@ -173,7 +156,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		state = -1;
 		for (Piece piece: pieces)
 		{
-			if (piece.contains(screenX, 720 - screenY))
+			if (piece.contains(screenX, Assets.windowHeight - screenY))
 			{
 				selectedPiece = piece;
 				state = 0;

@@ -36,9 +36,9 @@ public class Assets
 		buttonOptions = new Texture("menu/OptionsTile.jpg");
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
-		spriteBall = new Texture("game/ball.png");
-		spriteTriangle = new Texture("game/triangle.png");
-		spriteSquare = new Texture("game/square.png");
+		spriteBall = new Texture("game/red/ball.png");
+		spriteTriangle = new Texture("game/red/triangle.png");
+		spriteSquare = new Texture("game/red/square.png");
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2)
