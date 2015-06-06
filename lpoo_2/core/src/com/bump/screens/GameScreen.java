@@ -258,7 +258,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			}
 		}
 
-		//debugRenderer.render(world, debugMatrix);
+		debugRenderer.render(world, debugMatrix);
 	}
 	
 	private void checkReturns()
@@ -270,57 +270,40 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 			if (returnPlayer == PlayerTurn.Player2)
 			{
+				System.out.println("Removida " + piece.getClass().getSimpleName());
+				
 				if (piece.player == PlayerTurn.Player1)
 				{
-					if (piece.getClass().getName() == "Square")
-						piece.sprite = new Sprite(Assets.spriteBlueSquare);
-					else if (piece.getClass().getName() == "Ball")
-						piece.sprite = new Sprite(Assets.spriteBlueBall);
-					else if (piece.getClass().getName() == "Triangle")
-						piece.sprite = new Sprite(Assets.spriteBlueTriangle);
-
 					piecesPlayer1.remove(piece);
-					ronda1--;
-					nrRondas1--;
-					//piecesGlobal.remove(piece);
 				}
 				else
 				{
-					piecesPlayer1.remove(piece);
-					ronda1--;
-					nrRondas1--;
-					//piecesGlobal.remove(piece);
+					piecesPlayer2.remove(piece);
 				}
+				world.destroyBody(piece.body);
+				ronda1--;
+				nrRondas1--;
 			}
 			else if (returnPlayer == PlayerTurn.Player1)
 			{
+				System.out.println("Removida " + piece.getClass().getSimpleName());
+				
 				if (piece.player == PlayerTurn.Player2)
 				{
-					if (piece.getClass().getName() == "Square")
-						piece.sprite = new Sprite(Assets.spriteRedSquare);
-					else if (piece.getClass().getName() == "Ball")
-						piece.sprite = new Sprite(Assets.spriteRedBall);
-					else if (piece.getClass().getName() == "Triangle")
-						piece.sprite = new Sprite(Assets.spriteRedTriangle);
-
 					piecesPlayer2.remove(piece);
-					ronda2--;
-					nrRondas2--;
-					//piecesGlobal.remove(piece);
 				}
 				else
 				{
-					piecesPlayer2.remove(piece);
-					ronda2--;
-					nrRondas2--;
-					//piecesGlobal.remove(piece);
+					piecesPlayer1.remove(piece);
 				}
+				world.destroyBody(piece.body);
+				ronda2--;
+				nrRondas2--;
 			}
 		}
 		
 		piecesGlobal.clear();
 
-		/*
 		System.out.print("Peças do jogador 1 (" + piecesPlayer1.size() + "):");
 		for (Piece piece: piecesPlayer1)
 		{
@@ -336,7 +319,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		}
 		System.out.println();
 		System.out.println();
-		*/
 	}
 
 	private void gameOver()
