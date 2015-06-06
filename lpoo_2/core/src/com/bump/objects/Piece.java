@@ -1,6 +1,7 @@
 package com.bump.objects;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bump.assets.Assets;
@@ -32,6 +33,10 @@ public abstract class Piece
 		}
 		return false;
 	}
+	public void setToWait()
+	{
+		this.body.setTransform(new Vector2(- 100f, - 100f), 0f);
+	}
 	public void setToPenalty(PlayerTurn player)
 	{
 		if (player == PlayerTurn.Player1)
@@ -56,5 +61,14 @@ public abstract class Piece
 				return true;
 		}
 		return false;
+	}
+	public PlayerTurn checkReturn()
+	{
+		if (this.body.getPosition().x * Assets.PIXELS_TO_METERS > 1130 && this.body.getPosition().x * Assets.PIXELS_TO_METERS < 1280)
+			return PlayerTurn.Player2;
+		if (this.body.getPosition().x * Assets.PIXELS_TO_METERS > 0 && this.body.getPosition().x * Assets.PIXELS_TO_METERS < 150)
+			return PlayerTurn.Player1;
+		else
+			return null;
 	}
 }

@@ -77,7 +77,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonRedQuit;
 	Integer
 		points1 = 0,
-		ronda1 = 0;
+		ronda1 = 0,
+		nrRondas1 = 3;
 	Texture
 		score1;
 
@@ -98,7 +99,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonBlueQuit;
 	Integer
 		points2 = 0,
-		ronda2 = 0;
+		ronda2 = 0,
+		nrRondas2 = 3;
 	Texture
 		score2;
 
@@ -225,7 +227,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		if (arePiecesStopped() && nextPiece)
 		{
 			checkPoints();
-			if (ronda1 == piecesPlayer1.size() && ronda2 == piecesPlayer2.size())
+			checkReturns();
+			if (ronda1 == nrRondas1 && ronda2 == nrRondas2)
 				gameOver();
 			else
 			{
@@ -258,6 +261,84 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//debugRenderer.render(world, debugMatrix);
 	}
 	
+	private void checkReturns()
+	{
+		for (Piece piece: piecesGlobal)
+		{
+			PlayerTurn returnPlayer;
+			returnPlayer = piece.checkReturn();
+
+			if (returnPlayer == PlayerTurn.Player2)
+			{
+				if (piece.player == PlayerTurn.Player1)
+				{
+					if (piece.getClass().getName() == "Square")
+						piece.sprite = new Sprite(Assets.spriteBlueSquare);
+					else if (piece.getClass().getName() == "Ball")
+						piece.sprite = new Sprite(Assets.spriteBlueBall);
+					else if (piece.getClass().getName() == "Triangle")
+						piece.sprite = new Sprite(Assets.spriteBlueTriangle);
+
+					piecesPlayer1.remove(piece);
+					ronda1--;
+					nrRondas1--;
+					//piecesGlobal.remove(piece);
+				}
+				else
+				{
+					piecesPlayer1.remove(piece);
+					ronda1--;
+					nrRondas1--;
+					//piecesGlobal.remove(piece);
+				}
+			}
+			else if (returnPlayer == PlayerTurn.Player1)
+			{
+				if (piece.player == PlayerTurn.Player2)
+				{
+					if (piece.getClass().getName() == "Square")
+						piece.sprite = new Sprite(Assets.spriteRedSquare);
+					else if (piece.getClass().getName() == "Ball")
+						piece.sprite = new Sprite(Assets.spriteRedBall);
+					else if (piece.getClass().getName() == "Triangle")
+						piece.sprite = new Sprite(Assets.spriteRedTriangle);
+
+					piecesPlayer2.remove(piece);
+					ronda2--;
+					nrRondas2--;
+					//piecesGlobal.remove(piece);
+				}
+				else
+				{
+					piecesPlayer2.remove(piece);
+					ronda2--;
+					nrRondas2--;
+					//piecesGlobal.remove(piece);
+				}
+			}
+		}
+		
+		piecesGlobal.clear();
+
+		/*
+		System.out.print("Peças do jogador 1 (" + piecesPlayer1.size() + "):");
+		for (Piece piece: piecesPlayer1)
+		{
+			piecesGlobal.add(piece);
+			System.out.print(" +");
+		}
+		System.out.println();
+		System.out.print("Peças do jogador 2 (" + piecesPlayer2.size() + "):");
+		for (Piece piece: piecesPlayer2)
+		{
+			piecesGlobal.add(piece);
+			System.out.print(" +");
+		}
+		System.out.println();
+		System.out.println();
+		*/
+	}
+
 	private void gameOver()
 	{
 		game.batcher.enableBlending();
