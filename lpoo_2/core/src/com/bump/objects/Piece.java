@@ -14,6 +14,8 @@ public abstract class Piece
 		world;
 	public Body
 		body;
+	public PlayerTurn
+		player;
 
 	public abstract boolean contains(float x, float y);
 	public boolean isPlayableBy(PlayerTurn player)
@@ -40,5 +42,19 @@ public abstract class Piece
 		{
 			this.body.setTransform(Assets.penaltyPlayer2, (float) Math.toRadians(90));
 		}
+	}
+	public boolean checkPoints()
+	{
+		if (this.player == PlayerTurn.Player1)
+		{
+			if (this.body.getPosition().x * Assets.PIXELS_TO_METERS > 640 && this.body.getPosition().x * Assets.PIXELS_TO_METERS < 1130)
+				return true;
+		}
+		else if (this.player == PlayerTurn.Player2)
+		{
+			if (this.body.getPosition().x * Assets.PIXELS_TO_METERS < 640 && this.body.getPosition().x * Assets.PIXELS_TO_METERS > 150)
+				return true;
+		}
+		return false;
 	}
 }

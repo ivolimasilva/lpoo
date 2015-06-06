@@ -15,6 +15,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
@@ -51,7 +52,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	float
 		torque = 0.0f;
 	int
-		ronda,
 		state = 0,
 		startX,
 		startY;
@@ -73,6 +73,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		spritePlayer1Triangle;
 	Button
 		buttonRedQuit;
+	Integer
+		points1 = 0,
+		ronda1 = 0;
+	Texture
+		score1;
 
 	// Player 2 vars
 	ArrayList<Piece>
@@ -89,6 +94,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		spritePlayer2Triangle;
 	Button
 		buttonBlueQuit;
+	Integer
+		points2 = 0,
+		ronda2 = 0;
+	Texture
+		score2;
 
 	public GameScreen(Bump game)
 	{
@@ -105,16 +115,18 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		spritePlayer2Ball = new Sprite(Assets.spriteBlueBall);
 		spritePlayer1Triangle = new Sprite(Assets.spriteRedTriangle);
 		spritePlayer2Triangle = new Sprite(Assets.spriteBlueTriangle);
-		
+
+		score1 = new Texture("game/red/score/" + points1 + ".png");
+		score2 = new Texture("game/blue/score/" + points2 + ".png");
+
 		world = new World(new Vector2(0, 0f), true);
 		
 		createWalls();
 		createPlayer1Pieces();
 		createPlayer2Pieces();
 
-		ronda = 0;
 		playerTurn = PlayerTurn.Player1;
-		pieceToPlay = piecesPlayer1.get(ronda);
+		pieceToPlay = piecesPlayer1.get(ronda1);
 		pieceToPlay.setToPenalty(playerTurn);
 		
 		Gdx.input.setInputProcessor(this);
@@ -124,11 +136,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	
 	public void createPlayer1Pieces()
 	{
-		square1 = new Square(world, spritePlayer1Square, -100f, -100f);
+		square1 = new Square(PlayerTurn.Player1, world, spritePlayer1Square, -100f, -100f);
 		piecesPlayer1.add(square1);
-		ball1 = new Ball(world, spritePlayer1Ball, -100f, -100f);
+		ball1 = new Ball(PlayerTurn.Player1, world, spritePlayer1Ball, -100f, -100f);
 		piecesPlayer1.add(ball1);
-		triangle1 = new Triangle(world, spritePlayer1Triangle, -100f, -100f);
+		triangle1 = new Triangle(PlayerTurn.Player1, world, spritePlayer1Triangle, -100f, -100f);
 		piecesPlayer1.add(triangle1);
 
 		piecesGlobal.add(square1);
@@ -138,11 +150,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	
 	public void createPlayer2Pieces()
 	{
-		square2 = new Square(world, spritePlayer2Square, -100f, -100f);
+		square2 = new Square(PlayerTurn.Player2, world, spritePlayer2Square, -100f, -100f);
 		piecesPlayer2.add(square2);
-		ball2 = new Ball(world, spritePlayer2Ball, -100f, -100f);
+		ball2 = new Ball(PlayerTurn.Player2, world, spritePlayer2Ball, -100f, -100f);
 		piecesPlayer2.add(ball2);
-		triangle2 = new Triangle(world, spritePlayer2Triangle, -100f, -100f);
+		triangle2 = new Triangle(PlayerTurn.Player2, world, spritePlayer2Triangle, -100f, -100f);
 		piecesPlayer2.add(triangle2);
 
 		piecesGlobal.add(square2);
@@ -176,6 +188,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.backgroundGame, 0f, 0f);
+		game.batcher.draw(score1, 25f, Assets.windowHeight - 125f);
+		game.batcher.draw(score2, Assets.windowWidth - 125f, 25f);
 		game.batcher.end();
 		
 		buttonRedQuit.draw(game.batcher);
@@ -206,22 +220,45 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		if (arePiecesStopped() && nextPiece)
 		{
+			checkPoints();
 			if (playerTurn == PlayerTurn.Player1)
 			{
+				ronda1++;
 				playerTurn = PlayerTurn.Player2;
-				pieceToPlay = piecesPlayer2.get(ronda);
+				pieceToPlay = piecesPlayer2.get(ronda2);
 			}
 			else if (playerTurn == PlayerTurn.Player2)
 			{
-				ronda++;
+				ronda2++;
 				playerTurn = PlayerTurn.Player1;
-				pieceToPlay = piecesPlayer1.get(ronda);
+				pieceToPlay = piecesPlayer1.get(ronda1);
 			}
 			pieceToPlay.setToPenalty(playerTurn);
 			nextPiece = false;
 		}
 
 		//debugRenderer.render(world, debugMatrix);
+	}
+	
+	public void checkPoints()
+	{
+		points1 = 0;
+		points2 = 0;
+		for (Piece piece: piecesGlobal)
+		{
+			if (piece.checkPoints())
+			{
+				if (piece.player == PlayerTurn.Player1)
+					points1++;
+				else if (piece.player == PlayerTurn.Player2)
+					points2++;
+			}
+		}
+
+		score1 = new Texture("game/red/score/" + points1 + ".png");
+		score2 = new Texture("game/blue/score/" + points2 + ".png");
+
+		System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
 	}
 	
 	public boolean arePiecesStopped()

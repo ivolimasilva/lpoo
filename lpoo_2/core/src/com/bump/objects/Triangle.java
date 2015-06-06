@@ -6,11 +6,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bump.assets.Assets;
+import com.bump.screens.GameScreen.PlayerTurn;
 
 public class Triangle extends Piece
 {
-	public Triangle(World world, Sprite sprite, float pos_x, float pos_y)
+	public Triangle(PlayerTurn player, World world, Sprite sprite, float pos_x, float pos_y)
 	{
+		this.player = player;
 		this.world = world;
 		this.sprite = sprite;
 
