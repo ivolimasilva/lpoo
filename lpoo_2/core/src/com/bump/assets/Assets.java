@@ -30,21 +30,13 @@ public class Assets
 		
 		buttonRedQuit,
 		buttonBlueQuit,
+		buttonRedWin,
+		buttonBlueWin,
+		buttonDraw,
 		
-		scoreRed0,
-		scoreRed1,
-		scoreRed2,
-		scoreRed3,
-		scoreRed4,
-		scoreRed5,
-		scoreRed6,
-		scoreBlue0,
-		scoreBlue1,
-		scoreBlue2,
-		scoreBlue3,
-		scoreBlue4,
-		scoreBlue5,
-		scoreBlue6;
+		windowRedWin,
+		windowBlueWin,
+		windowDraw;
 
 	public static Vector2
 		penaltyPlayer1 = new Vector2(75 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS),
@@ -72,23 +64,13 @@ public class Assets
 		
 		buttonRedQuit = new Texture("game/red/close.png");
 		buttonBlueQuit = new Texture("game/blue/close.png");
+		buttonRedWin = new Texture("menu/red/check.png");
+		buttonBlueWin = new Texture("menu/blue/check.png");
+		buttonDraw = new Texture("menu/check.png");
 
-		/*
-		scoreRed0 = new Texture("game/red/score/0.png");
-		scoreRed1 = new Texture("game/red/score/1.png");
-		scoreRed2 = new Texture("game/red/score/2.png");
-		scoreRed3 = new Texture("game/red/score/3.png");
-		scoreRed4 = new Texture("game/red/score/4.png");
-		scoreRed5 = new Texture("game/red/score/5.png");
-		scoreRed6 = new Texture("game/red/score/6.png");
-		scoreBlue0,
-		scoreBlue1,
-		scoreBlue2,
-		scoreBlue3,
-		scoreBlue4,
-		scoreBlue5,
-		scoreBlue6
-		*/
+		windowRedWin = new Texture("game/red/win.png");
+		windowBlueWin = new Texture("game/blue/win.png");
+		windowDraw = new Texture("game/draw.png");
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2)

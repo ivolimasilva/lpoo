@@ -57,6 +57,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		startY;
 	boolean
 		nextPiece = false;
+	Button
+		buttonGameOver;
 	
 	// Player 1 vars
 	ArrayList<Piece>
@@ -75,7 +77,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonRedQuit;
 	Integer
 		points1 = 0,
-		ronda1 = 0;
+		ronda1 = 2;
 	Texture
 		score1;
 
@@ -96,7 +98,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonBlueQuit;
 	Integer
 		points2 = 0,
-		ronda2 = 0;
+		ronda2 = 2;
 	Texture
 		score2;
 
@@ -108,6 +110,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		
 		buttonRedQuit = new Button(Assets.buttonRedQuit, 25, 25);
 		buttonBlueQuit = new Button(Assets.buttonBlueQuit, Assets.windowWidth - 125, Assets.windowHeight - 125);
+		
+		buttonGameOver = new Button(Assets.buttonDraw, - Assets.windowWidth, - Assets.windowHeight);
 
 		spritePlayer1Square = new Sprite(Assets.spriteRedSquare);
 		spritePlayer2Square = new Sprite(Assets.spriteBlueSquare);
@@ -208,8 +212,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		debugMatrix = game.batcher.getProjectionMatrix().cpy().scale(Assets.PIXELS_TO_METERS, Assets.PIXELS_TO_METERS, 0);
 
-		game.batcher.begin();
 		game.batcher.enableBlending();
+		game.batcher.begin();
 		
 		for (Piece piece: piecesGlobal)
 		{
@@ -221,25 +225,62 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		if (arePiecesStopped() && nextPiece)
 		{
 			checkPoints();
-			if (playerTurn == PlayerTurn.Player1)
+			if (ronda1 == piecesPlayer1.size() && ronda2 == piecesPlayer2.size())
+				gameOver();
+			else
 			{
-				ronda1++;
-				playerTurn = PlayerTurn.Player2;
-				pieceToPlay = piecesPlayer2.get(ronda2);
+				if (playerTurn == PlayerTurn.Player1)
+				{
+					playerTurn = PlayerTurn.Player2;
+					if (ronda2 == piecesPlayer2.size())
+						nextPiece = true;
+					else
+					{
+						pieceToPlay = piecesPlayer2.get(ronda2);
+						nextPiece = false;
+					}
+				}
+				else if (playerTurn == PlayerTurn.Player2)
+				{
+					playerTurn = PlayerTurn.Player1;
+					if (ronda1 == piecesPlayer1.size())
+						nextPiece = true;
+					else
+					{
+						pieceToPlay = piecesPlayer1.get(ronda1);
+						nextPiece = false;
+					}
+				}
+				pieceToPlay.setToPenalty(playerTurn);
 			}
-			else if (playerTurn == PlayerTurn.Player2)
-			{
-				ronda2++;
-				playerTurn = PlayerTurn.Player1;
-				pieceToPlay = piecesPlayer1.get(ronda1);
-			}
-			pieceToPlay.setToPenalty(playerTurn);
-			nextPiece = false;
 		}
 
 		//debugRenderer.render(world, debugMatrix);
 	}
 	
+	private void gameOver()
+	{
+		game.batcher.enableBlending();
+		game.batcher.begin();
+		if (points1 > points2)
+		{
+			game.batcher.draw(Assets.windowRedWin, (Assets.windowWidth - Assets.windowRedWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowRedWin.getHeight()) / 2);
+			buttonGameOver = new Button(Assets.buttonRedWin, (Assets.windowWidth - Assets.buttonRedWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
+		}
+		else if (points1 < points2)
+		{
+			game.batcher.draw(Assets.windowBlueWin, (Assets.windowWidth - Assets.windowBlueWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowBlueWin.getHeight()) / 2);
+			buttonGameOver = new Button(Assets.buttonBlueWin, (Assets.windowWidth - Assets.buttonBlueWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
+		}
+		else
+		{
+			game.batcher.draw(Assets.windowDraw, (Assets.windowWidth - Assets.windowBlueWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowBlueWin.getHeight()) / 2);
+			buttonGameOver = new Button(Assets.buttonDraw, (Assets.windowWidth - Assets.buttonBlueWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
+		}
+		game.batcher.end();
+		buttonGameOver.draw(game.batcher);
+	}
+
 	public void checkPoints()
 	{
 		points1 = 0;
@@ -258,7 +299,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		score1 = new Texture("game/red/score/" + points1 + ".png");
 		score2 = new Texture("game/blue/score/" + points2 + ".png");
 
-		System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
+		//System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
 	}
 	
 	public boolean arePiecesStopped()
@@ -298,6 +339,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			game.setScreen(new MenuScreen(game));
 		else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			game.setScreen(new MenuScreen(game));
+		else if (buttonGameOver.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			game.setScreen(new MenuScreen(game));
 		
 		state = -1;
 		for (Piece piece: piecesGlobal)
@@ -321,10 +364,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		{
 			selectedPiece.body.applyAngularImpulse(0.1f, true);
 			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
-			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
+			//System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 			nextPiece = true;
+			if (playerTurn == PlayerTurn.Player1)
+				ronda1++;
+			else if (playerTurn == PlayerTurn.Player2)
+				ronda2++;
 		}
-		return false;
+		return true;
 	}
 
 	public boolean touchDragged(int screenX, int screenY, int pointer)
@@ -332,7 +379,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println ("Dragged: " + screenX + ", " + screenY + ", " + pointer);
 		if (state == 0)
 			state = 1;
-		return false;
+		return true;
 	}
 
 	public boolean mouseMoved(int screenX, int screenY)
