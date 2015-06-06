@@ -232,10 +232,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				gameOver();
 			else
 			{
-				//System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
+				System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
 				if (playerTurn == PlayerTurn.Player1) // && ronda2 < nrRondas2)
 				{
-					//System.out.println("Foi a vez do Jogador 1");
+					System.out.println("Foi a vez do Jogador 1");
 					playerTurn = PlayerTurn.Player2;
 					if (ronda2 == nrRondas2)
 						nextPiece = true;
@@ -248,7 +248,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				}
 				else if (playerTurn == PlayerTurn.Player2) // && ronda1 < nrRondas1)
 				{
-					//System.out.println("Foi a vez do Jogador 2");
+					System.out.println("Foi a vez do Jogador 2");
 					playerTurn = PlayerTurn.Player1;
 					if (ronda1 == nrRondas1)
 						nextPiece = true;
@@ -273,15 +273,19 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 			if (returnPlayer == PlayerTurn.Player2)
 			{
-				//System.out.println("Removida " + piece.getClass().getSimpleName());
+				System.out.println("Removida " + piece.getClass().getSimpleName());
 
 				if (piece.player == PlayerTurn.Player1)
 				{
 					piecesPlayer1.remove(piece);
+					ronda1--;
+					nrRondas1--;
 				}
 				else
 				{
 					piecesPlayer2.remove(piece);
+					ronda2--;
+					nrRondas2--;
 				}
 
 				if (piece.getClass().getSimpleName().equals("Square"))
@@ -319,20 +323,22 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				}
 
 				world.destroyBody(piece.body);
-				ronda1--;
-				nrRondas1--;
 			}
 			else if (returnPlayer == PlayerTurn.Player1)
 			{
-				//System.out.println("Removida " + piece.getClass().getSimpleName());
+				System.out.println("Removida " + piece.getClass().getSimpleName());
 
 				if (piece.player == PlayerTurn.Player2)
 				{
 					piecesPlayer2.remove(piece);
+					ronda2--;
+					nrRondas2--;
 				}
 				else
 				{
 					piecesPlayer1.remove(piece);
+					ronda1--;
+					nrRondas1--;
 				}
 
 				if (piece.getClass().getSimpleName().equals("Square"))
@@ -370,8 +376,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				}
 
 				world.destroyBody(piece.body);
-				ronda2--;
-				nrRondas2--;
 			}
 		}
 		
@@ -383,14 +387,14 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			piecesGlobal.add(piece);
 			System.out.print(" +");
 		}
-		//System.out.println();
+		System.out.println();
 		System.out.print("Peças do jogador 2 (" + piecesPlayer2.size() + "):");
 		for (Piece piece: piecesPlayer2)
 		{
 			piecesGlobal.add(piece);
 			System.out.print(" +");
 		}
-		//System.out.println();
+		System.out.println();
 		//System.out.println("Jogador 1 já jogou " + ronda1 + "/" + nrRondas1 + ".");
 		//System.out.println("Jogador 2 já jogou " + ronda2 + "/" + nrRondas2 + ".");
 	}
@@ -436,7 +440,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		score1 = new Texture("game/red/score/" + points1 + ".png");
 		score2 = new Texture("game/blue/score/" + points2 + ".png");
 
-		//System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
+		System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
 	}
 	
 	public boolean arePiecesStopped()
