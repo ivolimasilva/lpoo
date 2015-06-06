@@ -77,7 +77,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonRedQuit;
 	Integer
 		points1 = 0,
-		ronda1 = 2;
+		ronda1 = 0;
 	Texture
 		score1;
 
@@ -98,7 +98,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonBlueQuit;
 	Integer
 		points2 = 0,
-		ronda2 = 2;
+		ronda2 = 0;
 	Texture
 		score2;
 
