@@ -29,7 +29,7 @@ public class Ball extends Piece
 		fixtureDef.shape = shape;
 		fixtureDef.density = 0.9f;
 		fixtureDef.friction = 0.0f;
-		fixtureDef.restitution = 0.3f;
+		fixtureDef.restitution = 1f;
 
 		body.createFixture(fixtureDef);
 		shape.dispose();

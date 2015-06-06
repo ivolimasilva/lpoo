@@ -6,10 +6,10 @@ import com.bump.game.Bump;
 import com.bump.objects.Wall;
 import com.bump.objects.Ball;
 import com.bump.assets.Assets;
+import com.bump.objects.Button;
 import com.bump.objects.Piece;
 import com.bump.objects.Square;
 import com.bump.objects.Triangle;
-
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
@@ -71,6 +71,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		spritePlayer1Square,
 		spritePlayer1Ball,
 		spritePlayer1Triangle;
+	Button
+		buttonRedQuit;
 
 	// Player 2 vars
 	ArrayList<Piece>
@@ -85,19 +87,24 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		spritePlayer2Square,
 		spritePlayer2Ball,
 		spritePlayer2Triangle;
+	Button
+		buttonBlueQuit;
 
 	public GameScreen(Bump game)
 	{
 		this.game = game;
 		guiCam = new OrthographicCamera(Assets.windowWidth, Assets.windowHeight);
 		guiCam.position.set(Assets.windowWidth / 2, Assets.windowHeight / 2, 0);
+		
+		buttonRedQuit = new Button(Assets.buttonRedQuit, 25, 25);
+		buttonBlueQuit = new Button(Assets.buttonBlueQuit, Assets.windowWidth - 125, Assets.windowHeight - 125);
 
-		spritePlayer1Square = new Sprite(Assets.spriteSquare);
-		spritePlayer2Square = new Sprite(Assets.spriteSquare);
-		spritePlayer1Ball = new Sprite(Assets.spriteBall);
-		spritePlayer2Ball = new Sprite(Assets.spriteBall);
-		spritePlayer1Triangle = new Sprite(Assets.spriteTriangle);
-		spritePlayer2Triangle = new Sprite(Assets.spriteTriangle);
+		spritePlayer1Square = new Sprite(Assets.spriteRedSquare);
+		spritePlayer2Square = new Sprite(Assets.spriteBlueSquare);
+		spritePlayer1Ball = new Sprite(Assets.spriteRedBall);
+		spritePlayer2Ball = new Sprite(Assets.spriteBlueBall);
+		spritePlayer1Triangle = new Sprite(Assets.spriteRedTriangle);
+		spritePlayer2Triangle = new Sprite(Assets.spriteBlueTriangle);
 		
 		world = new World(new Vector2(0, 0f), true);
 		
@@ -117,10 +124,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	
 	public void createPlayer1Pieces()
 	{
-		ball1 = new Ball(world, spritePlayer1Ball, -100f, -100f);
-		piecesPlayer1.add(ball1);
 		square1 = new Square(world, spritePlayer1Square, -100f, -100f);
 		piecesPlayer1.add(square1);
+		ball1 = new Ball(world, spritePlayer1Ball, -100f, -100f);
+		piecesPlayer1.add(ball1);
 		triangle1 = new Triangle(world, spritePlayer1Triangle, -100f, -100f);
 		piecesPlayer1.add(triangle1);
 
@@ -165,7 +172,15 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		game.batcher.enableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.backgroundGame, 0f, 0f);
+		game.batcher.end();
 		
+		buttonRedQuit.draw(game.batcher);
+		buttonBlueQuit.draw(game.batcher);
+
 		for (Piece piece: piecesGlobal)
 		{
 			piece.body.applyTorque(torque, true);
@@ -206,7 +221,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			nextPiece = false;
 		}
 
-		debugRenderer.render(world, debugMatrix);
+		//debugRenderer.render(world, debugMatrix);
 	}
 	
 	public boolean arePiecesStopped()
@@ -218,7 +233,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			if (!piece.body.getLinearVelocity().equals(nullVector))
 				return false;
 		}
-		System.out.println("As peças estão todas paradas.");
+		//System.out.println("As peças estão todas paradas.");
 		return true;
 	}
 
@@ -239,7 +254,13 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
-		//System.out.println ("touchDown: " + screenX + ", " + screenY + ", " + pointer + "," + button);
+		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
+		//System.out.println("Red Quit: (" + buttonRedQuit.bounds.x + "," + buttonRedQuit.bounds.y + "; " + buttonRedQuit.bounds.width + ", " + buttonRedQuit.bounds.height + ").");
+
+		if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			game.setScreen(new MenuScreen(game));
+		else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			game.setScreen(new MenuScreen(game));
 		
 		state = -1;
 		for (Piece piece: piecesGlobal)

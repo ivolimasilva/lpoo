@@ -21,9 +21,15 @@ public class Assets
 		buttonOptions,
 		buttonExit,
 
-		spriteBall,
-		spriteTriangle,
-		spriteSquare;
+		spriteRedBall,
+		spriteRedTriangle,
+		spriteRedSquare,
+		spriteBlueBall,
+		spriteBlueTriangle,
+		spriteBlueSquare,
+		
+		buttonRedQuit,
+		buttonBlueQuit;
 
 	public static Vector2
 		penaltyPlayer1 = new Vector2(75 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS),
@@ -32,7 +38,7 @@ public class Assets
 	public static void load()
 	{
 		backgroundMenu = new Texture("menu/background.jpg");
-		backgroundGame = new Texture("game/background.jpg");
+		backgroundGame = new Texture("game/background.png");
 		backgroundHighscores = new Texture("highscores/background.jpg");
 
 		buttonBump = new Texture("menu/MainTile.jpg");
@@ -41,9 +47,16 @@ public class Assets
 		buttonOptions = new Texture("menu/OptionsTile.jpg");
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
-		spriteBall = new Texture("game/red/ball.png");
-		spriteTriangle = new Texture("game/red/triangle.png");
-		spriteSquare = new Texture("game/red/square.png");
+		spriteRedBall = new Texture("game/red/ball.png");
+		spriteRedTriangle = new Texture("game/red/triangle.png");
+		spriteRedSquare = new Texture("game/red/square.png");
+
+		spriteBlueBall = new Texture("game/blue/ball.png");
+		spriteBlueTriangle = new Texture("game/blue/triangle.png");
+		spriteBlueSquare = new Texture("game/blue/square.png");
+		
+		buttonRedQuit = new Texture("game/red/close.png");
+		buttonBlueQuit = new Texture("game/blue/close.png");
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2)

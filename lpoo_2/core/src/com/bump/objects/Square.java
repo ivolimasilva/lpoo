@@ -27,7 +27,7 @@ public class Square extends Piece
 
 		FixtureDef fixtureDef = new FixtureDef();
 		fixtureDef.shape = shape;
-		fixtureDef.density = 0.9f;
+		fixtureDef.density = 1.2f;
 		fixtureDef.friction = 0.0f;
 		fixtureDef.restitution = 0.3f;
 
