@@ -18,8 +18,8 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 	Button
 		bumpButton,
 		playButton,
-		highScoresButton,
-		optionButton,
+		pastGamesButton,
+		instructionsButton,
 		exitButton;
 
 	public MenuScreen(Bump game)
@@ -30,8 +30,8 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 
 		bumpButton = new Button(Assets.buttonBump, 30, Assets.windowHeight - Assets.buttonBump.getHeight() - 30);
 		playButton = new Button(Assets.buttonPlay, 30, Assets.windowHeight - Assets.buttonPlay.getHeight() - 160);
-		highScoresButton = new Button(Assets.buttonScores, 30, Assets.windowHeight - Assets.buttonScores.getHeight() - 290);
-		optionButton = new Button(Assets.buttonOptions, 30, Assets.windowHeight - Assets.buttonOptions.getHeight() - 420);
+		pastGamesButton = new Button(Assets.buttonPastGames, 30, Assets.windowHeight - Assets.buttonPastGames.getHeight() - 290);
+		instructionsButton = new Button(Assets.buttonInstructions, 30, Assets.windowHeight - Assets.buttonInstructions.getHeight() - 420);
 		exitButton = new Button(Assets.buttonExit, 30, Assets.windowHeight - Assets.buttonExit.getHeight() - 550);
 		
 		Gdx.input.setInputProcessor(this);
@@ -44,9 +44,9 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 
 		if (playButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			game.setScreen(new GameScreen(game));
-		else if (highScoresButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+		else if (pastGamesButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			game.setScreen(new Highscores(game));
-		else if (optionButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+		else if (instructionsButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			System.out.println("Clicou em Options.");
 		else if (exitButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			Gdx.app.exit();
@@ -67,8 +67,8 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		game.batcher.disableBlending();
 		bumpButton.draw(game.batcher);
 		playButton.draw(game.batcher);
-		highScoresButton.draw(game.batcher);
-		optionButton.draw(game.batcher);
+		pastGamesButton.draw(game.batcher);
+		instructionsButton.draw(game.batcher);
 		exitButton.draw(game.batcher);
 	}
 

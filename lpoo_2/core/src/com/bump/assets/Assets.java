@@ -17,8 +17,8 @@ public class Assets
 
 		buttonBump,
 		buttonPlay,
-		buttonScores,
-		buttonOptions,
+		buttonPastGames,
+		buttonInstructions,
 		buttonExit,
 
 		spriteRedBall,
@@ -43,8 +43,8 @@ public class Assets
 
 		buttonBump = new Texture("menu/MainTile.jpg");
 		buttonPlay = new Texture("menu/PlayTile.jpg");
-		buttonScores = new Texture("menu/ScoresTile.jpg");
-		buttonOptions = new Texture("menu/OptionsTile.jpg");
+		buttonPastGames = new Texture("menu/PastGamesTiles.jpg");
+		buttonInstructions = new Texture("menu/InstructionsTile.jpg");
 		buttonExit = new Texture("menu/ExitTile.jpg");
 
 		spriteRedBall = new Texture("game/red/ball.png");
