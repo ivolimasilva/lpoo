@@ -3,6 +3,8 @@ package com.bump.objects;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
+import com.bump.assets.Assets;
+import com.bump.screens.GameScreen.PlayerTurn;
 
 public abstract class Piece
 {
@@ -14,4 +16,29 @@ public abstract class Piece
 		body;
 
 	public abstract boolean contains(float x, float y);
+	public boolean isPlayableBy(PlayerTurn player)
+	{
+		if (player == PlayerTurn.Player1)
+		{
+			if (this.body.getPosition().x * Assets.PIXELS_TO_METERS < 150)
+				return true;
+		}
+		else if (player == PlayerTurn.Player2)
+		{
+			if (this.body.getPosition().x * Assets.PIXELS_TO_METERS > 1130)
+				return true;
+		}
+		return false;
+	}
+	public void setToPenalty(PlayerTurn player)
+	{
+		if (player == PlayerTurn.Player1)
+		{
+			this.body.setTransform(Assets.penaltyPlayer1, (float) Math.toRadians(- 90));
+		}
+		else if (player == PlayerTurn.Player2)
+		{
+			this.body.setTransform(Assets.penaltyPlayer2, (float) Math.toRadians(90));
+		}
+	}
 }

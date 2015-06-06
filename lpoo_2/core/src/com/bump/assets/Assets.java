@@ -1,6 +1,7 @@
 package com.bump.assets;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Vector2;
 
 public class Assets
 {
@@ -23,6 +24,10 @@ public class Assets
 		spriteBall,
 		spriteTriangle,
 		spriteSquare;
+
+	public static Vector2
+		penaltyPlayer1 = new Vector2(75 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS),
+		penaltyPlayer2 = new Vector2((Assets.windowWidth - 75) / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 
 	public static void load()
 	{
