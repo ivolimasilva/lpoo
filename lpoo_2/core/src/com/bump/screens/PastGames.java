@@ -48,7 +48,7 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 
 	private void readScores()
 	{
-		File folder = new File("C://BumpSavedGames/");
+		File folder = new File("BumpSavedGames/");
 		File[] listOfFiles = folder.listFiles();
 		
 		for (int i = 0; i < listOfFiles.length; i++)
