@@ -1,6 +1,12 @@
 package com.bump.screens;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.bump.game.Bump;
 import com.bump.objects.Wall;
@@ -8,6 +14,7 @@ import com.bump.objects.Ball;
 import com.bump.assets.Assets;
 import com.bump.objects.Button;
 import com.bump.objects.Piece;
+import com.bump.objects.SavedGame;
 import com.bump.objects.Square;
 import com.bump.objects.Triangle;
 import com.badlogic.gdx.Gdx;
@@ -46,7 +53,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	Matrix4
 		debugMatrix;
 	public enum
-		PlayerTurn {Player1, Player2}
+		PlayerTurn {PlayerRed, PlayerBlue}
 	PlayerTurn
 		playerTurn;
 	float
@@ -59,6 +66,8 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		nextPiece = false;
 	Button
 		buttonGameOver;
+	PlayerTurn
+		winner;
 	
 	// Player 1 vars
 	ArrayList<Piece>
@@ -131,7 +140,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		createPlayer1Pieces();
 		createPlayer2Pieces();
 
-		playerTurn = PlayerTurn.Player1;
+		playerTurn = PlayerTurn.PlayerRed;
 		pieceToPlay = piecesPlayer1.get(ronda1);
 		pieceToPlay.setToPenalty(playerTurn);
 		
@@ -142,11 +151,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	
 	public void createPlayer1Pieces()
 	{
-		square1 = new Square(PlayerTurn.Player1, world, spritePlayer1Square, -100f, -100f);
+		square1 = new Square(PlayerTurn.PlayerRed, world, spritePlayer1Square, -100f, -100f);
 		piecesPlayer1.add(square1);
-		ball1 = new Ball(PlayerTurn.Player1, world, spritePlayer1Ball, -100f, -100f);
+		ball1 = new Ball(PlayerTurn.PlayerRed, world, spritePlayer1Ball, -100f, -100f);
 		piecesPlayer1.add(ball1);
-		triangle1 = new Triangle(PlayerTurn.Player1, world, spritePlayer1Triangle, -100f, -100f);
+		triangle1 = new Triangle(PlayerTurn.PlayerRed, world, spritePlayer1Triangle, -100f, -100f);
 		piecesPlayer1.add(triangle1);
 
 		piecesGlobal.add(square1);
@@ -156,11 +165,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	
 	public void createPlayer2Pieces()
 	{
-		square2 = new Square(PlayerTurn.Player2, world, spritePlayer2Square, -100f, -100f);
+		square2 = new Square(PlayerTurn.PlayerBlue, world, spritePlayer2Square, -100f, -100f);
 		piecesPlayer2.add(square2);
-		ball2 = new Ball(PlayerTurn.Player2, world, spritePlayer2Ball, -100f, -100f);
+		ball2 = new Ball(PlayerTurn.PlayerBlue, world, spritePlayer2Ball, -100f, -100f);
 		piecesPlayer2.add(ball2);
-		triangle2 = new Triangle(PlayerTurn.Player2, world, spritePlayer2Triangle, -100f, -100f);
+		triangle2 = new Triangle(PlayerTurn.PlayerBlue, world, spritePlayer2Triangle, -100f, -100f);
 		piecesPlayer2.add(triangle2);
 
 		piecesGlobal.add(square2);
@@ -233,10 +242,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			else
 			{
 				//System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
-				if (playerTurn == PlayerTurn.Player1) // && ronda2 < nrRondas2)
+				if (playerTurn == PlayerTurn.PlayerRed) // && ronda2 < nrRondas2)
 				{
 					//System.out.println("Foi a vez do Jogador 1");
-					playerTurn = PlayerTurn.Player2;
+					playerTurn = PlayerTurn.PlayerBlue;
 					if (ronda2 == nrRondas2)
 						nextPiece = true;
 					else
@@ -246,10 +255,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 						nextPiece = false;
 					}
 				}
-				else if (playerTurn == PlayerTurn.Player2) // && ronda1 < nrRondas1)
+				else if (playerTurn == PlayerTurn.PlayerBlue) // && ronda1 < nrRondas1)
 				{
 					//System.out.println("Foi a vez do Jogador 2");
-					playerTurn = PlayerTurn.Player1;
+					playerTurn = PlayerTurn.PlayerRed;
 					if (ronda1 == nrRondas1)
 						nextPiece = true;
 					else
@@ -271,11 +280,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			PlayerTurn returnPlayer;
 			returnPlayer = piece.checkReturn();
 
-			if (returnPlayer == PlayerTurn.Player2)
+			if (returnPlayer == PlayerTurn.PlayerBlue)
 			{
 				//System.out.println("Removida " + piece.getClass().getSimpleName());
 
-				if (piece.player == PlayerTurn.Player1)
+				if (piece.player == PlayerTurn.PlayerRed)
 				{
 					piecesPlayer1.remove(piece);
 					ronda1--;
@@ -324,11 +333,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 				world.destroyBody(piece.body);
 			}
-			else if (returnPlayer == PlayerTurn.Player1)
+			else if (returnPlayer == PlayerTurn.PlayerRed)
 			{
 				//System.out.println("Removida " + piece.getClass().getSimpleName());
 
-				if (piece.player == PlayerTurn.Player2)
+				if (piece.player == PlayerTurn.PlayerBlue)
 				{
 					piecesPlayer2.remove(piece);
 					ronda2--;
@@ -430,9 +439,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		{
 			if (piece.checkPoints())
 			{
-				if (piece.player == PlayerTurn.Player1)
+				if (piece.player == PlayerTurn.PlayerRed)
 					points1++;
-				else if (piece.player == PlayerTurn.Player2)
+				else if (piece.player == PlayerTurn.PlayerBlue)
 					points2++;
 			}
 		}
@@ -475,13 +484,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	{
 		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
 		//System.out.println("Red Quit: (" + buttonRedQuit.bounds.x + "," + buttonRedQuit.bounds.y + "; " + buttonRedQuit.bounds.width + ", " + buttonRedQuit.bounds.height + ").");
-
-		if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-			game.setScreen(new MenuScreen(game));
-		else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-			game.setScreen(new MenuScreen(game));
-		else if (buttonGameOver.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-			game.setScreen(new MenuScreen(game));
 		
 		state = -1;
 		for (Piece piece: piecesGlobal)
@@ -494,12 +496,33 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				startY = screenY;
 			}
 		}
-
 		return true;
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
+		if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+		{
+			winner = PlayerTurn.PlayerBlue;
+			saveScore();
+			game.setScreen(new MenuScreen(game));
+		}
+		else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+		{
+			winner = PlayerTurn.PlayerRed;
+			saveScore();
+			game.setScreen(new MenuScreen(game));
+		}
+		else if (buttonGameOver.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+		{
+			if (points1 > points2)
+				winner = PlayerTurn.PlayerRed;
+			else
+				winner = PlayerTurn.PlayerBlue;
+			saveScore();
+			game.setScreen(new MenuScreen(game));
+		}
+
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
@@ -507,9 +530,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
 			//System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 			nextPiece = true;
-			if (playerTurn == PlayerTurn.Player1)
+			if (playerTurn == PlayerTurn.PlayerRed)
 				ronda1++;
-			else if (playerTurn == PlayerTurn.Player2)
+			else if (playerTurn == PlayerTurn.PlayerBlue)
 				ronda2++;
 		}
 		return true;
@@ -531,5 +554,25 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	public boolean scrolled(int amount)
 	{
 		return false;
+	}
+	public void saveScore()
+	{
+		SavedGame savedGame = new SavedGame(winner, points1, points2);
+		
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss");
+		Date date = new Date();
+		System.out.println("Jogo gravado como: " + dateFormat.format(date) + ".dat");
+
+		ObjectOutputStream file = null;
+		try
+		{
+			file = new ObjectOutputStream (new FileOutputStream("C://BumpSavedGames/" + dateFormat.format(date) + ".dat"));
+			file.writeObject(savedGame);
+			file.close();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 	}
 }

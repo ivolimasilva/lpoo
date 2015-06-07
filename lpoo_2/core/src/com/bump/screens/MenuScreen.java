@@ -37,7 +37,7 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		Gdx.input.setInputProcessor(this);
 	}
 	
-	public boolean touchDown(int screenX, int screenY, int pointer, int button)
+	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
 		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
 		//System.out.println("Red Quit: (" + buttonRedQuit.bounds.x + "," + buttonRedQuit.bounds.y + "; " + buttonRedQuit.bounds.width + ", " + buttonRedQuit.bounds.height + ").");
@@ -45,7 +45,7 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		if (playButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			game.setScreen(new GameScreen(game));
 		else if (pastGamesButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-			game.setScreen(new Highscores(game));
+			game.setScreen(new PastGames(game));
 		else if (instructionsButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			System.out.println("Clicou em Options.");
 		else if (exitButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
@@ -87,7 +87,7 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		return false;
 	}
 
-	public boolean touchUp(int screenX, int screenY, int pointer, int button)
+	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
