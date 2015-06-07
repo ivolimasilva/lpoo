@@ -88,7 +88,7 @@ public class Assets
 
 	private static void createSavedGamesFolder()
 	{
-		new File("C:\\BumpSavedGames").mkdir();
+		new File("BumpSavedGames").mkdir();
 	}
 
 	public static float distance(float x1, float y1, float x2, float y2)

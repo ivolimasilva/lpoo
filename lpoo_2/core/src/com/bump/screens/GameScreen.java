@@ -566,7 +566,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		ObjectOutputStream file = null;
 		try
 		{
-			file = new ObjectOutputStream (new FileOutputStream("C://BumpSavedGames/" + dateFormat.format(date) + ".dat"));
+			file = new ObjectOutputStream (new FileOutputStream("BumpSavedGames/" + dateFormat.format(date) + ".dat"));
 			file.writeObject(savedGame);
 			file.close();
 		}
