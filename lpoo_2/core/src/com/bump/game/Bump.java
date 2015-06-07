@@ -7,7 +7,8 @@ import com.bump.screens.MenuScreen;
 
 public class Bump extends Game
 {
-	public SpriteBatch batcher;
+	public SpriteBatch
+		batcher;
 
 	public void create()
 	{

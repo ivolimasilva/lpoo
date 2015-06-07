@@ -13,6 +13,7 @@ public class DesktopLauncher
 		config.title = "Bump";
 		config.height = (int) Assets.windowHeight;
 		config.width = (int) Assets.windowWidth;
+		config.fullscreen = true;
 		new LwjglApplication(new Bump(), config);
 	}
 }

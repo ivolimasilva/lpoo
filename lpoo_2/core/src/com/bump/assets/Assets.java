@@ -15,6 +15,7 @@ public class Assets
 	public static Texture
 		backgroundMenu,
 		backgroundGame,
+		iconWinner,
 
 		buttonBump,
 		buttonPlay,
@@ -53,6 +54,8 @@ public class Assets
 
 		backgroundMenu = new Texture("menu/background.jpg");
 		backgroundGame = new Texture("game/background.png");
+		
+		iconWinner = new Texture("pastgames/crown.png");
 
 		buttonBump = new Texture("menu/MainTile.jpg");
 		buttonPlay = new Texture("menu/PlayTile.jpg");

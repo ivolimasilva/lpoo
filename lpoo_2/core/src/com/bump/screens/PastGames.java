@@ -55,7 +55,7 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		{
 			if (listOfFiles[i].isFile())
 			{
-				System.out.println("File " + listOfFiles[i].getAbsolutePath());
+				//System.out.println("File " + listOfFiles[i].getAbsolutePath());
 				addFileToScope(listOfFiles[i].getAbsolutePath());
 			}
 		}
@@ -110,16 +110,16 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 			//System.out.println("Red: " + savedGame.pointsRed + " - " + savedGame.pointsBlue + " :Blue");
 			scoreRed = new Texture("pastgames/red/" + savedGame.pointsRed + ".png");
 			scoreBlue = new Texture("pastgames/blue/" + savedGame.pointsBlue + ".png");
-			if (savedGame.winner == PlayerTurn.PlayerRed)
-			{
-				
-			}
 			game.batcher.enableBlending();
 			game.batcher.begin();
 			game.batcher.draw(Assets.labelRed, (Assets.windowWidth - 575f) / 2 + 0f, - line * 100 + (Assets.windowHeight - 250) + increment);
 			game.batcher.draw(scoreRed, (Assets.windowWidth - 575f) / 2 + 204f, - line * 100 + (Assets.windowHeight - 250) + increment);
 			game.batcher.draw(scoreBlue, (Assets.windowWidth - 575f) / 2 + 270f, - line * 100 + (Assets.windowHeight - 250) + increment);
 			game.batcher.draw(Assets.labelBlue, (Assets.windowWidth - 575f) / 2 + 346f, - line * 100 + (Assets.windowHeight - 250) + increment);
+			if (savedGame.winner == PlayerTurn.PlayerRed)
+				game.batcher.draw(Assets.iconWinner, (Assets.windowWidth - 575f) / 2 - 100f, - line * 100 + (Assets.windowHeight - 250) + increment);
+			else
+				game.batcher.draw(Assets.iconWinner, (Assets.windowWidth - 575f) / 2 + 596f, - line * 100 + (Assets.windowHeight - 250) + increment);
 			game.batcher.end();
 			line++;
 		}
@@ -128,17 +128,15 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		touchDraggedDetected = false;
-		System.out.println("> " + screenX + ", " + screenY);
+		//System.out.println("> " + screenX + ", " + screenY);
 		return true;
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
-		if (touchDraggedDetected)
-			System.out.println("touchDown + touchDragged + touchUp!");
-		else
+		if (!touchDraggedDetected)
 		{
-			System.out.println("touchDown + touchUp!");
+			//System.out.println("touchDown + touchUp!");
 			game.setScreen(new MenuScreen(game));
 		}
 		return true;
@@ -150,12 +148,12 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		if (screenY > lastScreenY)
 		{
 			increment -= 10;
-			System.out.println("Roda para baixo");
+			//System.out.println("Roda para baixo");
 		}
 		else
 		{
 			increment += 10;
-			System.out.println("Roda para cima");
+			//System.out.println("Roda para cima");
 		}
 		lastScreenY = screenY;
 		return true;
@@ -166,12 +164,12 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		if (amount > 0)
 		{
 			increment += 25;
-			System.out.println("Roda para baixo");
+			//System.out.println("Roda para baixo");
 		}
 		else
 		{
 			increment -= 25;
-			System.out.println("Roda para cima");
+			//System.out.println("Roda para cima");
 		}
 		return true;
 	}

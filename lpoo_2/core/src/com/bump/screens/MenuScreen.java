@@ -47,7 +47,7 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		else if (pastGamesButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			game.setScreen(new PastGames(game));
 		else if (instructionsButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-			System.out.println("Clicou em Options.");
+			game.setScreen(new Instructions(game));
 		else if (exitButton.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 			Gdx.app.exit();
 		
