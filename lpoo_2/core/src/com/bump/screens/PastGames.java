@@ -120,7 +120,7 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.header, 0f, Assets.windowHeight - Assets.header.getHeight());
-		game.batcher.draw(Assets.footerInstructions, 0f, 0f);
+		game.batcher.draw(Assets.footerPastGames, 0f, 0f);
 		game.batcher.end();
 	}
 
