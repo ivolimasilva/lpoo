@@ -6,11 +6,23 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
+/**
+ * Wall.java
+ * @author Ivo and Mariana
+ */
 public class Wall
 {
 	public Body
 		body;
 
+	/**
+	 * Creates a wall (static body) for a given world on a given position with a given size
+	 * @param world World where the Wall is on
+	 * @param pos_x Position on the X axis where the Wall is created
+	 * @param pos_y Position on the Y axis where the Wall is created
+	 * @param width Width of the Wall
+	 * @param height Height of the Wall
+	 */
 	public void createWall(World world, float pos_x, float pos_y, float width, float height)
 	{
 		BodyDef bodyDef = new BodyDef();

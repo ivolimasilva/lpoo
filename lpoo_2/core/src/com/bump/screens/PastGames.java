@@ -18,6 +18,11 @@ import com.bump.game.Bump;
 import com.bump.objects.SavedGame;
 import com.bump.screens.GameScreen.PlayerTurn;
 
+/**
+ * PastGames.java
+ * @author Ivo and Mariana
+ * @see com.badlogic.gdx.ScreenAdapter
+ */
 public class PastGames extends ScreenAdapter implements InputProcessor
 {
 	private Bump
@@ -35,6 +40,10 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 	private float
 		increment = 0;
 
+	/**
+	 * Creates a PastGames Panel for a given Game
+	 * @param game Game who's parent of this PastGames Panel
+	 */
 	public PastGames(Bump game)
 	{
 		this.game = game;
@@ -46,6 +55,10 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		Gdx.input.setInputProcessor(this);
 	}
 
+	/**
+	 * Reads a SavedGame to a file
+	 * @see SavedGame.java
+	 */
 	private void readScores()
 	{
 		File folder = new File("BumpSavedGames/");
@@ -63,6 +76,10 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		Collections.reverse(savedGames);
 	}
 
+	/**
+	 * Adds a SavedGame from a file to the Array of SavedGames
+	 * @param fileName filepath of the file which contains a SavedGame
+	 */
 	private void addFileToScope(String fileName)
 	{
 		try
@@ -82,6 +99,10 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		}
 	}
 
+	/**
+	 * Function called to paint the screen.
+	 * @see com.badlogic.gdx.Game#render()
+	 */
 	public void render(float delta)
 	{
 		guiCam.update();
@@ -103,6 +124,9 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		game.batcher.end();
 	}
 
+	/**
+	 * Function called to paint the scores.
+	 */
 	private void printScores()
 	{
 		Texture
@@ -129,6 +153,9 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		}
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDown(int, int, int, int)
+	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		touchDraggedDetected = false;
@@ -136,6 +163,9 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchUp(int, int, int, int)
+	 */
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
 		if (!touchDraggedDetected)
@@ -146,6 +176,9 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDragged(int, int, int)
+	 */
 	public boolean touchDragged(int screenX, int screenY, int pointer)
 	{
 		touchDraggedDetected = true;
@@ -163,6 +196,9 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#scrolled(int)
+	 */
 	public boolean scrolled(int amount)
 	{
 		if (amount > 0)
@@ -178,21 +214,33 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#mouseMoved(int, int)
+	 */
 	public boolean mouseMoved(int screenX, int screenY)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyDown(int)
+	 */
 	public boolean keyDown(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyUp(int)
+	 */
 	public boolean keyUp(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyTyped(char)
+	 */
 	public boolean keyTyped(char character)
 	{
 		return false;

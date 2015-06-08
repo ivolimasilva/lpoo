@@ -10,6 +10,11 @@ import com.badlogic.gdx.math.Rectangle;
 import com.bump.assets.Assets;
 import com.bump.game.Bump;
 
+/**
+ * Instructions.java
+ * @author Ivo and Mariana
+ * @see com.badlogic.gdx.ScreenAdapter
+ */
 public class Instructions extends ScreenAdapter implements InputProcessor
 {
 	private Bump
@@ -23,6 +28,10 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 	private boolean
 		animationActive;
 
+	/**
+	 * Creates a Instructions Panel for a given Game
+	 * @param _game Game who's parent of this Instructions Panel
+	 */
 	public Instructions(Bump _game)
 	{
 		this.game = _game;
@@ -32,6 +41,10 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 		Gdx.input.setInputProcessor(this);
 	}
 
+	/**
+	 * Function called to paint the screen.
+	 * @see com.badlogic.gdx.Game#render()
+	 */
 	public void render(float delta)
 	{
 		animation = new Texture("instructions/frames/frame_(" + currentFrame + ").bmp");
@@ -55,10 +68,13 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 		game.batcher.end();
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchUp(int, int, int, int)
+	 */
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
-		Rectangle bounds = new Rectangle(160f, 300f, animation.getWidth(), animation.getHeight());
-		if (bounds.contains(screenX, screenY))
+		Rectangle bounds = new Rectangle(160f - Assets.windowWidth / 2, 300f - Assets.windowHeight / 2, animation.getWidth(), animation.getHeight());
+		if (bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
 		{
 			currentFrame = 0;
 			animationActive = true;
@@ -69,36 +85,57 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDown(int, int, int, int)
+	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDragged(int, int, int)
+	 */
 	public boolean touchDragged(int screenX, int screenY, int pointer)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#scrolled(int)
+	 */
 	public boolean scrolled(int amount)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#mouseMoved(int, int)
+	 */
 	public boolean mouseMoved(int screenX, int screenY)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyDown(int)
+	 */
 	public boolean keyDown(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyUp(int)
+	 */
 	public boolean keyUp(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyTyped(char)
+	 */
 	public boolean keyTyped(char character)
 	{
 		return false;

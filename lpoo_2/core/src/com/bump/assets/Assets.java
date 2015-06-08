@@ -5,6 +5,11 @@ import java.io.File;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Assets.java
+ * @author Ivo and Mariana
+ */
+
 public class Assets
 {
 	public static float
@@ -50,6 +55,9 @@ public class Assets
 		penaltyPlayer1 = new Vector2(75 / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS),
 		penaltyPlayer2 = new Vector2((Assets.windowWidth - 75) / Assets.PIXELS_TO_METERS, Assets.windowHeight / 2 / Assets.PIXELS_TO_METERS);
 
+	/**
+	 * Loads the textures that will be used in severeal classes
+	 */
 	public static void load()
 	{
 		createSavedGamesFolder();

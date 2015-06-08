@@ -29,6 +29,11 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
+/**
+ * GameScreen.java
+ * @author Ivo and Mariana
+ * @see com.badlogic.gdx.ScreenAdapter
+ */
 public class GameScreen extends ScreenAdapter implements InputProcessor
 {
 	// General vars
@@ -113,6 +118,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	Texture
 		score2;
 
+	/**
+	 * Creates a GameScreen for a given Game
+	 * @param game Game who's parent of this GameScreen
+	 */
 	public GameScreen(Bump game)
 	{
 		this.game = game;
@@ -148,7 +157,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		debugRenderer = new Box2DDebugRenderer();
 	}
-	
+
+	/**
+	 * Creates the pieces of Player Red
+	 */
 	public void createPlayer1Pieces()
 	{
 		square1 = new Square(PlayerTurn.PlayerRed, world, spritePlayer1Square, -100f, -100f);
@@ -162,7 +174,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		piecesGlobal.add(ball1);
 		piecesGlobal.add(triangle1);
 	}
-	
+
+	/**
+	 * Creates the pieces of Player Blue
+	 */
 	public void createPlayer2Pieces()
 	{
 		square2 = new Square(PlayerTurn.PlayerBlue, world, spritePlayer2Square, -100f, -100f);
@@ -176,7 +191,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		piecesGlobal.add(ball2);
 		piecesGlobal.add(triangle2);
 	}
-	
+
+	/**
+	 * Creates the walls for the world of this GameScreen
+	 */
 	public void createWalls()
 	{
 		wallTop = new Wall();
@@ -192,6 +210,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		wallRight.createWall(world, Assets.windowWidth / Assets.PIXELS_TO_METERS, 0, 0, Assets.windowHeight / Assets.PIXELS_TO_METERS);
 	}
 
+	/**
+	 * Function called to paint the screen.
+	 * @see com.badlogic.gdx.Game#render()
+	 */
 	public void render(float delta)
 	{
 		guiCam.update();
@@ -272,7 +294,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		}
 		//debugRenderer.render(world, debugMatrix);
 	}
-	
+
+	/**
+	 * Checks which Pieces must be returned/given to player (white areas)
+	 */
 	private void checkReturns()
 	{
 		for (Piece piece: piecesGlobal)
@@ -408,6 +433,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		//System.out.println("Jogador 2 já jogou " + ronda2 + "/" + nrRondas2 + ".");
 	}
 
+	/**
+	 * Shows the end game label
+	 */
 	private void gameOver()
 	{
 		game.batcher.enableBlending();
@@ -431,6 +459,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		buttonGameOver.draw(game.batcher);
 	}
 
+	/**
+	 * Updates the number of points of each player and the textures of the counters
+	 */
 	public void checkPoints()
 	{
 		points1 = 0;
@@ -451,7 +482,11 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 		//System.out.println("Player 1 (" + points1 + ") - (" + points2 + ") Player 2.");
 	}
-	
+
+	/**
+	 * Checks if all pieces in the board are stopped
+	 * @return True if all pieces are stopped or False if pieces are moving
+	 */
 	public boolean arePiecesStopped()
 	{
 		Vector2
@@ -465,21 +500,33 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyDown(int)
+	 */
 	public boolean keyDown(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyUp(int)
+	 */
 	public boolean keyUp(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyTyped(char)
+	 */
 	public boolean keyTyped(char character)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDown(int, int, int, int)
+	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
@@ -499,6 +546,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchUp(int, int, int, int)
+	 */
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
 		if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
@@ -538,6 +588,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDragged(int, int, int)
+	 */
 	public boolean touchDragged(int screenX, int screenY, int pointer)
 	{
 		//System.out.println ("Dragged: " + screenX + ", " + screenY + ", " + pointer);
@@ -546,15 +599,26 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#mouseMoved(int, int)
+	 */
 	public boolean mouseMoved(int screenX, int screenY)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#scrolled(int)
+	 */
 	public boolean scrolled(int amount)
 	{
 		return false;
 	}
+
+	/**
+	 * Writes a SavedGame to a file
+	 * @see com.bump.objects.SavedGame
+	 */
 	public void saveScore()
 	{
 		SavedGame savedGame = new SavedGame(winner, points1, points2);

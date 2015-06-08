@@ -9,6 +9,11 @@ import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 
+/**
+ * MenuScreen.java
+ * @author Ivo and Mariana
+ * @see com.badlogic.gdx.ScreenAdapter
+ */
 public class MenuScreen extends ScreenAdapter implements InputProcessor
 {
 	private Bump
@@ -22,6 +27,10 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		instructionsButton,
 		exitButton;
 
+	/**
+	 * Creates a MenuScreen Panel for a given Game
+	 * @param game Game who's parent of this MenuScreen Panel
+	 */
 	public MenuScreen(Bump game)
 	{
 		this.game = game;
@@ -36,7 +45,10 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		
 		Gdx.input.setInputProcessor(this);
 	}
-	
+
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchUp(int, int, int, int)
+	 */
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
 		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
@@ -54,6 +66,10 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		return true;
 	}
 
+	/**
+	 * Function called to paint the screen.
+	 * @see com.badlogic.gdx.Game#render()
+	 */
 	public void render(float delta)
 	{
 		Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -72,36 +88,57 @@ public class MenuScreen extends ScreenAdapter implements InputProcessor
 		exitButton.draw(game.batcher);
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyDown(int)
+	 */
 	public boolean keyDown(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyUp(int)
+	 */
 	public boolean keyUp(int keycode)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#keyTyped(char)
+	 */
 	public boolean keyTyped(char character)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDown(int, int, int, int)
+	 */
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#touchDragged(int, int, int)
+	 */
 	public boolean touchDragged(int screenX, int screenY, int pointer)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#mouseMoved(int, int)
+	 */
 	public boolean mouseMoved(int screenX, int screenY)
 	{
 		return false;
 	}
 
+	/**
+	 * @see com.badlogic.gdx.InputProcessor#scrolled(int)
+	 */
 	public boolean scrolled(int amount)
 	{
 		return false;
