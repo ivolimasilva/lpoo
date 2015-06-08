@@ -5,6 +5,8 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.ScreenAdapter;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.math.Rectangle;
 import com.bump.assets.Assets;
 import com.bump.game.Bump;
 
@@ -14,12 +16,12 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 		game;
 	private OrthographicCamera
 		guiCam;
-	private boolean
-		touchDraggedDetected = false;
 	private int
-		lastScreenY = 0;
-	private float
-		increment = 0;
+		currentFrame = 237;
+	Texture
+		animation;
+	private boolean
+		animationActive;
 
 	public Instructions(Bump _game)
 	{
@@ -32,6 +34,11 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 
 	public void render(float delta)
 	{
+		animation = new Texture("instructions/frames/frame_(" + currentFrame + ").bmp");
+		if (currentFrame == 237)
+			animationActive = false;
+		if (animationActive)
+			currentFrame++;
 		guiCam.update();
 
 		Gdx.gl.glClearColor(0.9f, 0.9f, 0.9f, 1);
@@ -39,58 +46,42 @@ public class Instructions extends ScreenAdapter implements InputProcessor
 
 		game.batcher.enableBlending();
 		game.batcher.begin();
-		game.batcher.draw(Assets.backgroundMenu, 0f, 0f);
-		game.batcher.draw(Assets.tileBump, (Assets.windowWidth - Assets.tileBump.getWidth()) / 2, Assets.windowHeight - Assets.tileBump.getHeight());
+		game.batcher.draw(Assets.backgroundInstructions, 0f, 0f);
+		
+		game.batcher.draw(animation, 160f, 300f);
+		
+		game.batcher.draw(Assets.header, 0f, Assets.windowHeight - Assets.header.getHeight());
+		game.batcher.draw(Assets.footerInstructions, 0f, 0f);
 		game.batcher.end();
-	}
-
-	public boolean touchDown(int screenX, int screenY, int pointer, int button)
-	{
-		touchDraggedDetected = false;
-		//System.out.println("> " + screenX + ", " + screenY);
-		return true;
 	}
 
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
-		if (!touchDraggedDetected)
+		Rectangle bounds = new Rectangle(160f, 300f, animation.getWidth(), animation.getHeight());
+		if (bounds.contains(screenX, screenY))
 		{
-			//System.out.println("touchDown + touchUp!");
-			game.setScreen(new MenuScreen(game));
+			currentFrame = 0;
+			animationActive = true;
 		}
+		else
+			game.setScreen(new MenuScreen(game));
+		
 		return true;
+	}
+
+	public boolean touchDown(int screenX, int screenY, int pointer, int button)
+	{
+		return false;
 	}
 
 	public boolean touchDragged(int screenX, int screenY, int pointer)
 	{
-		touchDraggedDetected = true;
-		if (screenY > lastScreenY)
-		{
-			increment -= 10;
-			//System.out.println("Roda para baixo");
-		}
-		else
-		{
-			increment += 10;
-			//System.out.println("Roda para cima");
-		}
-		lastScreenY = screenY;
-		return true;
+		return false;
 	}
 
 	public boolean scrolled(int amount)
 	{
-		if (amount > 0)
-		{
-			increment += 25;
-			//System.out.println("Roda para baixo");
-		}
-		else
-		{
-			increment -= 25;
-			//System.out.println("Roda para cima");
-		}
-		return true;
+		return false;
 	}
 
 	public boolean mouseMoved(int screenX, int screenY)

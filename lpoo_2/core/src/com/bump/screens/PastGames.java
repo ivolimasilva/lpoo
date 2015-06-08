@@ -92,10 +92,15 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 		game.batcher.enableBlending();
 		game.batcher.begin();
 		game.batcher.draw(Assets.backgroundMenu, 0f, 0f);
-		game.batcher.draw(Assets.tileBump, (Assets.windowWidth - Assets.tileBump.getWidth()) / 2, Assets.windowHeight - Assets.tileBump.getHeight());
 		game.batcher.end();
 
 		printScores();
+		
+		game.batcher.enableBlending();
+		game.batcher.begin();
+		game.batcher.draw(Assets.header, 0f, Assets.windowHeight - Assets.header.getHeight());
+		game.batcher.draw(Assets.footerInstructions, 0f, 0f);
+		game.batcher.end();
 	}
 
 	private void printScores()
@@ -112,14 +117,13 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 			scoreBlue = new Texture("pastgames/blue/" + savedGame.pointsBlue + ".png");
 			game.batcher.enableBlending();
 			game.batcher.begin();
-			game.batcher.draw(Assets.labelRed, (Assets.windowWidth - 575f) / 2 + 0f, - line * 100 + (Assets.windowHeight - 250) + increment);
-			game.batcher.draw(scoreRed, (Assets.windowWidth - 575f) / 2 + 204f, - line * 100 + (Assets.windowHeight - 250) + increment);
-			game.batcher.draw(scoreBlue, (Assets.windowWidth - 575f) / 2 + 270f, - line * 100 + (Assets.windowHeight - 250) + increment);
-			game.batcher.draw(Assets.labelBlue, (Assets.windowWidth - 575f) / 2 + 346f, - line * 100 + (Assets.windowHeight - 250) + increment);
+			game.batcher.draw(Assets.labelPlayers, (Assets.windowWidth - Assets.labelPlayers.getWidth()) / 2, - line * 130f + (Assets.windowHeight - 260f) + increment);
+			game.batcher.draw(scoreRed, 565f, - line * 130f + (Assets.windowHeight - 240f) + increment);
+			game.batcher.draw(scoreBlue, 660f, - line * 130f + (Assets.windowHeight - 240f) + increment);
 			if (savedGame.winner == PlayerTurn.PlayerRed)
-				game.batcher.draw(Assets.iconWinner, (Assets.windowWidth - 575f) / 2 - 100f, - line * 100 + (Assets.windowHeight - 250) + increment);
+				game.batcher.draw(Assets.iconWinner, 342f, - line * 130f + (Assets.windowHeight - 233f) + increment);
 			else
-				game.batcher.draw(Assets.iconWinner, (Assets.windowWidth - 575f) / 2 + 596f, - line * 100 + (Assets.windowHeight - 250) + increment);
+				game.batcher.draw(Assets.iconWinner, 907f, - line * 130f + (Assets.windowHeight - 233f) + increment);
 			game.batcher.end();
 			line++;
 		}

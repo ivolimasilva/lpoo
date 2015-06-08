@@ -15,7 +15,7 @@ public class Assets
 	public static Texture
 		backgroundMenu,
 		backgroundGame,
-		iconWinner,
+		backgroundInstructions,
 
 		buttonBump,
 		buttonPlay,
@@ -23,9 +23,11 @@ public class Assets
 		buttonInstructions,
 		buttonExit,
 		
-		tileBump,
-		labelRed,
-		labelBlue,
+		labelPlayers,
+		iconWinner,
+		header,
+		footerPastGames,
+		footerInstructions,
 
 		spriteRedBall,
 		spriteRedTriangle,
@@ -54,6 +56,10 @@ public class Assets
 
 		backgroundMenu = new Texture("menu/background.jpg");
 		backgroundGame = new Texture("game/background.png");
+		backgroundInstructions = new Texture("instructions/background.png");
+		header = new Texture("pastgames/Header.png");
+		footerPastGames = new Texture("pastgames/Footer.png");
+		footerInstructions = new Texture("instructions/Footer.png");
 		
 		iconWinner = new Texture("pastgames/crown.png");
 
@@ -63,9 +69,7 @@ public class Assets
 		buttonInstructions = new Texture("menu/InstructionsTile.jpg");
 		buttonExit = new Texture("menu/ExitTile.jpg");
 		
-		tileBump = new Texture("pastgames/MainTile.png");
-		labelRed = new Texture("pastgames/red.png");
-		labelBlue = new Texture("pastgames/blue.png");
+		labelPlayers = new Texture("pastgames/players.png");
 
 		spriteRedBall = new Texture("game/red/ball.png");
 		spriteRedTriangle = new Texture("game/red/triangle.png");
