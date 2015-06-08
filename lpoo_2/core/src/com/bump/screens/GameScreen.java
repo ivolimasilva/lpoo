@@ -552,30 +552,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	 */
 	public boolean touchUp(int screenX, int screenY, int pointer, int button)
 	{
-		if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-		{
-			winner = PlayerTurn.PlayerBlue;
-			saveScore();
-			game.setScreen(new MenuScreen(game));
-		}
-		else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-		{
-			winner = PlayerTurn.PlayerRed;
-			saveScore();
-			game.setScreen(new MenuScreen(game));
-		}
-		else if (buttonGameOver.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
-		{
-			if (points1 > points2)
-				winner = PlayerTurn.PlayerRed;
-			else if (points1 < points2)
-				winner = PlayerTurn.PlayerBlue;
-			else
-				winner = PlayerTurn.NULL;
-			saveScore();
-			game.setScreen(new MenuScreen(game));
-		}
-
 		//System.out.println ("touchUp: " + screenX + ", " + screenY + ", " + pointer + "," + button);
 		if (state == 1)
 		{
@@ -583,6 +559,32 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
 			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 			nextPiece = true;
+		}
+		else
+		{
+			if (buttonRedQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			{
+				winner = PlayerTurn.PlayerBlue;
+				saveScore();
+				game.setScreen(new MenuScreen(game));
+			}
+			else if (buttonBlueQuit.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			{
+				winner = PlayerTurn.PlayerRed;
+				saveScore();
+				game.setScreen(new MenuScreen(game));
+			}
+			else if (buttonGameOver.bounds.contains((screenX - Assets.windowWidth / 2), (Assets.windowHeight / 2 - screenY)))
+			{
+				if (points1 > points2)
+					winner = PlayerTurn.PlayerRed;
+				else if (points1 < points2)
+					winner = PlayerTurn.PlayerBlue;
+				else
+					winner = PlayerTurn.NULL;
+				saveScore();
+				game.setScreen(new MenuScreen(game));
+			}
 		}
 		return true;
 	}
