@@ -239,8 +239,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			piece.sprite.setRotation((float) Math.toDegrees(piece.body.getAngle()));
 		}
 
-		//System.out.println("Speed: (" + body.getLinearVelocity().x + ", " + body.getLinearVelocity().y + ", " + body.getAngularVelocity() + ")");
-
 		game.batcher.setProjectionMatrix(guiCam.combined);
 
 		debugMatrix = game.batcher.getProjectionMatrix().cpy().scale(Assets.PIXELS_TO_METERS, Assets.PIXELS_TO_METERS, 0);
@@ -263,35 +261,37 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				gameOver();
 			else
 			{
-				//System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
-				if (playerTurn == PlayerTurn.PlayerRed) // && ronda2 < nrRondas2)
+				if (playerTurn == PlayerTurn.PlayerRed)
 				{
-					ronda1++;
 					//System.out.println("Foi a vez do Jogador 1");
+					if (ronda1 < nrRondas1)
+						ronda1++;
 					playerTurn = PlayerTurn.PlayerBlue;
 					if (ronda2 == nrRondas2)
 						nextPiece = true;
-					else
+					else if (ronda2 < nrRondas2)
 					{
 						pieceToPlay = piecesPlayer2.get(ronda2);
 						pieceToPlay.setToPenalty(playerTurn);
 						nextPiece = false;
 					}
 				}
-				else if (playerTurn == PlayerTurn.PlayerBlue) // && ronda1 < nrRondas1)
+				else if (playerTurn == PlayerTurn.PlayerBlue)
 				{
-					ronda2++;
 					//System.out.println("Foi a vez do Jogador 2");
+					if (ronda2 < nrRondas2)
+						ronda2++;
 					playerTurn = PlayerTurn.PlayerRed;
 					if (ronda1 == nrRondas1)
 						nextPiece = true;
-					else
+					else if (ronda1 < nrRondas1)
 					{
 						pieceToPlay = piecesPlayer1.get(ronda1);
 						pieceToPlay.setToPenalty(playerTurn);
 						nextPiece = false;
 					}
 				}
+				System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
 			}
 		}
 		//debugRenderer.render(world, debugMatrix);
@@ -309,7 +309,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 
 			if (returnPlayer == PlayerTurn.PlayerBlue)
 			{
-				//System.out.println("Removida " + piece.getClass().getSimpleName());
+				System.out.println("Removida " + piece.getClass().getSimpleName());
 
 				if (piece.player == PlayerTurn.PlayerRed)
 				{
@@ -317,7 +317,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					ronda1--;
 					nrRondas1--;
 				}
-				else
+				else if (piece.player == PlayerTurn.PlayerBlue)
 				{
 					piecesPlayer2.remove(piece);
 					ronda2--;
@@ -333,7 +333,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteBlueSquare);
 					square = new Square(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer2.add(square);
-					nrRondas2++;
 				}
 				else if (piece.getClass().getSimpleName().equals("Ball"))
 				{
@@ -344,7 +343,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteBlueBall);
 					ball = new Ball(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer2.add(ball);
-					nrRondas2++;
 				}
 				else if (piece.getClass().getSimpleName().equals("Triangle"))
 				{
@@ -355,14 +353,15 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteBlueTriangle);
 					triangle = new Triangle(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer2.add(triangle);
-					nrRondas2++;
 				}
+				
+				nrRondas2++;
 
 				world.destroyBody(piece.body);
 			}
 			else if (returnPlayer == PlayerTurn.PlayerRed)
 			{
-				//System.out.println("Removida " + piece.getClass().getSimpleName());
+				System.out.println("Removida " + piece.getClass().getSimpleName());
 
 				if (piece.player == PlayerTurn.PlayerBlue)
 				{
@@ -370,7 +369,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					ronda2--;
 					nrRondas2--;
 				}
-				else
+				else if (piece.player == PlayerTurn.PlayerRed)
 				{
 					piecesPlayer1.remove(piece);
 					ronda1--;
@@ -386,7 +385,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteRedSquare);
 					square = new Square(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer1.add(square);
-					nrRondas1++;
 				}
 				else if (piece.getClass().getSimpleName().equals("Ball"))
 				{
@@ -397,7 +395,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteRedBall);
 					ball = new Ball(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer1.add(ball);
-					nrRondas1++;
 				}
 				else if (piece.getClass().getSimpleName().equals("Triangle"))
 				{
@@ -408,8 +405,9 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 					sprite = new Sprite(Assets.spriteRedTriangle);
 					triangle = new Triangle(returnPlayer, world, sprite, - 100f, - 100f);
 					piecesPlayer1.add(triangle);
-					nrRondas1++;
 				}
+				
+				nrRondas1++;
 
 				world.destroyBody(piece.body);
 			}
@@ -535,8 +533,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	public boolean touchDown(int screenX, int screenY, int pointer, int button)
 	{
 		//System.out.println("touchDown: " + (screenX - Assets.windowWidth / 2) + ", " + (Assets.windowHeight / 2 - screenY) + ", " + pointer + "," + button);
-		//System.out.println("Red Quit: (" + buttonRedQuit.bounds.x + "," + buttonRedQuit.bounds.y + "; " + buttonRedQuit.bounds.width + ", " + buttonRedQuit.bounds.height + ").");
-		
 		state = -1;
 		for (Piece piece: piecesGlobal)
 		{
@@ -585,7 +581,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		{
 			selectedPiece.body.applyAngularImpulse(0.1f, true);
 			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
-			//System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
+			System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 			nextPiece = true;
 		}
 		return true;
