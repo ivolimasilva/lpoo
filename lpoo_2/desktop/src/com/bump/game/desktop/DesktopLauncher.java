@@ -1,5 +1,6 @@
 package com.bump.game.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.bump.assets.Assets;
@@ -14,6 +15,7 @@ public class DesktopLauncher
 		config.height = (int) Assets.windowHeight;
 		config.width = (int) Assets.windowWidth;
 		config.fullscreen = true;
+		config.addIcon("game/icon.png", Files.FileType.Internal);
 		new LwjglApplication(new Bump(), config);
 	}
 }
