@@ -146,7 +146,7 @@ public class PastGames extends ScreenAdapter implements InputProcessor
 			game.batcher.draw(scoreBlue, 660f, - line * 130f + (Assets.windowHeight - 240f) + increment);
 			if (savedGame.winner == PlayerTurn.PlayerRed)
 				game.batcher.draw(Assets.iconWinner, 342f, - line * 130f + (Assets.windowHeight - 233f) + increment);
-			else
+			else if (savedGame.winner == PlayerTurn.PlayerBlue)
 				game.batcher.draw(Assets.iconWinner, 907f, - line * 130f + (Assets.windowHeight - 233f) + increment);
 			game.batcher.end();
 			line++;

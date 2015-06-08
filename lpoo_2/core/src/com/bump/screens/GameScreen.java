@@ -58,7 +58,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 	Matrix4
 		debugMatrix;
 	public enum
-		PlayerTurn {PlayerRed, PlayerBlue}
+		PlayerTurn {PlayerRed, PlayerBlue, NULL}
 	PlayerTurn
 		playerTurn;
 	float
@@ -266,6 +266,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				//System.out.println("Rondas:\nJogador 1: " + ronda1 + "/" + nrRondas1 + "\nJogador 2: " + ronda2 + "/" + nrRondas2);
 				if (playerTurn == PlayerTurn.PlayerRed) // && ronda2 < nrRondas2)
 				{
+					ronda1++;
 					//System.out.println("Foi a vez do Jogador 1");
 					playerTurn = PlayerTurn.PlayerBlue;
 					if (ronda2 == nrRondas2)
@@ -279,6 +280,7 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 				}
 				else if (playerTurn == PlayerTurn.PlayerBlue) // && ronda1 < nrRondas1)
 				{
+					ronda2++;
 					//System.out.println("Foi a vez do Jogador 2");
 					playerTurn = PlayerTurn.PlayerRed;
 					if (ronda1 == nrRondas1)
@@ -442,16 +444,19 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		game.batcher.begin();
 		if (points1 > points2)
 		{
+			winner = PlayerTurn.PlayerRed;
 			game.batcher.draw(Assets.windowRedWin, (Assets.windowWidth - Assets.windowRedWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowRedWin.getHeight()) / 2);
 			buttonGameOver = new Button(Assets.buttonRedWin, (Assets.windowWidth - Assets.buttonRedWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
 		}
 		else if (points1 < points2)
 		{
+			winner = PlayerTurn.PlayerBlue;
 			game.batcher.draw(Assets.windowBlueWin, (Assets.windowWidth - Assets.windowBlueWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowBlueWin.getHeight()) / 2);
 			buttonGameOver = new Button(Assets.buttonBlueWin, (Assets.windowWidth - Assets.buttonBlueWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
 		}
 		else
 		{
+			winner = PlayerTurn.NULL;
 			game.batcher.draw(Assets.windowDraw, (Assets.windowWidth - Assets.windowBlueWin.getWidth()) / 2, (Assets.windowHeight - Assets.windowBlueWin.getHeight()) / 2);
 			buttonGameOver = new Button(Assets.buttonDraw, (Assets.windowWidth - Assets.buttonBlueWin.getWidth()) / 2, (Assets.windowHeight - 300) / 2);
 		}
@@ -567,8 +572,10 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 		{
 			if (points1 > points2)
 				winner = PlayerTurn.PlayerRed;
-			else
+			else if (points1 < points2)
 				winner = PlayerTurn.PlayerBlue;
+			else
+				winner = PlayerTurn.NULL;
 			saveScore();
 			game.setScreen(new MenuScreen(game));
 		}
@@ -580,10 +587,6 @@ public class GameScreen extends ScreenAdapter implements InputProcessor
 			selectedPiece.body.applyForceToCenter((float) 0.5 * (screenX - startX), (float) 0.5 * (startY - screenY), true);
 			//System.out.println ("Movimento: (" + (screenX - startX) + ", " + (screenY - startY) + ").");
 			nextPiece = true;
-			if (playerTurn == PlayerTurn.PlayerRed)
-				ronda1++;
-			else if (playerTurn == PlayerTurn.PlayerBlue)
-				ronda2++;
 		}
 		return true;
 	}
